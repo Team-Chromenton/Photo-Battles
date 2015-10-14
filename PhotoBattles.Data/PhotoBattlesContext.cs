@@ -2,12 +2,12 @@ namespace PhotoBattles.Data
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
-
+    using Microsoft.AspNet.Identity.EntityFramework;
     using PhotoBattles.Data.Contracts;
     using PhotoBattles.Data.Migrations;
     using PhotoBattles.Models;
 
-    public class PhotoBattlesContext : DbContext, IPhotoBattlesContext
+    public class PhotoBattlesContext : IdentityDbContext<User>, IPhotoBattlesContext
     {
         public PhotoBattlesContext()
             : base("name=PhotoBattlesContext")
