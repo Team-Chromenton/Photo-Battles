@@ -4,12 +4,12 @@
 
     public class DeadlineByParticipants : IDeadlineStrategy
     {
-        public void Dismiss()
+        public void Dismiss(Contest contest)
         {
             throw new System.NotImplementedException();
         }
 
-        public void End()
+        public void End(Contest contest)
         {
             throw new System.NotImplementedException();
         }

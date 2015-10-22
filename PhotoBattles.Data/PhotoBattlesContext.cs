@@ -23,6 +23,11 @@ namespace PhotoBattles.Data
 
         public virtual IDbSet<Vote> Votes { get; set; }
 
+        public static PhotoBattlesContext Create()
+        {
+            return new PhotoBattlesContext();
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
@@ -33,24 +38,35 @@ namespace PhotoBattles.Data
 
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Participants)
-                        .WithMany(u => u.ParticipatingContests)
+                        .WithMany(u => u.ParticipatingContest)
                         .Map(
                             m =>
                                 {
                                     m.MapLeftKey("ContestId");
                                     m.MapRightKey("UserId");
-                                    m.ToTable("ParticipantsContests");
+                                    m.ToTable("ParticipatingContests");
                                 });
 
             modelBuilder.Entity<Contest>()
-                        .HasMany(c => c.VotingUsers)
-                        .WithMany(u => u.VotingContests)
+                        .HasMany(c => c.AllowedForParticipation)
+                        .WithMany(u => u.AllowedForParticipation)
                         .Map(
                             m =>
                                 {
                                     m.MapLeftKey("ContestId");
                                     m.MapRightKey("UserId");
-                                    m.ToTable("VotersContests");
+                                    m.ToTable("ParticipationContest");
+                                });
+
+            modelBuilder.Entity<Contest>()
+                        .HasMany(c => c.AllowedForVoting)
+                        .WithMany(u => u.AllowedForVoting)
+                        .Map(
+                            m =>
+                                {
+                                    m.MapLeftKey("ContestId");
+                                    m.MapRightKey("UserId");
+                                    m.ToTable("VoteContest");
                                 });
 
             modelBuilder.Entity<Contest>()
@@ -61,7 +77,7 @@ namespace PhotoBattles.Data
                                 {
                                     m.MapLeftKey("ContestId");
                                     m.MapRightKey("UserId");
-                                    m.ToTable("WinersContests");
+                                    m.ToTable("WinerContest");
                                 });
 
             base.OnModelCreating(modelBuilder);

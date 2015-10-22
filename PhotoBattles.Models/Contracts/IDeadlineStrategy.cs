@@ -2,8 +2,8 @@
 {
     public interface IDeadlineStrategy
     {
-        void Dismiss();
+        void Dismiss(Contest contest);
 
-        void End();
+        void End(Contest contest);
     }
 }

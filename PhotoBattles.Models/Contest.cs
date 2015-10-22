@@ -12,7 +12,9 @@
 
         private ICollection<User> participants;
 
-        private ICollection<User> votingUsers;
+        private ICollection<User> allowedForParticipation;
+
+        private ICollection<User> allowedForVoting;
 
         private ICollection<User> winners;
 
@@ -20,7 +22,8 @@
         {
             this.photos = new HashSet<Photo>();
             this.participants = new HashSet<User>();
-            this.votingUsers = new HashSet<User>();
+            this.allowedForParticipation = new HashSet<User>();
+            this.allowedForVoting = new HashSet<User>();
             this.winners = new HashSet<User>();
         }
 
@@ -45,16 +48,16 @@
         public virtual User Organizer { get; set; }
 
         [Required]
-        public IRewardStrategy RewardStrategy { get; set; }
+        public virtual IRewardStrategy RewardStrategy { get; set; }
 
         [Required]
-        public IVotingStrategy VotingStrategy { get; set; }
+        public virtual IVotingStrategy VotingStrategy { get; set; }
 
         [Required]
-        public IParticipationStrategy ParticipationStrategy { get; set; }
+        public virtual IParticipationStrategy ParticipationStrategy { get; set; }
 
         [Required]
-        public IDeadlineStrategy DeadlineStrategy { get; set; }
+        public virtual IDeadlineStrategy DeadlineStrategy { get; set; }
 
         public virtual ICollection<Photo> Photos
         {
@@ -82,16 +85,29 @@
             }
         }
 
-        public virtual ICollection<User> VotingUsers
+        public virtual ICollection<User> AllowedForParticipation
         {
             get
             {
-                return this.votingUsers;
+                return this.allowedForParticipation;
             }
 
             set
             {
-                this.votingUsers = value;
+                this.allowedForParticipation = value;
+            }
+        }
+
+        public virtual ICollection<User> AllowedForVoting
+        {
+            get
+            {
+                return this.allowedForVoting;
+            }
+
+            set
+            {
+                this.allowedForVoting = value;
             }
         }
 

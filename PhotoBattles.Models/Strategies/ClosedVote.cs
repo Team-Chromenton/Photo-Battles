@@ -6,7 +6,7 @@
     {
         public bool CanVote(User user, Contest contest)
         {
-            if (contest.VotingUsers.Contains(user))
+            if (contest.AllowedForVoting.Contains(user))
             {
                 return true;
             }

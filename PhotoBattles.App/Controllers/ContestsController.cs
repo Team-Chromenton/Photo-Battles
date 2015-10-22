@@ -8,48 +8,48 @@
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         [AllowAnonymous]
         public ActionResult Details(int id)
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult Create()
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult Participate(int id)
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult GetResultsOfContest(int id)
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult GetContestsByUser(string username)
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult UpdateContestUser(string username)
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult DismissContestUser(string username)
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult FinalizeContestUser(string username)
         {
-            return View();
+            return this.View();
         }
     }
 }

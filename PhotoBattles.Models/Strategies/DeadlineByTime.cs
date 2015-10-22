@@ -6,12 +6,12 @@
 
     internal class DeadlineByTime : IDeadlineStrategy
     {
-        public void Dismiss()
+        public void Dismiss(Contest contest)
         {
             throw new NotImplementedException();
         }
 
-        public void End()
+        public void End(Contest contest)
         {
             throw new NotImplementedException();
         }

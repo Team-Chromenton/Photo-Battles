@@ -11,18 +11,24 @@
     {
         private ICollection<Contest> ownContests;
 
-        private ICollection<Contest> participatingContests;
+        private ICollection<Contest> participatingContest;
 
-        private ICollection<Contest> votingContests;
+        private ICollection<Contest> allowedForPartisipation;
+
+        private ICollection<Contest> allowedForVoting;
 
         private ICollection<Contest> winContests;
+
+        private ICollection<Vote> votes;
 
         public User()
         {
             this.ownContests = new HashSet<Contest>();
-            this.participatingContests = new HashSet<Contest>();
-            this.votingContests = new HashSet<Contest>();
+            this.participatingContest = new HashSet<Contest>();
+            this.allowedForPartisipation = new HashSet<Contest>();
+            this.allowedForVoting = new HashSet<Contest>();
             this.winContests = new HashSet<Contest>();
+            this.votes = new HashSet<Vote>();
         }
 
         public virtual ICollection<Contest> OwnContests
@@ -38,29 +44,42 @@
             }
         }
 
-        public virtual ICollection<Contest> ParticipatingContests
+        public virtual ICollection<Contest> ParticipatingContest
         {
             get
             {
-                return this.participatingContests;
+                return this.participatingContest;
             }
 
             set
             {
-                this.participatingContests = value;
+                this.participatingContest = value;
             }
         }
 
-        public virtual ICollection<Contest> VotingContests
+        public virtual ICollection<Contest> AllowedForParticipation
         {
             get
             {
-                return this.votingContests;
+                return this.allowedForPartisipation;
             }
 
             set
             {
-                this.votingContests = value;
+                this.allowedForPartisipation = value;
+            }
+        }
+
+        public virtual ICollection<Contest> AllowedForVoting
+        {
+            get
+            {
+                return this.allowedForVoting;
+            }
+
+            set
+            {
+                this.allowedForVoting = value;
             }
         }
 
@@ -74,6 +93,19 @@
             set
             {
                 this.winContests = value;
+            }
+        }
+
+        public virtual ICollection<Vote> Votes
+        {
+            get
+            {
+                return this.votes;
+            }
+
+            set
+            {
+                this.votes = value;
             }
         }
 

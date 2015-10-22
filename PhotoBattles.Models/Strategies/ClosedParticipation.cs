@@ -6,7 +6,7 @@
     {
         public bool CanParticipate(User user, Contest contest)
         {
-            if (contest.Participants.Contains(user))
+            if (contest.AllowedForParticipation.Contains(user))
             {
                 return true;
             }

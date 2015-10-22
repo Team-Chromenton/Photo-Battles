@@ -1,14 +1,16 @@
 ﻿using Microsoft.Owin;
-using Owin;
 
-[assembly: OwinStartupAttribute(typeof(PhotoBattles.App.Startup))]
+[assembly: OwinStartup(typeof(PhotoBattles.App.Startup))]
+
 namespace PhotoBattles.App
 {
+    using Owin;
+
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            this.ConfigureAuth(app);
         }
     }
 }
