@@ -15,12 +15,15 @@
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string PhotoUrl { get; set; }
 
+        [Required]
         public string AuthorId { get; set; }
 
         public virtual User Author { get; set; }
 
+        [Required]
         public int ContestId { get; set; }
 
         public Contest Contest { get; set; }
