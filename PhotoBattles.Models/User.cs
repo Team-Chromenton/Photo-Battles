@@ -1,6 +1,7 @@
 ﻿namespace PhotoBattles.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -30,6 +31,10 @@
             this.winContests = new HashSet<Contest>();
             this.votes = new HashSet<Vote>();
         }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public virtual ICollection<Contest> OwnContests
         {

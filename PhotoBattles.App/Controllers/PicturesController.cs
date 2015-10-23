@@ -2,7 +2,7 @@
 {
     using System.Web.Mvc;
 
-    public class PicturesController : Controller
+    public class PicturesController : BaseController
     {
         public ActionResult Create()
         {

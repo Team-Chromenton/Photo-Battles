@@ -3,7 +3,7 @@
     using System.Web.Mvc;
 
     [Authorize]
-    public class ContestsController : Controller
+    public class ContestsController : BaseController
     {
         [AllowAnonymous]
         public ActionResult Index()

@@ -79,7 +79,7 @@
             var result =
                 await
                 this.SignInManager.PasswordSignInAsync(
-                    model.Email,
+                    model.Username,
                     model.Password,
                     model.RememberMe,
                     shouldLockout: false);
@@ -168,7 +168,11 @@
         {
             if (this.ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new User
+                    {
+                        UserName = model.Username,
+                        Email = model.Email
+                    };
                 var result = await this.UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -180,7 +184,7 @@
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return this.RedirectToAction("Index", "Home");
+                    return this.RedirectToAction("Index", "Contests");
                 }
                 this.AddErrors(result);
             }
@@ -369,7 +373,11 @@
                     this.ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return this.View(
                         "ExternalLoginConfirmation",
-                        new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                        new ExternalLoginConfirmationViewModel
+                            {
+                                Email = loginInfo.Email,
+                                Username = loginInfo.DefaultUserName
+                            });
             }
         }
 
@@ -384,7 +392,7 @@
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToAction("Index", "Manage");
+                return this.RedirectToAction("Index", "Profile");
             }
 
             if (this.ModelState.IsValid)
@@ -395,7 +403,7 @@
                 {
                     return this.View("ExternalLoginFailure");
                 }
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = model.Username, Email = model.Email };
                 var result = await this.UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -420,7 +428,7 @@
         public ActionResult LogOff()
         {
             this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Contests");
         }
 
         //
@@ -478,7 +486,7 @@
             {
                 return this.Redirect(returnUrl);
             }
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Contests");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

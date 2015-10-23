@@ -12,17 +12,17 @@
     using PhotoBattles.App.Models;
 
     [Authorize]
-    public class ManageController : Controller
+    public class ProfileController : Controller
     {
         private ApplicationSignInManager _signInManager;
 
         private ApplicationUserManager _userManager;
 
-        public ManageController()
+        public ProfileController()
         {
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ProfileController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
@@ -52,8 +52,7 @@
             }
         }
 
-        //
-        // GET: /Manage/Index
+        // GET: /Profile/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             this.ViewBag.StatusMessage =
@@ -83,8 +82,7 @@
             return this.View(model);
         }
 
-        //
-        // POST: /Manage/RemoveLogin
+        // POST: /Profile/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
@@ -111,15 +109,13 @@
             return this.RedirectToAction("ManageLogins", new { Message = message });
         }
 
-        //
-        // GET: /Manage/AddPhoneNumber
+        // GET: /Profile/AddPhoneNumber
         public ActionResult AddPhoneNumber()
         {
             return this.View();
         }
 
-        //
-        // POST: /Manage/AddPhoneNumber
+        // POST: /Profile/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
@@ -143,8 +139,7 @@
             return this.RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
 
-        //
-        // POST: /Manage/EnableTwoFactorAuthentication
+        // POST: /Profile/EnableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
@@ -155,11 +150,10 @@
             {
                 await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
             }
-            return this.RedirectToAction("Index", "Manage");
+            return this.RedirectToAction("Index", "Profile");
         }
 
-        //
-        // POST: /Manage/DisableTwoFactorAuthentication
+        // POST: /Profile/DisableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
@@ -170,11 +164,10 @@
             {
                 await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
             }
-            return this.RedirectToAction("Index", "Manage");
+            return this.RedirectToAction("Index", "Profile");
         }
 
-        //
-        // GET: /Manage/VerifyPhoneNumber
+        // GET: /Profile/VerifyPhoneNumber
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
             var code =
@@ -185,8 +178,7 @@
                        : this.View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
 
-        //
-        // POST: /Manage/VerifyPhoneNumber
+        // POST: /Profile/VerifyPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
@@ -212,8 +204,7 @@
             return this.View(model);
         }
 
-        //
-        // GET: /Manage/RemovePhoneNumber
+        // GET: /Profile/RemovePhoneNumber
         public async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await this.UserManager.SetPhoneNumberAsync(this.User.Identity.GetUserId(), null);
@@ -229,15 +220,19 @@
             return this.RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
 
-        //
-        // GET: /Manage/ChangePassword
+        // GET: /Profile/EditProfile
+        public ActionResult EditProfile()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        // GET: /Profile/ChangePassword
         public ActionResult ChangePassword()
         {
             return this.View();
         }
 
-        //
-        // POST: /Manage/ChangePassword
+        // POST: /Profile/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -265,15 +260,13 @@
             return this.View(model);
         }
 
-        //
-        // GET: /Manage/SetPassword
+        // GET: /Profile/SetPassword
         public ActionResult SetPassword()
         {
             return this.View();
         }
 
-        //
-        // POST: /Manage/SetPassword
+        // POST: /Profile/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
@@ -297,8 +290,7 @@
             return this.View(model);
         }
 
-        //
-        // GET: /Manage/ManageLogins
+        // GET: /Profile/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             this.ViewBag.StatusMessage =
@@ -326,8 +318,7 @@
                     });
         }
 
-        //
-        // POST: /Manage/LinkLogin
+        // POST: /Profile/LinkLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
@@ -335,12 +326,11 @@
             // Request a redirect to the external login provider to link a login for the current user
             return new AccountController.ChallengeResult(
                 provider,
-                this.Url.Action("LinkLoginCallback", "Manage"),
+                this.Url.Action("LinkLoginCallback", "Profile"),
                 this.User.Identity.GetUserId());
         }
 
-        //
-        // GET: /Manage/LinkLoginCallback
+        // GET: /Profile/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo =
