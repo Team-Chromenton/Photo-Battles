@@ -6,7 +6,7 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.Owin.Security;
 
-    public class IndexViewModel
+    public class ProfileViewModel
     {
         public bool HasPassword { get; set; }
 
@@ -17,6 +17,24 @@
         public bool TwoFactor { get; set; }
 
         public bool BrowserRemembered { get; set; }
+
+        public EditProfileViewModel EditProfileViewModel { get; set; }
+
+        public SetPasswordViewModel SetPasswordViewModel { get; set; }
+
+        public ChangePasswordViewModel ChangePasswordViewModel { get; set; }
+    }
+
+    public class EditProfileViewModel
+    {
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
     }
 
     public class ManageLoginsViewModel

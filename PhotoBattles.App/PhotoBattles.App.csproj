@@ -266,6 +266,7 @@
     <Content Include="Views\Profile\ManageLogins.cshtml" />
     <Content Include="Views\Profile\SetPassword.cshtml" />
     <Content Include="Views\Profile\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Profile\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

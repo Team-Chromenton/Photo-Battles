@@ -1,23 +1,21 @@
-﻿@model PhotoBattles.App.Models.IndexViewModel
+﻿@model PhotoBattles.App.Models.ProfileViewModel
 @{
     ViewBag.Title = "Profile";
 }
 
 <p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-1">
+        @Html.Partial("EditProfile")
+    </div>
+    <div class="col-lg-4 col-lg-offset-2">
+        @if (Model.HasPassword)
+        {
+            @Html.Partial("ChangePassword")
+        }
+        else
+        {
+            @Html.Partial("SetPassword")
+        }
+    </div>
 </div>

@@ -12,7 +12,7 @@
     using PhotoBattles.App.Models;
 
     [Authorize]
-    public class ProfileController : Controller
+    public class ProfileController : BaseController
     {
         private ApplicationSignInManager _signInManager;
 
@@ -64,14 +64,12 @@
                                 ? "Your two-factor authentication provider has been set."
                                 : message == ManageMessageId.Error
                                       ? "An error has occurred."
-                                      : message == ManageMessageId.AddPhoneSuccess
-                                            ? "Your phone number was added."
-                                            : message == ManageMessageId.RemovePhoneSuccess
-                                                  ? "Your phone number was removed."
-                                                  : "";
+                                      : message == ManageMessageId.EditProfileSuccess
+                                            ? "Your profile has been edited."
+                                            : "";
 
             var userId = this.User.Identity.GetUserId();
-            var model = new IndexViewModel
+            var model = new ProfileViewModel
                 {
                     HasPassword = this.HasPassword(),
                     PhoneNumber = await this.UserManager.GetPhoneNumberAsync(userId),
@@ -79,6 +77,18 @@
                     Logins = await this.UserManager.GetLoginsAsync(userId),
                     BrowserRemembered = await this.AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
                 };
+
+            var user = this.Data.Users.GetAll().FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                return this.View(model);
+            }
+
+            model.EditProfileViewModel = new EditProfileViewModel();
+            model.EditProfileViewModel.Email = user.Email;
+            model.EditProfileViewModel.FirstName = user.FirstName ?? string.Empty;
+            model.EditProfileViewModel.LastName = user.LastName ?? string.Empty;
+
             return this.View(model);
         }
 
@@ -220,22 +230,35 @@
             return this.RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
 
-        // GET: /Profile/EditProfile
-        public ActionResult EditProfile()
+        // POST: /Profile/EditProfile
+        [HttpPost]
+        public ActionResult EditProfile(ProfileViewModel model)
         {
-            throw new System.NotImplementedException();
-        }
+            if (!this.ModelState.IsValid)
+            {
+                return this.RedirectToAction("Index");
+            }
 
-        // GET: /Profile/ChangePassword
-        public ActionResult ChangePassword()
-        {
-            return this.View();
+            var userId = this.User.Identity.GetUserId();
+            var user = this.Data.Users.GetAll().FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            user.Email = model.EditProfileViewModel.Email;
+            user.FirstName = model.EditProfileViewModel.FirstName;
+            user.LastName = model.EditProfileViewModel.LastName;
+
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("Index", new { Message = ManageMessageId.EditProfileSuccess });
         }
 
         // POST: /Profile/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<ActionResult> ChangePassword(ProfileViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -245,8 +268,8 @@
                 await
                 this.UserManager.ChangePasswordAsync(
                     this.User.Identity.GetUserId(),
-                    model.OldPassword,
-                    model.NewPassword);
+                    model.ChangePasswordViewModel.OldPassword,
+                    model.ChangePasswordViewModel.NewPassword);
             if (result.Succeeded)
             {
                 var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
@@ -269,11 +292,15 @@
         // POST: /Profile/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
+        public async Task<ActionResult> SetPassword(ProfileViewModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var result = await this.UserManager.AddPasswordAsync(this.User.Identity.GetUserId(), model.NewPassword);
+                var result =
+                    await
+                    this.UserManager.AddPasswordAsync(
+                        this.User.Identity.GetUserId(),
+                        model.SetPasswordViewModel.NewPassword);
                 if (result.Succeeded)
                 {
                     var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
@@ -400,6 +427,8 @@
         public enum ManageMessageId
         {
             AddPhoneSuccess,
+
+            EditProfileSuccess,
 
             ChangePasswordSuccess,
 
