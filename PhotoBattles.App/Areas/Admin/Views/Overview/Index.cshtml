@@ -1,0 +1,32 @@
+﻿@model PhotoBattles.App.Areas.Admin.Models.ViewModels.AdminOverviewViewModel
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h4>Manage Users</h4>
+            </div>
+            <div class="panel-body">
+                @foreach (var user in Model.Users)
+                {
+                    @Html.ActionLink(user.UserName, "EditUser", "Users",
+                        new { area = "Admin", username = user.UserName },
+                        new { @class = "btn btn-default btn-block" })
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h4>Manage Contests</h4>
+            </div>
+            <div class="panel-body">
+                @foreach (var contest in Model.Contests)
+                {
+                    // TODO Add link for contest
+                }
+            </div>
+        </div>
+    </div>
+</div>

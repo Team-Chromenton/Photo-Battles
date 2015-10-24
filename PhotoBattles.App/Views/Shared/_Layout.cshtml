@@ -22,7 +22,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Contests", "Index", "Contests")</li>
+                <li>@Html.ActionLink("Contests", "Index", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

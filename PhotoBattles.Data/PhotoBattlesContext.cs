@@ -6,7 +6,6 @@ namespace PhotoBattles.Data
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using PhotoBattles.Data.Contracts;
-    using PhotoBattles.Data.Migrations;
     using PhotoBattles.Models;
 
     public class PhotoBattlesContext : IdentityDbContext<User>, IPhotoBattlesContext
@@ -14,7 +13,6 @@ namespace PhotoBattles.Data
         public PhotoBattlesContext()
             : base("name=PhotoBattlesContext")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<PhotoBattlesContext, Configuration>());
         }
 
         public virtual IDbSet<Contest> Contests { get; set; }
