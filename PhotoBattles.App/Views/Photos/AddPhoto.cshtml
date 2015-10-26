@@ -1,0 +1,21 @@
+﻿@model PhotoBattles.App.Models.BindingModels.PhotoBindingModel
+
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Add Photo";
+}
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+
+@using (Html.BeginForm("AddPhoto", "Photos", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+{
+    <div class="panel panel-default panel-primary">
+        <div class="panel-body">
+            @Html.TextBoxFor(m => m.PhotoData, new { type = "file" })
+        </div>
+        <div class="panel-footer">
+            <input type="submit" class="btn btn-default btn-primary" value="Add Photo" />
+        </div>
+    </div>
+}

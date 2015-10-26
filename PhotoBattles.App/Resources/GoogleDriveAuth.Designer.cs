@@ -59,23 +59,5 @@ namespace PhotoBattles.App.Resources {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDKQV4DD9dRQ2Y1\nVIpt8EPUvOyfvYcB1olGAA1RaEX7oiHkpzdlLrB/B/vqZ74z2FY1AKpy63zsgHhh\nGIJG6uyxPylGWbhemIQrvASDCvMnkFDmf519hG5YzmUiomJ+qg2VobhXGkoFKptn\nmTJzyfJoIzZXs/LkMD/FnJvHZ5Xxv6bGvROk3y68TUnkXLwHAfCv9hGJR2HXyvog\nr5k2O7rWyj05tKM1SQ0XdT/Os3jhyaXEIEdLQwCSa0AGITZW1trg2U0zqyWp2n0j\nQEXUTtxEEcTWSo9UFG8q8O3AtqKWJUEFo/awOsEEtrTh1/CtBEq4Vo/tiKTaL633\nPpsggeZLAgMBAAECggEBAL9pI5bUPBtNJQKdsrCe7SL9dRcsYAPOTHXyAKilfW3K\noDbsRdG9YQ2nubK6YdhhC [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string GoogleDrivePrivateKey {
-            get {
-                return ResourceManager.GetString("GoogleDrivePrivateKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 440839730918-bl8qakk064m5sahh1hapj6c3pkap1p44@developer.gserviceaccount.com.
-        /// </summary>
-        internal static string GoogleDriveServiceAccountEmail {
-            get {
-                return ResourceManager.GetString("GoogleDriveServiceAccountEmail", resourceCulture);
-            }
-        }
     }
 }
