@@ -1,0 +1,23 @@
+﻿@model IQueryable<PhotoBattles.App.Models.ViewModels.PhotoViewModel>
+
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+{
+    Html.RenderAction("AddPhoto", "Photos");
+}
+
+@foreach (var photo in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <img src=@photo.Url class="media-object profile-image-sm"/>
+        </div>
+        <div class="panel-footer"></div>
+    </div>
+}

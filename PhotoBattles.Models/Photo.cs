@@ -1,5 +1,6 @@
 ﻿namespace PhotoBattles.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -16,7 +17,10 @@
         public int Id { get; set; }
 
         [Required]
-        public string PhotoUrl { get; set; }
+        public string Url { get; set; }
+
+        [Required]
+        public DateTime Uploaded { get; set; }
 
         [Required]
         public string AuthorId { get; set; }

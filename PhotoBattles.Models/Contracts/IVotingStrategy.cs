@@ -2,6 +2,6 @@
 {
     public interface IVotingStrategy
     {
-        bool CanVote(User user, Contest contest);
+        bool CanVote(string user);
     }
 }

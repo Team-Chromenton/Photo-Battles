@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     using PhotoBattles.Models.Contracts;
 
@@ -12,18 +13,12 @@
 
         private ICollection<User> participants;
 
-        private ICollection<User> allowedForParticipation;
-
-        private ICollection<User> allowedForVoting;
-
         private ICollection<User> winners;
 
         public Contest()
         {
             this.photos = new HashSet<Photo>();
             this.participants = new HashSet<User>();
-            this.allowedForParticipation = new HashSet<User>();
-            this.allowedForVoting = new HashSet<User>();
             this.winners = new HashSet<User>();
         }
 
@@ -37,10 +32,16 @@
         public string Description { get; set; }
 
         [Required]
-        public DateTime StartDateTime { get; set; }
+        public DateTime Start { get; set; }
+
+        [Required]
+        public DateTime? Deadline { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
+
+        [Required]
+        public bool IsOpen { get; set; }
 
         [Required]
         public string OrganizerId { get; set; }
@@ -48,10 +49,10 @@
         public virtual User Organizer { get; set; }
 
         [Required]
-        public virtual IRewardStrategy RewardStrategy { get; set; }
+        public virtual IVotingStrategy VotingStrategy { get; set; }
 
         [Required]
-        public virtual IVotingStrategy VotingStrategy { get; set; }
+        public virtual IRewardStrategy RewardStrategy { get; set; }
 
         [Required]
         public virtual IParticipationStrategy ParticipationStrategy { get; set; }
@@ -85,32 +86,6 @@
             }
         }
 
-        public virtual ICollection<User> AllowedForParticipation
-        {
-            get
-            {
-                return this.allowedForParticipation;
-            }
-
-            set
-            {
-                this.allowedForParticipation = value;
-            }
-        }
-
-        public virtual ICollection<User> AllowedForVoting
-        {
-            get
-            {
-                return this.allowedForVoting;
-            }
-
-            set
-            {
-                this.allowedForVoting = value;
-            }
-        }
-
         public virtual ICollection<User> Winners
         {
             get
@@ -122,6 +97,20 @@
             {
                 this.winners = value;
             }
+        }
+
+        public void Dismiss()
+        {
+            this.IsActive = false;
+            this.IsOpen = false;
+            this.RewardStrategy = null;
+        }
+
+        public void End()
+        {
+            this.IsActive = false;
+            this.IsOpen = false;
+            this.RewardStrategy.GetWiners();
         }
     }
 }

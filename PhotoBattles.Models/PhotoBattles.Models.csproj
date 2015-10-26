@@ -63,14 +63,14 @@
     <Compile Include="Contracts\IRewardStrategy.cs" />
     <Compile Include="Contracts\IVotingStrategy.cs" />
     <Compile Include="Photo.cs" />
-    <Compile Include="Strategies\ClosedParticipation.cs" />
-    <Compile Include="Strategies\ClosedVote.cs" />
-    <Compile Include="Strategies\DeadlineByParticipants.cs" />
-    <Compile Include="Strategies\DeadlineByTime.cs" />
-    <Compile Include="Strategies\OpenParticipation.cs" />
-    <Compile Include="Strategies\OpenVote.cs" />
-    <Compile Include="Strategies\TopNWinners.cs" />
-    <Compile Include="Strategies\TopOneWinner.cs" />
+    <Compile Include="Strategies\ParticipationStrategies\ClosedParticipationStrategy.cs" />
+    <Compile Include="Strategies\VotingStrategies\ClosedVotingStartegy.cs" />
+    <Compile Include="Strategies\DeadlineStrategies\DeadlineByParticipants.cs" />
+    <Compile Include="Strategies\DeadlineStrategies\DeadlineByTime.cs" />
+    <Compile Include="Strategies\ParticipationStrategies\OpenParticipationStrategy.cs" />
+    <Compile Include="Strategies\VotingStrategies\OpenVotingStartegy.cs" />
+    <Compile Include="Strategies\RewardStrategies\TopNWinners.cs" />
+    <Compile Include="Strategies\RewardStrategies\SingleWinner.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Contest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +80,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

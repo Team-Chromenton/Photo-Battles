@@ -8,16 +8,8 @@
     using Google.Apis.Drive.v2;
     using Google.Apis.Services;
 
-    using PhotoBattles.App.Resources;
-
     public class GoogleDriveService
     {
-        //private static readonly ResourceManager ResourceManager = new ResourceManager("PhotoBattles.App.Resources.GoogleDriveAuth", Assembly.GetExecutingAssembly());
-
-        //private static readonly string GoogleDriveServiceAccountEmail = ResourceManager.GetString("GoogleDriveServiceAccountEmail");
-
-        //private static readonly string GoogleDrivePrivateKey = ResourceManager.GetString("GoogleDrivePrivateKey2");
-
         private static readonly string GoogleDriveServiceAccountEmail = "440839730918-bl8qakk064m5sahh1hapj6c3pkap1p44@developer.gserviceaccount.com";
 
         private static readonly string GoogleDrivePrivateKey =

@@ -22,25 +22,36 @@
 
     public class PhotosController : BaseController
     {
+        [AllowAnonymous]
+        public ActionResult Index(int contestId = 0)
+        {
+            var photos = this.Data.Photos.GetAll()
+                    .Where(p => p.ContestId == contestId)
+                    .OrderByDescending(p => p.Uploaded)
+                    .ProjectTo<PhotoViewModel>();
+
+            return this.View(photos);
+        }
+
         public ActionResult AddPhoto()
         {
-            return this.View();
+            return this.PartialView("~/Views/Photos/_AddPhoto.cshtml");
         }
 
         // POST /contests/{id}/photos
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> AddPhoto(PhotoBindingModel model, int contestId = 1)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(model);
+                return this.PartialView("~/Views/Photos/_AddPhoto.cshtml", model);
             }
 
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
 
-            var currentUser =
-                this.Data.Users.GetAll()
+            var currentUser = this.Data.Users.GetAll()
                     .Where(u => u.Id == currentUserId)
                     .ProjectTo<UserViewModel>()
                     .FirstOrDefault();
@@ -49,6 +60,9 @@
 
             if (uploadResults[0] == "success")
             {
+
+
+
                 this.ViewBag.StatusMessage = "Success";
             }
             else
@@ -56,7 +70,7 @@
                 this.ViewBag.StatusMessage = "Error";
             }
 
-            return this.View(model);
+            return this.RedirectToAction("Index", "Photos");
         }
 
         private string[] UploadPhotoToGoogleDrive(HttpPostedFileBase fileData)
@@ -64,24 +78,18 @@
             string photoMimeType = fileData.ContentType;
             string fileName = fileData.FileName;
 
-            //MemoryStream memoryStream = new MemoryStream();
-
-            //fileData.InputStream.CopyTo(memoryStream);
-
-            //var byteArray = memoryStream.ToArray();
-            
             var service = GoogleDriveService.Get();
 
             File body = new File
-                {
-                    Title = fileName, 
-                    MimeType = photoMimeType, 
-                    Parents =
+            {
+                Title = fileName,
+                MimeType = photoMimeType,
+                Parents =
                         new List<ParentReference>
                             {
                                 new ParentReference { Id = "0ByDHCWWSmvcLRlNrcEh2QVF3cnM" }
                             }
-                };
+            };
 
             try
             {

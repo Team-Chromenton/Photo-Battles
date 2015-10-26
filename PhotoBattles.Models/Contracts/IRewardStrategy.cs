@@ -4,6 +4,6 @@
 
     public interface IRewardStrategy
     {
-        ICollection<User> GetWiners(int numberOfWinners, Contest contest);
+        ICollection<User> GetWiners();
     }
 }

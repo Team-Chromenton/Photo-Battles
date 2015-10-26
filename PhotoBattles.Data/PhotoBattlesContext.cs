@@ -45,27 +45,27 @@ namespace PhotoBattles.Data
                                     m.ToTable("ParticipatingContests");
                                 });
 
-            modelBuilder.Entity<Contest>()
-                        .HasMany(c => c.AllowedForParticipation)
-                        .WithMany(u => u.AllowedForParticipation)
-                        .Map(
-                            m =>
-                                {
-                                    m.MapLeftKey("ContestId");
-                                    m.MapRightKey("UserId");
-                                    m.ToTable("ParticipationContest");
-                                });
+            //modelBuilder.Entity<Contest>()
+            //            .HasMany(c => c.AllowedForParticipation)
+            //            .WithMany(u => u.AllowedForParticipation)
+            //            .Map(
+            //                m =>
+            //                    {
+            //                        m.MapLeftKey("ContestId");
+            //                        m.MapRightKey("UserId");
+            //                        m.ToTable("ParticipationContest");
+            //                    });
 
-            modelBuilder.Entity<Contest>()
-                        .HasMany(c => c.AllowedForVoting)
-                        .WithMany(u => u.AllowedForVoting)
-                        .Map(
-                            m =>
-                                {
-                                    m.MapLeftKey("ContestId");
-                                    m.MapRightKey("UserId");
-                                    m.ToTable("VoteContest");
-                                });
+            //modelBuilder.Entity<Contest>()
+            //            .HasMany(c => c.AllowedForVoting)
+            //            .WithMany(u => u.AllowedForVoting)
+            //            .Map(
+            //                m =>
+            //                    {
+            //                        m.MapLeftKey("ContestId");
+            //                        m.MapRightKey("UserId");
+            //                        m.ToTable("VoteContest");
+            //                    });
 
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Winners)
