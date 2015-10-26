@@ -1,3 +1,24 @@
-﻿@{
-    ViewBag.Title = "Contests";
+﻿@model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+{
+    Html.RenderAction("AddContest", "Contests");
+}
+
+@foreach (var contest in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <p>@contest.Title</p>
+            <p>@contest.Description</p>
+            <p>@contest.CreatedOn</p>
+            <p>@contest.Organizer.UserName</p>
+
+        </div>
+    </div>
 }

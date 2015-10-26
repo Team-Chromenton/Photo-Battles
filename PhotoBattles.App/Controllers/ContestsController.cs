@@ -1,6 +1,17 @@
 ﻿namespace PhotoBattles.App.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
+
+    using AutoMapper.QueryableExtensions;
+
+    using Microsoft.AspNet.Identity;
+
+    using PhotoBattles.App.Models.BindingModels;
+    using PhotoBattles.App.Models.ViewModels;
+    using PhotoBattles.Models;
 
     [Authorize]
     public class ContestsController : BaseController
@@ -8,48 +19,49 @@
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return this.View();
+            IQueryable<ContestViewModel> contests = this.Data.Contests
+                    .GetAll()
+                    .OrderByDescending(c => c.IsActive)
+                    .ThenByDescending(c => c.IsOpen)
+                    .ThenByDescending(c => c.CreatedOn)
+                    .ProjectTo<ContestViewModel>();
+
+            return this.View(contests);
         }
 
-        [AllowAnonymous]
-        public ActionResult Details(int id)
+        public ActionResult AddContest()
         {
-            return this.View();
+            return this.PartialView("~/Views/Contests/_AddContest.cshtml");
         }
 
-        public ActionResult Create()
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> AddContest(ContestBindingModel model)
         {
-            return this.View();
-        }
+            if (!this.ModelState.IsValid)
+            {
+                return this.PartialView("~/Views/Contests/_AddContest.cshtml", model);
+            }
 
-        public ActionResult Participate(int id)
-        {
-            return this.View();
-        }
+            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
 
-        public ActionResult GetResultsOfContest(int id)
-        {
-            return this.View();
-        }
+            var currentUser = this.Data.Users.GetAll().Where(u => u.Id == currentUserId).ProjectTo<UserViewModel>().FirstOrDefault();
 
-        public ActionResult GetContestsByUser(string username)
-        {
-            return this.View();
-        }
+            var newContest = new Contest
+            {
+                Title = model.Title,
+                Description = model.Description,
+                CreatedOn = DateTime.Now,
+                IsActive = true,
+                IsOpen = true,
+                OrganizerId = currentUserId
+            };
 
-        public ActionResult UpdateContestUser(string username)
-        {
-            return this.View();
-        }
+            this.Data.Contests.Add(newContest);
+            this.Data.SaveChanges();
 
-        public ActionResult DismissContestUser(string username)
-        {
-            return this.View();
-        }
-
-        public ActionResult FinalizeContestUser(string username)
-        {
-            return this.View();
+            return this.RedirectToAction("Index", "Contests");
         }
     }
 }

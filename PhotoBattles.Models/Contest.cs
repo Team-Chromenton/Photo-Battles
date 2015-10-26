@@ -32,9 +32,8 @@
         public string Description { get; set; }
 
         [Required]
-        public DateTime Start { get; set; }
+        public DateTime CreatedOn { get; set; }
 
-        [Required]
         public DateTime? Deadline { get; set; }
 
         [Required]
@@ -48,16 +47,16 @@
 
         public virtual User Organizer { get; set; }
 
-        [Required]
+        //[Required]
         public virtual IVotingStrategy VotingStrategy { get; set; }
 
-        [Required]
+        //[Required]
         public virtual IRewardStrategy RewardStrategy { get; set; }
 
-        [Required]
+        //[Required]
         public virtual IParticipationStrategy ParticipationStrategy { get; set; }
 
-        [Required]
+        //[Required]
         public virtual IDeadlineStrategy DeadlineStrategy { get; set; }
 
         public virtual ICollection<Photo> Photos
