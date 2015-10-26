@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GoogleDrivePrivateKey" xml:space="preserve">
+    <value>-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDKQV4DD9dRQ2Y1\nVIpt8EPUvOyfvYcB1olGAA1RaEX7oiHkpzdlLrB/B/vqZ74z2FY1AKpy63zsgHhh\nGIJG6uyxPylGWbhemIQrvASDCvMnkFDmf519hG5YzmUiomJ+qg2VobhXGkoFKptn\nmTJzyfJoIzZXs/LkMD/FnJvHZ5Xxv6bGvROk3y68TUnkXLwHAfCv9hGJR2HXyvog\nr5k2O7rWyj05tKM1SQ0XdT/Os3jhyaXEIEdLQwCSa0AGITZW1trg2U0zqyWp2n0j\nQEXUTtxEEcTWSo9UFG8q8O3AtqKWJUEFo/awOsEEtrTh1/CtBEq4Vo/tiKTaL633\nPpsggeZLAgMBAAECggEBAL9pI5bUPBtNJQKdsrCe7SL9dRcsYAPOTHXyAKilfW3K\noDbsRdG9YQ2nubK6YdhhChz5N1axJLYSU1rYvhptpHmOY/qPWJw1zQgy1TZLe5la\nzCWIarzqQyBKnI4tjfd/6oFM3s+YMqs3CoH+CzBn08DYakqQI/Pu8buMHiWWE+MH\npbJvY4t/ZtAy+YTr5GgMW1+1U5GeM8JhqYr35Vs8yaRuchjGQSvQAO7fxN96cZGT\n2ODYv5mpAUDVZs559a5by63nBj8l1XZDMMbjKX5X9+52ckqkxO2dmvGCYd/fgcDP\nLq66DuF21QZ9uZJg395icz5zi/kdgAwq3Lz8ouDmVokCgYEA7Vz46qscA865at1O\n5iSUDRu4mHsTFmKwi/VCHU656egpwiR5r8bu0kN8OTg2xWV+70ML0pzMsDRromLr\nzMVbk4wF+NuoIyB86HjqKXq69dOcO0ZfV/3rg+0daCNeLXrJGMtFp6jI+6Dgt6iT\n+mb35WqtIEx7iV2Cnb5OwDg6vIUCgYEA2iK5LUbmxjw0CTHNBiwgc4E3vAhdZAaq\nhIFMa99gFSNgQCU7LIwR2ujWqDYlU2r3jeQQJAUqhFELL8fMxoOgsK3GPZR1a/X4\nRFTdRLClPRgqi7mAzX1FFBuAKD7Q4PtgUdu8/bcUO0pshNQEGrsUCYl7i3Q4b+y3\nqLe6ZGNXuI8CgYAm1yPUIpO++8DTf8s9VZb0XijiqqEA9L026bcb3JoHcHoEzrsq\nzD6gIXLeWhh8TJNsy2fP2uCTpMBIHi+/njvR9QO1KRxmQxatY7vNdcvKFgpmmKlZ\nWK+FMvOw6riqcIEfkYOgX7ojkruy0d8FBnxiCgayVlGQtMB+13lDcvAJkQKBgADa\n/ADqc0M5vzZ+BIDOsX3idtZ87ejTgd2tKCCQKq9KiTkXLEk7b2J9YUIdnD3cgIYE\n6+9IOed07edNEEeDAqFOvSVGrMM0nrmd35RCYROBQcF0g8XKhPfUN8dwn58SPUl0\n5CPWkPS+kPhgYHe+XhC/gkWEuifuNLYrqkZ0gUaPAoGBANFsYrLKlaWOIcZtg2Ph\nwa3Lpgs1txUhSJ8NBd3zT8/fm07TZn2Xy+16tWgpoVjuz091YNQDESRHW5QqTvt5\nKDCXQnjViOw8RSwiL1Dv6PiYIOlCegf2X5thJ6zFjj4b7H4CGX3wz9LBudOFEX+R\nG+X3N4aS5gG5GNkiGBxILlwe\n-----END PRIVATE KEY-----\n</value>
+  </data>
+  <data name="GoogleDriveServiceAccountEmail" xml:space="preserve">
+    <value>440839730918-bl8qakk064m5sahh1hapj6c3pkap1p44@developer.gserviceaccount.com</value>
+  </data>
+</root>

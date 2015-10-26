@@ -4,9 +4,6 @@
 
     public class PicturesController : BaseController
     {
-        public ActionResult Create()
-        {
-            return this.View();
-        }
+        
     }
 }
