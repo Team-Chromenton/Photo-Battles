@@ -1,5 +1,6 @@
 ﻿@model PhotoBattles.App.Models.ViewModels.ContestDetailsViewModel
-<p>@Model.Title</p>
+<h1>@Model.Title</h1>
+<h3>Images</h3>
 @foreach (var photo in Model.Photos)
 {
     <img src="@photo.Url"/>

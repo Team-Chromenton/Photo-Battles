@@ -17,7 +17,7 @@
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.App.Services;
-
+    using PhotoBattles.Models;
     using File = Google.Apis.Drive.v2.Data.File;
 
     public class PhotosController : BaseController
@@ -59,8 +59,16 @@
 
             if (uploadResults[0] == "success")
             {
+                var newPhoto = new Photo()
+                {
+                    Url = uploadResults[1],
+                    Uploaded = DateTime.Now,
+                    AuthorId = currentUserId,
+                    ContestId = contestId
+                };
 
-
+                this.Data.Photos.Add(newPhoto);
+                this.Data.SaveChanges();
 
                 this.ViewBag.StatusMessage = "Success";
             }
