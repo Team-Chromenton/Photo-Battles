@@ -58,10 +58,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commitee.cs" />
     <Compile Include="Contracts\IDeadlineStrategy.cs" />
     <Compile Include="Contracts\IParticipationStrategy.cs" />
     <Compile Include="Contracts\IRewardStrategy.cs" />
     <Compile Include="Contracts\IVotingStrategy.cs" />
+    <Compile Include="Enumerations\VotingStrategy.cs" />
     <Compile Include="Photo.cs" />
     <Compile Include="Strategies\ParticipationStrategies\ClosedParticipationStrategy.cs" />
     <Compile Include="Strategies\VotingStrategies\ClosedVotingStartegy.cs" />

@@ -12,6 +12,8 @@
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models;
+    using PhotoBattles.Models.Enumerations;
+    using PhotoBattles.Models.Strategies.VotingStrategies;
 
     [Authorize]
     public class ContestsController : BaseController
@@ -59,6 +61,23 @@
             };
 
             this.Data.Contests.Add(newContest);
+
+            if (model.VotingStartegy == VotingStrategy.Open)
+            {
+                newContest.VotingStrategy = VotingStrategy.Open;
+            }
+            else if (model.VotingStartegy == VotingStrategy.Closed)
+            {
+                newContest.VotingStrategy = VotingStrategy.Closed;
+
+                string[] commiteeMembersNames = model.CommiteeMembers.Split(',').Select(cm => cm.Trim()).ToArray();
+                var commiteeMembers = this.Data.Users.GetAll().Where(u => commiteeMembersNames.Contains(u.UserName)).Select(u => u.UserName).ToArray();
+
+                string members = string.Join(", ", commiteeMembers);
+
+                this.Data.Commitees.Add(new Commitee() {ContestId = newContest.Id, Members = members});
+            }
+
             this.Data.SaveChanges();
 
             return this.RedirectToAction("Index", "Contests");

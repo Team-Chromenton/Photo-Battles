@@ -6,6 +6,7 @@
     using System.Linq;
 
     using PhotoBattles.Models.Contracts;
+    using PhotoBattles.Models.Enumerations;
 
     public class Contest
     {
@@ -48,7 +49,7 @@
         public virtual User Organizer { get; set; }
 
         //[Required]
-        public virtual IVotingStrategy VotingStrategy { get; set; }
+        public virtual VotingStrategy VotingStrategy { get; set; }
 
         //[Required]
         public virtual IRewardStrategy RewardStrategy { get; set; }

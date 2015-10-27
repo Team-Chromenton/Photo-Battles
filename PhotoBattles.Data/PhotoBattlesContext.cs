@@ -21,6 +21,9 @@ namespace PhotoBattles.Data
 
         public virtual IDbSet<Vote> Votes { get; set; }
 
+        public virtual IDbSet<Commitee> Commitees { get; set; }
+
+
         public static PhotoBattlesContext Create()
         {
             return new PhotoBattlesContext();

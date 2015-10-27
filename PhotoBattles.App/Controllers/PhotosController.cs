@@ -38,7 +38,6 @@
             return this.PartialView("~/Views/Photos/_AddPhoto.cshtml");
         }
 
-        // POST /contests/{id}/photos
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> AddPhoto(PhotoBindingModel model, int contestId = 1)

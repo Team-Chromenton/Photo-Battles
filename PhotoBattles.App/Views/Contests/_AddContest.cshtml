@@ -12,11 +12,35 @@
         <div class="panel-body">
 
             @Html.TextBoxFor(m => m.Title)
+            <br />
             @Html.TextAreaFor(m => m.Description)
-            
+
+            <div>
+                <p>Voting Strategy</p>
+                @Html.LabelFor(m => m.VotingStartegy, "Open")
+                @Html.RadioButtonFor(m => m.VotingStartegy, 1, new { @checked = "checked", @onclick = "hide('commitee-members')" })
+
+                @Html.LabelFor(m => m.VotingStartegy, "Closed")
+                @Html.RadioButtonFor(m => m.VotingStartegy, 2, new { @onclick = "show('commitee-members')" })
+
+                @Html.TextBoxFor(m => m.CommiteeMembers, new { @id = "commitee-members", @style = "display:none" })
+            </div>
         </div>
         <div class="panel-footer">
             <input type="submit" class="btn btn-default btn-primary" value="Add Contest" />
         </div>
     </div>
 }
+
+<script>
+    function hide(obj) {
+        var el = document.getElementById(obj);
+        el.style.display = 'none';
+
+    }
+
+    function show(obj) {
+        var el = document.getElementById(obj);
+        el.style.display = '';
+    }
+</script>

@@ -11,5 +11,7 @@
         IDbSet<Photo> Photos { get; }
 
         IDbSet<Vote> Votes { get; }
+
+        IDbSet<Commitee> Commitees { get; }
     }
 }
