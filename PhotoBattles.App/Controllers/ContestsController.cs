@@ -10,8 +10,8 @@
 
     using Microsoft.AspNet.Identity;
 
-    using PhotoBattles.App.Models.BindingModels;
-    using PhotoBattles.App.Models.ViewModels;
+    using Models.BindingModels;
+    using Models.ViewModels;
     using PhotoBattles.Models;
     using PhotoBattles.Models.Enumerations;
 
@@ -55,7 +55,37 @@
             return this.PartialView("~/Views/Contests/_AddContest.cshtml", model);
         }
 
-        [Authorize]
+        [HttpGet]
+        public ActionResult Participate(int id)
+        {
+            var userId = this.User.Identity.GetUserId();
+            var contest = this.Data.Contests.Find(id);
+            var user = this.Data.Users.Find(userId);
+
+            if (contest.ParticipationStrategy == ParticipationStrategy.Closed && !contest.RegisteredParticipants.Contains(user))
+            {
+                return RedirectToAction("Index");
+            }
+
+            contest.Participants.Add(user);
+
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("Index");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var contest = this.Data.Contests.GetAll()
+                .Where(c => c.Id == id)
+                .ProjectTo<ContestDetailsViewModel>()
+                .FirstOrDefault();
+
+            return this.View(contest);
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddContest(ContestBindingModel model)
         {

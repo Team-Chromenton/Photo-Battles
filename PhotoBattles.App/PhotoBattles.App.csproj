@@ -265,6 +265,7 @@
     <Compile Include="Models\BindingModels\ContestBindingModel.cs" />
     <Compile Include="Models\BindingModels\PhotoBindingModel.cs" />
     <Compile Include="Models\ManageModels.cs" />
+    <Compile Include="Models\ViewModels\ContestDetailsViewModel.cs" />
     <Compile Include="Models\ViewModels\ContestViewModel.cs" />
     <Compile Include="Models\ViewModels\PhotoViewModel.cs" />
     <Compile Include="Models\ViewModels\UserViewModel.cs" />
@@ -347,6 +348,8 @@
     <Content Include="Views\Photos\Index.cshtml" />
     <Content Include="Views\Contests\_AddContest.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />
+    <Content Include="Views\Contests\Details.cshtml" />
+    <None Include="Views\Contests\Participate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Shared\" />

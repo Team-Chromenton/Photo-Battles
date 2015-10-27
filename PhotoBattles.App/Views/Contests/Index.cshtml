@@ -1,4 +1,6 @@
-﻿@model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
+﻿@using Microsoft.AspNet.Identity
+@using PhotoBattles.Models.Enumerations
+@model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -13,12 +15,24 @@
 {
     <div class="panel panel-default">
         <div class="panel-body">
+            <div class="col-lg-6">
+                <p>@contest.Title</p>
+                <p>@contest.Description</p>
+                <p>@contest.CreatedOn</p>
+                <p>@contest.Organizer.UserName</p> 
+            </div>
+            <div class="col-lg-6 text-right">
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    if (contest.ParticipationStrategy == ParticipationStrategy.Open ||
+                        (contest.ParticipationStrategy == ParticipationStrategy.Closed && contest.InvitedUsers.Any(c => c.Equals(this.User.Identity.GetUserName()))))
+                    {
+                        @Html.ActionLink("Participate", "Participate", "Contests", new { area = "", id = contest.Id }, new { @class = "btn btn-primary" })
+                    }
+                }
 
-            <p>@contest.Title</p>
-            <p>@contest.Description</p>
-            <p>@contest.CreatedOn</p>
-            <p>@contest.Organizer.UserName</p>
-
+                @Html.ActionLink("Details", "Details", "Contests", new { area = "", id = contest.Id }, new { @class = "btn btn-primary" })
+            </div>
         </div>
     </div>
 }

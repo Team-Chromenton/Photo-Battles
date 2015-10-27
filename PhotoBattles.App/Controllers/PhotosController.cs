@@ -40,7 +40,7 @@
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> AddPhoto(PhotoBindingModel model, int contestId = 1)
+        public async Task<ActionResult> AddPhoto(PhotoBindingModel model, int contestId = 11)
         {
             if (!this.ModelState.IsValid)
             {
