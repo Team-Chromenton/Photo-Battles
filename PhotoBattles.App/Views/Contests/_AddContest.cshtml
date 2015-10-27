@@ -18,10 +18,10 @@
             <div>
                 <p>Voting Strategy</p>
                 @Html.LabelFor(m => m.VotingStartegy, "Open")
-                @Html.RadioButtonFor(m => m.VotingStartegy, 1, new { @checked = "checked", @onclick = "hide('commitee-members')" })
+                @Html.RadioButtonFor(m => m.VotingStartegy, "Open", new { @checked = "checked", @onclick = "hide('commitee-members')" })
 
                 @Html.LabelFor(m => m.VotingStartegy, "Closed")
-                @Html.RadioButtonFor(m => m.VotingStartegy, 2, new { @onclick = "show('commitee-members')" })
+                @Html.RadioButtonFor(m => m.VotingStartegy, "Open", new { @onclick = "show('commitee-members')" })
 
                 @Html.TextBoxFor(m => m.CommiteeMembers, new { @id = "commitee-members", @style = "display:none" })
             </div>
@@ -29,12 +29,23 @@
             <div>
                 <p>Participation Strategy</p>
                 @Html.LabelFor(m => m.ParticipationStrategy, "Open")
-                @Html.RadioButtonFor(m => m.ParticipationStrategy, 1, new { @checked = "checked", @onclick = "hide('participants')" })
+                @Html.RadioButtonFor(m => m.ParticipationStrategy, "Open", new { @checked = "checked", @onclick = "hide('participants')" })
 
                 @Html.LabelFor(m => m.ParticipationStrategy, "Closed")
-                @Html.RadioButtonFor(m => m.ParticipationStrategy, 2, new { @onclick = "show('participants')" })
+                @Html.RadioButtonFor(m => m.ParticipationStrategy, "Closed", new { @onclick = "show('participants')" })
 
                 @Html.TextBoxFor(m => m.Participants, new { @id = "participants", @style = "display:none" })
+            </div>
+
+            <div>
+                <p>Reward Strategy</p>
+                @Html.LabelFor(m => m.RewardStrategy, "Single Winner")
+                @Html.RadioButtonFor(m => m.RewardStrategy, "SingleWinner", new { @checked = "checked", @onclick = "hide('number-of-winners')" })
+
+                @Html.LabelFor(m => m.RewardStrategy, "Multiple Winners")
+                @Html.RadioButtonFor(m => m.RewardStrategy, "TopNWinners", new { @onclick = "show('number-of-winners')" })
+
+                @Html.TextBoxFor(m => m.NumberOfWinners, new { @id = "number-of-winners", @style = "display:none", @type = "number" })
             </div>
         </div>
         <div class="panel-footer">

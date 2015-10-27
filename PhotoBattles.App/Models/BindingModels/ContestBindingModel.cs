@@ -2,8 +2,6 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using PhotoBattles.Models.Enumerations;
-
     public class ContestBindingModel
     {
         [Required]
@@ -13,13 +11,18 @@
         public string Description { get; set; }
 
         [Required]
-        public VotingStrategy VotingStartegy { get; set; }
+        public string VotingStartegy { get; set; }
 
         public string CommiteeMembers { get; set; }
 
         [Required]
-        public ParticipationStrategy ParticipationStrategy { get; set; }
+        public string ParticipationStrategy { get; set; }
 
         public string Participants { get; set; }
+
+        [Required]
+        public string RewardStrategy { get; set; }
+
+        public int? NumberOfWinners { get; set; }
     }
 }

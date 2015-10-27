@@ -13,11 +13,7 @@
 
         private ICollection<Contest> contests;
 
-        private ICollection<Contest> allowedForPartisipation;
-
-        private ICollection<Contest> allowedForVoting;
-
-        private ICollection<Contest> winContests;
+        private ICollection<Contest> contestsWon;
 
         private ICollection<Vote> votes;
 
@@ -25,9 +21,7 @@
         {
             this.ownContests = new HashSet<Contest>();
             this.contests = new HashSet<Contest>();
-            this.allowedForPartisipation = new HashSet<Contest>();
-            this.allowedForVoting = new HashSet<Contest>();
-            this.winContests = new HashSet<Contest>();
+            this.contestsWon = new HashSet<Contest>();
             this.votes = new HashSet<Vote>();
         }
 
@@ -61,42 +55,16 @@
             }
         }
 
-        public virtual ICollection<Contest> AllowedForParticipation
+        public virtual ICollection<Contest> ContestsWon
         {
             get
             {
-                return this.allowedForPartisipation;
+                return this.contestsWon;
             }
 
             set
             {
-                this.allowedForPartisipation = value;
-            }
-        }
-
-        public virtual ICollection<Contest> AllowedForVoting
-        {
-            get
-            {
-                return this.allowedForVoting;
-            }
-
-            set
-            {
-                this.allowedForVoting = value;
-            }
-        }
-
-        public virtual ICollection<Contest> WinContests
-        {
-            get
-            {
-                return this.winContests;
-            }
-
-            set
-            {
-                this.winContests = value;
+                this.contestsWon = value;
             }
         }
 

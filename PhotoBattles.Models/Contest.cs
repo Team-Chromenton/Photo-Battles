@@ -6,7 +6,6 @@
     using System.Linq;
 
     using PhotoBattles.Models.Contracts;
-    using PhotoBattles.Models.Enumerations;
 
     public class Contest
     {
@@ -49,18 +48,16 @@
         public virtual User Organizer { get; set; }
 
         //[Required]
-        public virtual VotingStrategy VotingStrategy { get; set; }
+        public virtual string VotingStrategy { get; set; }
 
         //[Required]
         //public virtual IParticipationStrategy ParticipationStrategy { get; set; }
 
-
-
-
         //[Required]
-        public virtual IRewardStrategy RewardStrategy { get; set; }
+        //public virtual IRewardStrategy RewardStrategy { get; set; }
 
-        
+        [Required]
+        public int NumberOfWinners { get; set; }
 
         //[Required]
         public virtual IDeadlineStrategy DeadlineStrategy { get; set; }
@@ -108,14 +105,14 @@
         {
             this.IsActive = false;
             this.IsOpen = false;
-            this.RewardStrategy = null;
+            this.NumberOfWinners = 0;
         }
 
         public void End()
         {
             this.IsActive = false;
             this.IsOpen = false;
-            this.RewardStrategy.GetWiners();
+            //this.RewardStrategy.GetWiners();
         }
     }
 }

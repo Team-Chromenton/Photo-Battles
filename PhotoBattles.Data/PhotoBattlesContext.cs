@@ -23,7 +23,6 @@ namespace PhotoBattles.Data
 
         public virtual IDbSet<Commitee> Commitees { get; set; }
 
-
         public static PhotoBattlesContext Create()
         {
             return new PhotoBattlesContext();
@@ -48,37 +47,15 @@ namespace PhotoBattles.Data
                                     m.ToTable("ContestsParticipants");
                                 });
 
-            //modelBuilder.Entity<Contest>()
-            //            .HasMany(c => c.AllowedForParticipation)
-            //            .WithMany(u => u.AllowedForParticipation)
-            //            .Map(
-            //                m =>
-            //                    {
-            //                        m.MapLeftKey("ContestId");
-            //                        m.MapRightKey("UserId");
-            //                        m.ToTable("ParticipationContest");
-            //                    });
-
-            //modelBuilder.Entity<Contest>()
-            //            .HasMany(c => c.AllowedForVoting)
-            //            .WithMany(u => u.AllowedForVoting)
-            //            .Map(
-            //                m =>
-            //                    {
-            //                        m.MapLeftKey("ContestId");
-            //                        m.MapRightKey("UserId");
-            //                        m.ToTable("VoteContest");
-            //                    });
-
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Winners)
-                        .WithMany(u => u.WinContests)
+                        .WithMany(u => u.ContestsWon)
                         .Map(
                             m =>
                                 {
                                     m.MapLeftKey("ContestId");
                                     m.MapRightKey("UserId");
-                                    m.ToTable("WinerContest");
+                                    m.ToTable("ContestsWinners");
                                 });
 
             base.OnModelCreating(modelBuilder);

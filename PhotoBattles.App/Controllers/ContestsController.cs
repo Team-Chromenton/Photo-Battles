@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
@@ -13,8 +14,6 @@
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models;
-    using PhotoBattles.Models.Enumerations;
-    using PhotoBattles.Models.Strategies.VotingStrategies;
 
     [Authorize]
     public class ContestsController : BaseController
@@ -64,26 +63,24 @@
             this.Data.Contests.Add(newContest);
 
             // Voting Strategy
-            if (model.VotingStartegy == VotingStrategy.Open)
+            if (model.VotingStartegy == "Open")
             {
-                newContest.VotingStrategy = VotingStrategy.Open;
+                newContest.VotingStrategy = "Open";
             }
-            else if (model.VotingStartegy == VotingStrategy.Closed)
+            else if (model.VotingStartegy == "Closed")
             {
-                newContest.VotingStrategy = VotingStrategy.Closed;
+                newContest.VotingStrategy = "Closed";
 
                 string[] commiteeMembersNames = model.CommiteeMembers.Split(',').Select(cm => cm.Trim()).ToArray();
                 var commiteeMembers = this.Data.Users.GetAll().Where(u => commiteeMembersNames.Contains(u.UserName)).Select(u => u.UserName).ToArray();
 
                 string members = string.Join(", ", commiteeMembers);
 
-                newContest.VotingStrategy = VotingStrategy.Closed;
-
-                this.Data.Commitees.Add(new Commitee() { ContestId = newContest.Id, Members = members });
+                this.Data.Commitees.Add(new Commitee { ContestId = newContest.Id, Members = members });
             }
 
             // Participation Strategy
-            if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            if (model.ParticipationStrategy == "Closed")
             {
                 string[] participantsNames = model.Participants.Split(',').Select(p => p.Trim()).ToArray();
                 var participants = this.Data.Users
@@ -91,8 +88,18 @@
                         .Where(u => participantsNames.Contains(u.UserName))
                         .ToList();
 
-                newContest.Participants = participants;
+                participants.ForEach(p => newContest.Participants.Add(p));
                 newContest.IsOpen = false;
+            }
+
+            // Reward Strategy
+            if (model.RewardStrategy == "SingleWinner")
+            {
+                newContest.NumberOfWinners = 1;
+            }
+            else if (model.RewardStrategy == "TopNWinners")
+            {
+                newContest.NumberOfWinners = (int) model.NumberOfWinners;
             }
 
             this.Data.SaveChanges();
