@@ -13,6 +13,7 @@
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models;
+    using PhotoBattles.Models.Enumerations;
 
     [Authorize]
     public class ContestsController : BaseController
@@ -32,17 +33,24 @@
 
         public ActionResult AddContest()
         {
-            var model = new ContestBindingModel { Title = "", Description = "", AvailableUsers = new List<UserViewModel>()};
+            var model = new ContestBindingModel
+            {
+                Title = string.Empty,
+                Description = string.Empty,
+                AvailableParticipants = new List<UserViewModel>(),
+                AvailableVoters = new List<UserViewModel>()
+            };
 
             string currentUserName = System.Web.HttpContext.Current.User.Identity.GetUserName();
 
-            var availableUsers = this.Data.Users
+            var availableParticipants = this.Data.Users
                 .GetAll()
-                .Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
                 .ProjectTo<UserViewModel>()
                 .ToList();
+            availableParticipants.ForEach(p => model.AvailableParticipants.Add(p));
 
-            availableUsers.ForEach(u => model.AvailableUsers.Add(u));
+            var availableVoters = availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator").ToList();
+            availableVoters.ForEach(u => model.AvailableVoters.Add(u));
 
             return this.PartialView("~/Views/Contests/_AddContest.cshtml", model);
         }
@@ -57,10 +65,6 @@
             }
 
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            string currentUserName = System.Web.HttpContext.Current.User.Identity.GetUserName();
-
-            var currentUser =
-                this.Data.Users.GetAll().Where(u => u.Id == currentUserId).ProjectTo<UserViewModel>().FirstOrDefault();
 
             var newContest = new Contest
             {
@@ -75,51 +79,58 @@
             this.Data.Contests.Add(newContest);
 
             // Voting Strategy
-            if (model.VotingStartegy == "Open")
+            if (model.VotingStartegy == VotingStrategy.Open)
             {
-                newContest.VotingStrategy = "Open";
+                newContest.VotingStrategy = VotingStrategy.Open;
             }
-            else if (model.VotingStartegy == "Closed")
+            else if (model.VotingStartegy == VotingStrategy.Closed)
             {
-                newContest.VotingStrategy = "Closed";
+                newContest.VotingStrategy = VotingStrategy.Closed;
 
-                var voters = this.Data.Users.GetAll().Where(u => model.VotersNames.Contains(u.UserName)).ToList();
+                var voters = this.Data.Users.GetAll().Where(u => model.Voters.Contains(u.UserName)).ToList();
 
                 voters.ForEach(v => newContest.RegisteredVoters.Add(v));
             }
 
-            //// Participation Strategy
-            // if (model.ParticipationStrategy == "Closed")
-            // {
-            // string[] participantsNames = model.Participants.Split(',').Select(p => p.Trim()).ToArray();
-            // var participants = this.Data.Users
-            // .GetAll()
-            // .Where(u => participantsNames.Contains(u.UserName))
-            // .ToList();
+            // Participation Strategy
+            if (model.ParticipationStrategy == ParticipationStrategy.Open)
+            {
+                newContest.ParticipationStrategy = ParticipationStrategy.Open;
+            }
+            else if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            {
+                newContest.ParticipationStrategy = ParticipationStrategy.Closed;
 
-            // participants.ForEach(p => newContest.Participants.Add(p));
-            // newContest.IsOpen = false;
-            // }
+                var participants = this.Data.Users.GetAll().Where(u => model.Participants.Contains(u.UserName)).ToList();
 
-            //// Reward Strategy
-            // if (model.RewardStrategy == "SingleWinner")
-            // {
-            // newContest.NumberOfWinners = 1;
-            // }
-            // else if (model.RewardStrategy == "TopNWinners")
-            // {
-            // newContest.NumberOfWinners = (int) model.NumberOfWinners;
-            // }
+                participants.ForEach(p => newContest.RegisteredParticipants.Add(p));
+                newContest.IsOpen = false;
+            }
 
-            //// Deadline Strategy
-            // if (model.DeadlineStrategy == "ByTime")
-            // {
-            // newContest.Deadline = model.Deadline;
-            // }
-            // else if (model.RewardStrategy == "ByParticipants")
-            // {
-            // newContest.NumberOfParticipants = model.NumberOfParticipants;
-            // }
+            // Reward Strategy
+            if (model.RewardStrategy == RewardStrategy.SingleWinner)
+            {
+                newContest.RewardStrategy = RewardStrategy.SingleWinner;
+                newContest.NumberOfWinners = 1;
+            }
+            else if (model.RewardStrategy == RewardStrategy.MultipleWinners)
+            {
+                newContest.RewardStrategy = RewardStrategy.MultipleWinners;
+                newContest.NumberOfWinners = (int)model.NumberOfWinners;
+            }
+
+            // Deadline Strategy
+            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
+            {
+                newContest.DeadlineStrategy = DeadlineStrategy.EndDate;
+                newContest.EndDate = (DateTime)model.EndDate;
+            }
+            else if (model.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
+            {
+                newContest.DeadlineStrategy = DeadlineStrategy.ParticipantsLimit;
+                newContest.ParticipantsLimit = (int)model.ParticipantsLimit;
+            }
+
             this.Data.SaveChanges();
 
             return this.RedirectToAction("Index", "Contests");

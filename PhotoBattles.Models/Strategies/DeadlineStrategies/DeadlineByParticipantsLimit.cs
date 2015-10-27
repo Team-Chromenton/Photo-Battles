@@ -2,13 +2,13 @@
 {
     using PhotoBattles.Models.Contracts;
 
-    public class DeadlineByParticipants : IDeadlineStrategy
+    public class DeadlineByParticipantsLimit : IDeadlineStrategy
     {
         private readonly Contest contest;
 
         private readonly int numberOfParticipants;
 
-        public DeadlineByParticipants(Contest contest, int numberOfParticipants)
+        public DeadlineByParticipantsLimit(Contest contest, int numberOfParticipants)
         {
             this.contest = contest;
             this.numberOfParticipants = numberOfParticipants;

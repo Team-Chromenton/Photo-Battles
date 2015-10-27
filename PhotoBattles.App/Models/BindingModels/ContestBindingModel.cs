@@ -6,6 +6,7 @@
     using System.Web.Mvc;
 
     using PhotoBattles.App.Models.ViewModels;
+    using PhotoBattles.Models.Enumerations;
 
     public class ContestBindingModel
     {
@@ -15,28 +16,26 @@
         [Required]
         public string Description { get; set; }
 
-        public string VotingStartegy { get; set; }
+        public VotingStrategy VotingStartegy { get; set; }
 
-        public IList<UserViewModel> AvailableUsers { get; set; }
+        public IList<UserViewModel> AvailableVoters { get; set; }
 
-        public string[] VotersNames { get; set; }
+        public string[] Voters { get; set; }
 
-        //[Required]
-        //public string ParticipationStrategy { get; set; }
+        public ParticipationStrategy ParticipationStrategy { get; set; }
 
-        //public string Participants { get; set; }
+        public IList<UserViewModel> AvailableParticipants { get; set; }
 
-        //[Required]
-        //public string RewardStrategy { get; set; }
+        public string[] Participants { get; set; }
 
-        //public int? NumberOfWinners { get; set; }
+        public RewardStrategy RewardStrategy { get; set; }
 
-        //[Required]
-        //public string DeadlineStrategy { get; set; }
+        public int? NumberOfWinners { get; set; }
 
-        //public DateTime? Deadline { get; set; }
+        public DeadlineStrategy DeadlineStrategy { get; set; }
 
-        //public int? NumberOfParticipants { get; set; }
+        public DateTime? EndDate { get; set; }
 
+        public int? ParticipantsLimit { get; set; }
     }
 }

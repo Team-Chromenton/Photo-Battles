@@ -5,13 +5,13 @@
 
     using PhotoBattles.Models.Contracts;
 
-    public class TopNWinners : IRewardStrategy
+    public class MultipleWinners : IRewardStrategy
     {
         private readonly Contest contest;
 
         private readonly int numberOfWinners;
 
-        public TopNWinners(Contest contest, int numberOfWinners)
+        public MultipleWinners(Contest contest, int numberOfWinners)
         {
             this.contest = contest;
             this.numberOfWinners = numberOfWinners;

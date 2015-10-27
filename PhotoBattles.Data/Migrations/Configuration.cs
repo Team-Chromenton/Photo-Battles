@@ -37,7 +37,7 @@ namespace PhotoBattles.Data.Migrations
 
                 for (int i = 1; i < 7; i++)
                 {
-                    var user = new User { Email = "user" + i + "@abv.bg", UserName = "User_" + i };
+                    var user = new User { Email = "user" + i + "@abv.bg", UserName = "user" + i };
                     userManager.Create(user, "qwerty");
 
                     var identityUserRole = new IdentityUserRole { RoleId = userRole.Id, UserId = user.Id };

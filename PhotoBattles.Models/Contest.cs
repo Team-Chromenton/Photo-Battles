@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using PhotoBattles.Models.Enumerations;
+
     public class Contest
     {
         private ICollection<Photo> photos;
@@ -49,23 +51,23 @@
         public virtual User Organizer { get; set; }
 
         //[Required]
-        public virtual string VotingStrategy { get; set; }
+        public virtual VotingStrategy VotingStrategy { get; set; }
 
         //[Required]
-        //public virtual IParticipationStrategy ParticipationStrategy { get; set; }
+        public virtual ParticipationStrategy ParticipationStrategy { get; set; }
 
         //[Required]
-        //public virtual IRewardStrategy RewardStrategy { get; set; }
-
-        //[Required]
-        //public virtual IDeadlineStrategy DeadlineStrategy { get; set; }
+        public virtual RewardStrategy RewardStrategy { get; set; }
 
         [Required]
         public int NumberOfWinners { get; set; }
 
-        public DateTime? Deadline { get; set; }
+        //[Required]
+        public virtual DeadlineStrategy DeadlineStrategy { get; set; }
 
-        public int? NumberOfParticipants { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        public int? ParticipantsLimit { get; set; }
 
         public virtual ICollection<Photo> Photos
         {

@@ -4,19 +4,19 @@
 
     using PhotoBattles.Models.Contracts;
 
-    internal class DeadlineByTime : IDeadlineStrategy
+    internal class DeadlineByEndDate : IDeadlineStrategy
     {
         private readonly Contest contest;
 
-        public DeadlineByTime(Contest contest, DateTime deadline)
+        public DeadlineByEndDate(Contest contest, DateTime deadline)
         {
             this.contest = contest;
-            this.contest.Deadline = deadline;
+            this.contest.EndDate = deadline;
         }
 
         public void Expire()
         {
-            if (DateTime.Now > this.contest.Deadline)
+            if (DateTime.Now > this.contest.EndDate)
             {
                 this.contest.End();
             }
