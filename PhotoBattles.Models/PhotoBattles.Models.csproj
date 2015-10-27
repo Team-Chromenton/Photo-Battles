@@ -58,7 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commitee.cs" />
     <Compile Include="Contracts\IDeadlineStrategy.cs" />
     <Compile Include="Contracts\IParticipationStrategy.cs" />
     <Compile Include="Contracts\IRewardStrategy.cs" />

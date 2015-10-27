@@ -21,12 +21,12 @@
                 @Html.RadioButtonFor(m => m.VotingStartegy, "Open", new { @checked = "checked", @onclick = "hide('commitee-members')" })
 
                 @Html.LabelFor(m => m.VotingStartegy, "Closed")
-                @Html.RadioButtonFor(m => m.VotingStartegy, "Open", new { @onclick = "show('commitee-members')" })
+                @Html.RadioButtonFor(m => m.VotingStartegy, "Closed", new { @onclick = "show('commitee-members')" })
 
                 @Html.TextBoxFor(m => m.CommiteeMembers, new { @id = "commitee-members", @style = "display:none" })
             </div>
 
-            <div>
+            @*<div>
                 <p>Participation Strategy</p>
                 @Html.LabelFor(m => m.ParticipationStrategy, "Open")
                 @Html.RadioButtonFor(m => m.ParticipationStrategy, "Open", new { @checked = "checked", @onclick = "hide('participants')" })
@@ -47,6 +47,19 @@
 
                 @Html.TextBoxFor(m => m.NumberOfWinners, new { @id = "number-of-winners", @style = "display:none", @type = "number" })
             </div>
+
+            <div>
+                <p>Deadline Strategy</p>
+                @Html.LabelFor(m => m.DeadlineStrategy, "By time")
+                @Html.RadioButtonFor(m => m.DeadlineStrategy, "ByTime", new { @checked = "checked", @onclick = "hide('number-of-participants'); show('deadline')" })
+
+                @Html.TextBoxFor(m => m.Deadline, new { @id = "deadline", @type = "date" })
+
+                @Html.LabelFor(m => m.DeadlineStrategy, "By number of participants")
+                @Html.RadioButtonFor(m => m.DeadlineStrategy, "ByParticipants", new { @onclick = "hide('deadline'); show('number-of-participants')" })
+
+                @Html.TextBoxFor(m => m.NumberOfParticipants, new { @id = "number-of-participants", @style = "display:none", @type = "number" })
+            </div>*@
         </div>
         <div class="panel-footer">
             <input type="submit" class="btn btn-default btn-primary" value="Add Contest" />

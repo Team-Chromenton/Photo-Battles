@@ -21,8 +21,6 @@ namespace PhotoBattles.Data
 
         public virtual IDbSet<Vote> Votes { get; set; }
 
-        public virtual IDbSet<Commitee> Commitees { get; set; }
-
         public static PhotoBattlesContext Create()
         {
             return new PhotoBattlesContext();
@@ -33,8 +31,19 @@ namespace PhotoBattles.Data
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
             modelBuilder.Entity<User>()
-                        .HasMany(u => u.OwnContests)
+                        .HasMany(u => u.OrganizedContests)
                         .WithRequired(c => c.Organizer);
+
+            modelBuilder.Entity<Contest>()
+                        .HasMany(c => c.RegisteredParticipants)
+                        .WithMany(u => u.ContestsAllowedToParticipate)
+                        .Map(
+                            m =>
+                            {
+                                m.MapLeftKey("ContestId");
+                                m.MapRightKey("UserId");
+                                m.ToTable("ContestsRegisteredParticipants");
+                            });
 
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Participants)
@@ -46,6 +55,17 @@ namespace PhotoBattles.Data
                                     m.MapRightKey("UserId");
                                     m.ToTable("ContestsParticipants");
                                 });
+
+            modelBuilder.Entity<Contest>()
+                       .HasMany(c => c.RegisteredVoters)
+                       .WithMany(u => u.ContestsAllowedToVote)
+                       .Map(
+                           m =>
+                           {
+                               m.MapLeftKey("ContestId");
+                               m.MapRightKey("UserId");
+                               m.ToTable("ContestsRegisteredVoters");
+                           });
 
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Winners)

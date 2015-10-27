@@ -3,23 +3,26 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-
-    using PhotoBattles.Models.Contracts;
 
     public class Contest
     {
         private ICollection<Photo> photos;
 
+        private ICollection<User> registeredParticipants;
+
         private ICollection<User> participants;
 
         private ICollection<User> winners;
 
+        private ICollection<User> registeredVoters;
+
         public Contest()
         {
             this.photos = new HashSet<Photo>();
+            this.registeredParticipants = new HashSet<User>();
             this.participants = new HashSet<User>();
             this.winners = new HashSet<User>();
+            this.registeredVoters = new HashSet<User>();
         }
 
         [Key]
@@ -33,8 +36,6 @@
 
         [Required]
         public DateTime CreatedOn { get; set; }
-
-        public DateTime? Deadline { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -56,11 +57,15 @@
         //[Required]
         //public virtual IRewardStrategy RewardStrategy { get; set; }
 
+        //[Required]
+        //public virtual IDeadlineStrategy DeadlineStrategy { get; set; }
+
         [Required]
         public int NumberOfWinners { get; set; }
 
-        //[Required]
-        public virtual IDeadlineStrategy DeadlineStrategy { get; set; }
+        public DateTime? Deadline { get; set; }
+
+        public int? NumberOfParticipants { get; set; }
 
         public virtual ICollection<Photo> Photos
         {
@@ -72,6 +77,19 @@
             set
             {
                 this.photos = value;
+            }
+        }
+
+        public virtual ICollection<User> RegisteredParticipants
+        {
+            get
+            {
+                return this.registeredParticipants;
+            }
+
+            set
+            {
+                this.registeredParticipants = value;
             }
         }
 
@@ -98,6 +116,19 @@
             set
             {
                 this.winners = value;
+            }
+        }
+
+        public virtual ICollection<User> RegisteredVoters
+        {
+            get
+            {
+                return this.registeredVoters;
+            }
+
+            set
+            {
+                this.registeredVoters = value;
             }
         }
 

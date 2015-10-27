@@ -12,8 +12,6 @@
 
         IRepository<Vote> Votes { get; }
 
-        IRepository<Commitee> Commitees { get; }
-
         void SaveChanges();
     }
 }

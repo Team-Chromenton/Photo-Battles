@@ -9,7 +9,7 @@
 
     public class User : IdentityUser
     {
-        private ICollection<Contest> ownContests;
+        private ICollection<Contest> organizedContests;
 
         private ICollection<Contest> contests;
 
@@ -17,28 +17,34 @@
 
         private ICollection<Vote> votes;
 
+        private ICollection<Contest> contestsAllowedToVote;
+
+        private ICollection<Contest> contestsAllowedToParticipate;
+
         public User()
         {
-            this.ownContests = new HashSet<Contest>();
+            this.organizedContests = new HashSet<Contest>();
             this.contests = new HashSet<Contest>();
             this.contestsWon = new HashSet<Contest>();
             this.votes = new HashSet<Vote>();
+            this.contestsAllowedToVote = new HashSet<Contest>();
+            this.contestsAllowedToParticipate = new HashSet<Contest>();
         }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public virtual ICollection<Contest> OwnContests
+        public virtual ICollection<Contest> OrganizedContests
         {
             get
             {
-                return this.ownContests;
+                return this.organizedContests;
             }
 
             set
             {
-                this.ownContests = value;
+                this.organizedContests = value;
             }
         }
 
@@ -78,6 +84,32 @@
             set
             {
                 this.votes = value;
+            }
+        }
+
+        public virtual ICollection<Contest> ContestsAllowedToVote
+        {
+            get
+            {
+                return this.contestsAllowedToVote;
+            }
+
+            set
+            {
+                this.contestsAllowedToVote = value;
+            }
+        }
+
+        public virtual ICollection<Contest> ContestsAllowedToParticipate
+        {
+            get
+            {
+                return this.contestsAllowedToParticipate;
+            }
+
+            set
+            {
+                this.contestsAllowedToParticipate = value;
             }
         }
 

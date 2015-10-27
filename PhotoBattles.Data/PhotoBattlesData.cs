@@ -57,14 +57,6 @@
             }
         }
 
-        public IRepository<Commitee> Commitees
-        {
-            get
-            {
-                return this.GetRepository<Commitee>();
-            }
-        }
-
         public void SaveChanges()
         {
             try
