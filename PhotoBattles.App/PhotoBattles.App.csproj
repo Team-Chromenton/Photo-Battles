@@ -243,8 +243,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Admin\Controllers\OverviewController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Models\BindingModels\AdminContestBindingModel.cs" />
     <Compile Include="Areas\Admin\Models\BindingModels\AdminUserBindingModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\AdminOverviewViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\AdminContestViewModel.cs" />
@@ -288,6 +290,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Contests\EditContests.cshtml" />
     <None Include="Areas\Admin\Views\Overview\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Users\EditUser.cshtml" />

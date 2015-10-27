@@ -8,6 +8,7 @@
     using PhotoBattles.App.Areas.Admin.Models.BindingModels;
     using PhotoBattles.App.Areas.Admin.Models.ViewModels;
 
+    [Authorize(Roles = "Admin")]
     public class UsersController : BaseController
     {
         // GET: Admin/Users

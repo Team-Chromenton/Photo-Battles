@@ -13,9 +13,11 @@
 
         public string Description { get; set; }
 
-        public DateTime StartDateTime { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsOpen { get; set; }
 
         public string OrganizerId { get; set; }
     }
