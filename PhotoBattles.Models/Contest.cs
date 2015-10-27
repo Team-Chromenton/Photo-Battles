@@ -52,10 +52,15 @@
         public virtual VotingStrategy VotingStrategy { get; set; }
 
         //[Required]
-        public virtual IRewardStrategy RewardStrategy { get; set; }
+        //public virtual IParticipationStrategy ParticipationStrategy { get; set; }
+
+
+
 
         //[Required]
-        public virtual IParticipationStrategy ParticipationStrategy { get; set; }
+        public virtual IRewardStrategy RewardStrategy { get; set; }
+
+        
 
         //[Required]
         public virtual IDeadlineStrategy DeadlineStrategy { get; set; }

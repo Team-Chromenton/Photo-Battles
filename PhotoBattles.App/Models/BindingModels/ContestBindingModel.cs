@@ -16,5 +16,10 @@
         public VotingStrategy VotingStartegy { get; set; }
 
         public string CommiteeMembers { get; set; }
+
+        [Required]
+        public ParticipationStrategy ParticipationStrategy { get; set; }
+
+        public string Participants { get; set; }
     }
 }

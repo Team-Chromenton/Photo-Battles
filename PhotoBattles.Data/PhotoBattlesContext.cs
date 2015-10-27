@@ -39,13 +39,13 @@ namespace PhotoBattles.Data
 
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Participants)
-                        .WithMany(u => u.ParticipatingContest)
+                        .WithMany(u => u.Contests)
                         .Map(
                             m =>
                                 {
                                     m.MapLeftKey("ContestId");
                                     m.MapRightKey("UserId");
-                                    m.ToTable("ParticipatingContests");
+                                    m.ToTable("ContestsParticipants");
                                 });
 
             //modelBuilder.Entity<Contest>()

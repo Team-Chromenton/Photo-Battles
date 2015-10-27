@@ -25,6 +25,17 @@
 
                 @Html.TextBoxFor(m => m.CommiteeMembers, new { @id = "commitee-members", @style = "display:none" })
             </div>
+
+            <div>
+                <p>Participation Strategy</p>
+                @Html.LabelFor(m => m.ParticipationStrategy, "Open")
+                @Html.RadioButtonFor(m => m.ParticipationStrategy, 1, new { @checked = "checked", @onclick = "hide('participants')" })
+
+                @Html.LabelFor(m => m.ParticipationStrategy, "Closed")
+                @Html.RadioButtonFor(m => m.ParticipationStrategy, 2, new { @onclick = "show('participants')" })
+
+                @Html.TextBoxFor(m => m.Participants, new { @id = "participants", @style = "display:none" })
+            </div>
         </div>
         <div class="panel-footer">
             <input type="submit" class="btn btn-default btn-primary" value="Add Contest" />

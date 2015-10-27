@@ -63,6 +63,7 @@
     <Compile Include="Contracts\IParticipationStrategy.cs" />
     <Compile Include="Contracts\IRewardStrategy.cs" />
     <Compile Include="Contracts\IVotingStrategy.cs" />
+    <Compile Include="Enumerations\ParticipationStrategy.cs" />
     <Compile Include="Enumerations\VotingStrategy.cs" />
     <Compile Include="Photo.cs" />
     <Compile Include="Strategies\ParticipationStrategies\ClosedParticipationStrategy.cs" />

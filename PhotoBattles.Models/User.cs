@@ -11,7 +11,7 @@
     {
         private ICollection<Contest> ownContests;
 
-        private ICollection<Contest> participatingContest;
+        private ICollection<Contest> contests;
 
         private ICollection<Contest> allowedForPartisipation;
 
@@ -24,7 +24,7 @@
         public User()
         {
             this.ownContests = new HashSet<Contest>();
-            this.participatingContest = new HashSet<Contest>();
+            this.contests = new HashSet<Contest>();
             this.allowedForPartisipation = new HashSet<Contest>();
             this.allowedForVoting = new HashSet<Contest>();
             this.winContests = new HashSet<Contest>();
@@ -48,16 +48,16 @@
             }
         }
 
-        public virtual ICollection<Contest> ParticipatingContest
+        public virtual ICollection<Contest> Contests
         {
             get
             {
-                return this.participatingContest;
+                return this.contests;
             }
 
             set
             {
-                this.participatingContest = value;
+                this.contests = value;
             }
         }
 

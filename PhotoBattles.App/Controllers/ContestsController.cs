@@ -1,6 +1,7 @@
 ﻿namespace PhotoBattles.App.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
@@ -62,6 +63,7 @@
 
             this.Data.Contests.Add(newContest);
 
+            // Voting Strategy
             if (model.VotingStartegy == VotingStrategy.Open)
             {
                 newContest.VotingStrategy = VotingStrategy.Open;
@@ -75,7 +77,22 @@
 
                 string members = string.Join(", ", commiteeMembers);
 
-                this.Data.Commitees.Add(new Commitee() {ContestId = newContest.Id, Members = members});
+                newContest.VotingStrategy = VotingStrategy.Closed;
+
+                this.Data.Commitees.Add(new Commitee() { ContestId = newContest.Id, Members = members });
+            }
+
+            // Participation Strategy
+            if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            {
+                string[] participantsNames = model.Participants.Split(',').Select(p => p.Trim()).ToArray();
+                var participants = this.Data.Users
+                        .GetAll()
+                        .Where(u => participantsNames.Contains(u.UserName))
+                        .ToList();
+
+                newContest.Participants = participants;
+                newContest.IsOpen = false;
             }
 
             this.Data.SaveChanges();
