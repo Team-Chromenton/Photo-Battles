@@ -23,14 +23,26 @@ namespace PhotoBattles.Data.Migrations
                 var userStore = new UserStore<User>(context);
                 var userManager = new UserManager<User>(userStore);
 
-                var user = new User { Email = "admin@admin.com", UserName = "Administrator" };
-                userManager.Create(user, "qwerty");
+                var admin = new User { Email = "admin@admin.com", UserName = "Administrator" };
+                userManager.Create(admin, "qwerty");
 
-                var role = new IdentityRole { Name = "Admin" };
-                context.Roles.Add(role);
+                var adminRole = new IdentityRole { Name = "Admin" };
+                context.Roles.Add(adminRole);
 
-                var userRole = new IdentityUserRole { RoleId = role.Id, UserId = user.Id };
-                role.Users.Add(userRole);
+                var identityRole = new IdentityUserRole { RoleId = adminRole.Id, UserId = admin.Id };
+                adminRole.Users.Add(identityRole);
+
+                var userRole = new IdentityRole { Name = "User" };
+                context.Roles.Add(userRole);
+
+                for (int i = 1; i < 7; i++)
+                {
+                    var user = new User { Email = "user" + i + "@abv.bg", UserName = "User_" + i };
+                    userManager.Create(user, "qwerty");
+
+                    var identityUserRole = new IdentityUserRole { RoleId = userRole.Id, UserId = user.Id };
+                    userRole.Users.Add(identityUserRole);
+                }
 
                 context.SaveChanges();
             }
