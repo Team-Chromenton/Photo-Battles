@@ -1,0 +1,26 @@
+﻿@model PhotoBattles.App.Models.ViewModels.ContestViewModel
+
+@{
+    ViewBag.Title = "Result";
+}
+
+<h2>Winners:</h2>
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        <p>@Model.Title</p>
+        <p>@Model.Description</p>
+        <p>@Model.CreatedOn</p>
+        <p>@Model.Organizer.UserName</p>
+        <p>Winners:</p>
+
+        @foreach (var winner in Model.Winners)
+            {
+            <h3>@winner.UserName</h3>
+        }
+
+    </div>
+</div>
+
+
+

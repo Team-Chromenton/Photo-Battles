@@ -165,5 +165,70 @@
 
             return this.RedirectToAction("Index", "Contests");
         }
+
+        [HttpGet]
+        public ActionResult ParticipateContests()
+        {
+            var userId = this.User.Identity.GetUserId();
+
+            IQueryable<ContestViewModel> partContests = this.Data.Contests.GetAll()
+                .Where(p => p.Participants.Any(u => u.Id == userId))
+                .ProjectTo<ContestViewModel>();
+
+            return this.View("~/Views/Contests/_ParticipateContests.cshtml", partContests);
+        }
+
+        [HttpGet]
+        public ActionResult Winners(int id)
+        {
+            var userId = this.User.Identity.GetUserId();
+
+            var winnContests = this.Data.Contests.GetAll()
+                .Where(p => p.Participants.Any(u => u.Id == userId) && p.Id == id)
+                .ProjectTo<ContestViewModel>().FirstOrDefault();
+
+            return this.View("~/Views/Contests/_Winners.cshtml", winnContests);
+        }
+
+        [HttpGet]
+        public ActionResult OwnContests()
+        {
+            var userId = this.User.Identity.GetUserId();
+
+            //IQueryable<ContestViewModel> ownContests = this.Data.Contests.GetAll()
+            //    .Where(p => p.Participants.Any(u => u.Id == user.Id))
+            //    .ProjectTo<ContestViewModel>();
+
+            //This if we want to show only the from user created  contests should be discuss
+            IQueryable<ContestViewModel> ownContests = this.Data.Contests.GetAll()
+                .Where(p => p.Organizer.Id == userId)
+                .ProjectTo<ContestViewModel>();
+
+            return this.View("~/Views/Contests/_OwnContests.cshtml", ownContests);
+        }
+
+        [HttpGet]
+        public ActionResult EditContest(int id)
+        {
+            var contest = this.Data.Contests.GetAll().Where(c => c.Id == id).FirstOrDefault();
+
+            ViewBag.Limit = contest.ParticipantsLimit;
+            ViewBag.Id = contest.Id;
+            return this.View("~/Views/Contests/_EditContest.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditContest(ContestEditBindigModel model, int id)
+        {
+            var contest = this.Data.Contests.GetAll().FirstOrDefault(c => c.Id == id);
+
+            contest.Title = model.Title;
+            contest.Description = model.Description;
+            contest.EndDate = model.EndDate;
+            contest.ParticipantsLimit = model.ParticipantsLimit;
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("OwnContests", "Contests");
+        }
     }
 }

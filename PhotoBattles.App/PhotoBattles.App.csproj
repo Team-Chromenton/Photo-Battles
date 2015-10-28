@@ -263,6 +263,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BindingModels\ContestBindingModel.cs" />
+    <Compile Include="Models\BindingModels\ContestEditBindigModel.cs" />
     <Compile Include="Models\BindingModels\PhotoBindingModel.cs" />
     <Compile Include="Models\ManageModels.cs" />
     <Compile Include="Models\ViewModels\ContestDetailsViewModel.cs" />
@@ -311,7 +312,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -350,6 +353,10 @@
     <Content Include="Views\Contests\Index.cshtml" />
     <Content Include="Views\Contests\Details.cshtml" />
     <None Include="Views\Contests\Participate.cshtml" />
+    <Content Include="Views\Contests\_EditContest.cshtml" />
+    <Content Include="Views\Contests\_OwnContests.cshtml" />
+    <Content Include="Views\Contests\_Winners.cshtml" />
+    <Content Include="Views\Contests\_ParticipateContests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Shared\" />

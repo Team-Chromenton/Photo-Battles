@@ -1,0 +1,27 @@
+﻿@model System.Linq.IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
+
+@{
+    ViewBag.Title = "OwnContests";
+}
+
+<h2>OwnContests</h2>
+<h3>The contest of the user are:</h3>
+@foreach (var context in Model)
+{
+    <p>@context.Title</p>
+    <p>@context.Description</p>
+    <p>Created on: @context.CreatedOn</p>
+    if (context.EndDate != null)
+    {
+        <p>End date: @context.EndDate</p>
+        @Html.ActionLink("Edit", "EditContest", "Contests", new {id = context.Id}, new {@class = "btn btn-primary"})
+    }
+    else
+    {
+        <p>Participant limit: @context.ParticipantsLimit</p>
+        @Html.ActionLink("Edit", "EditContest", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
+    }
+
+
+
+}

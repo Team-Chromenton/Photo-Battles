@@ -24,6 +24,11 @@
 
         public int? ParticipantsLimit { get; set; }
 
+        public DateTime? EndDate { get; set; }
+
+        //I don't know, if we should make new ViewModel
+        public ICollection<UserViewModel> Winners { get; set; }
+
         public ICollection<string> InvitedUsers { get; set; }
 
         public void CreateMappings(IConfiguration configuration)

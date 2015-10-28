@@ -32,7 +32,16 @@
                 }
 
                 @Html.ActionLink("Details", "Details", "Contests", new { area = "", id = contest.Id }, new { @class = "btn btn-primary" })
+                
             </div>
         </div>
     </div>
 }
+@if(Request.IsAuthenticated)
+{
+        @Html.ActionLink("Own contests", "OwnContests", "Contests", new { @class = "btn btn-primary" })
+        <br/>
+        <br/>
+        @Html.ActionLink("Contest you are in", "ParticipateContests", "Contests", new { @class = "btn btn-primary" })
+}
+

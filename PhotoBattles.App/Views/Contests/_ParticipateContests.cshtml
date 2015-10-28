@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Identity
+@using PhotoBattles.Models.Enumerations
+@model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
+@{
+    ViewBag.Title = "ParticipateContests";
+}
+
+<h2>The contest you are participate in:</h2>
+
+@foreach (var contest in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-lg-6">
+                <p>@contest.Title</p>
+                <p>@contest.Description</p>
+                <p>@contest.CreatedOn</p>
+                <p>@contest.Organizer.UserName</p>
+            </div>
+            <div class="col-lg-6 text-right">
+
+                @Html.ActionLink("Details", "Details", "Contests", new { area = "", id = contest.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Winners", "Winners", "Contests", new { area = "", id = contest.Id }, new { @class = "btn btn-primary" })
+
+            </div>
+        </div>
+    </div>
+}
+
