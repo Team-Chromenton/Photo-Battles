@@ -19,6 +19,8 @@
 
         public UserViewModel Author { get; set; }
 
+        public ContestViewModel Contest { get; set; }
+
         public ICollection<VoteViewModel> Votes { get; set; }
     }
 }

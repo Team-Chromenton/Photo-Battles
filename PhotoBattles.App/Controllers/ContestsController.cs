@@ -80,6 +80,7 @@
         {
             var contest = this.Data.Contests.GetAll()
                 .Where(c => c.Id == id)
+                .OrderByDescending(c => c.CreatedOn)
                 .ProjectTo<ContestDetailsViewModel>()
                 .FirstOrDefault();
 
@@ -173,6 +174,7 @@
 
             IQueryable<ContestViewModel> partContests = this.Data.Contests.GetAll()
                 .Where(p => p.Participants.Any(u => u.Id == userId))
+                .OrderByDescending(c => c.CreatedOn)
                 .ProjectTo<ContestViewModel>();
 
             return this.View("~/Views/Contests/_ParticipateContests.cshtml", partContests);

@@ -14,29 +14,32 @@
         </div>
 
         <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
-                {
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Upvote</button>
-                    </div>
+            @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
+            {
+                @Html.ActionLink("Upvote", "Upvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-default" })
+            }
+            else
+            {
+                <a class="btn btn-default disabled">Upvote</a>
+            }
 
-                    <div class="btn-group">
-                        @if (photo.Votes == null)
-                        {
-                            <button type="button" class="btn btn-default disabled">0</button>
-                        }
-                        else
-                        {
-                            <button type="button" class="btn btn-default disabled">@photo.Votes.Sum(v => v.Score)</button>
-                        }
-                    </div>
+            @if (photo.Votes == null)
+            {
+                <button type="button" class="btn btn-default disabled">0</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-default disabled">@photo.Votes.Sum(v => v.Score)</button>
+            }
 
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Downvote</button>
-                    </div>
-                }
-            </div>
+            @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
+            {
+                @Html.ActionLink("Downvote", "Downvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-default" })
+            }
+            else
+            {
+                <a class="btn btn-default disabled">Downvote</a>
+            }
         </div>
     </div>
 }
