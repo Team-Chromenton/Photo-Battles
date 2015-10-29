@@ -6,6 +6,9 @@
     public class PhotoBindingModel
     {
         [Required]
+        public int? ContestId { get; set; }
+
+        [Required]
         public HttpPostedFileBase PhotoData { get; set; }
     }
 }

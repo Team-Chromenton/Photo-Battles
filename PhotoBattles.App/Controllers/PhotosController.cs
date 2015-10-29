@@ -33,18 +33,20 @@
             return this.View(photos);
         }
 
-        public ActionResult AddPhoto()
+        [ChildActionOnly]
+        public ActionResult AddPhoto(int? contestId)
         {
-            return this.PartialView("~/Views/Photos/_AddPhoto.cshtml");
+            var model = new PhotoBindingModel { ContestId = contestId };
+            return this.PartialView("~/Views/Photos/_AddPhoto.cshtml", model);
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> AddPhoto(PhotoBindingModel model, int contestId = 11)
+        public async Task<ActionResult> AddPhoto(PhotoBindingModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.PartialView("~/Views/Photos/_AddPhoto.cshtml", model);
+                return this.ViewBag.StatusMessage("Error");
             }
 
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
@@ -64,20 +66,18 @@
                     Url = uploadResults[1],
                     Uploaded = DateTime.Now,
                     AuthorId = currentUserId,
-                    ContestId = contestId
+                    ContestId = (int)model.ContestId
                 };
 
                 this.Data.Photos.Add(newPhoto);
                 this.Data.SaveChanges();
 
-                this.ViewBag.StatusMessage = "Success";
+                return this.RedirectToAction("Details", "Contests", new { id = model.ContestId });
             }
             else
             {
-                this.ViewBag.StatusMessage = "Error";
+                return this.ViewBag.StatusMessage = "Error";
             }
-
-            return this.RedirectToAction("Index", "Photos");
         }
 
         private string[] UploadPhotoToGoogleDrive(HttpPostedFileBase fileData)

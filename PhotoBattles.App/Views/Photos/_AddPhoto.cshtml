@@ -1,6 +1,6 @@
 ﻿@model PhotoBattles.App.Models.BindingModels.PhotoBindingModel
 
-<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css"/>
 
 @{
     ViewBag.Title = "Add Photo";
@@ -10,12 +10,16 @@
 
 @using (Html.BeginForm("AddPhoto", "Photos", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
 {
-    <div class="panel panel-default panel-primary">
-        <div class="panel-body">
-            @Html.TextBoxFor(m => m.PhotoData, new { type = "file" })
-        </div>
-        <div class="panel-footer">
-            <input type="submit" class="btn btn-default btn-primary" value="Add Photo" />
-        </div>
-    </div>
+    <span>
+        @Html.TextBoxFor(m => m.ContestId, new { type = "hidden" })
+    </span>
+    <span class="btn btn-default btn-primary btn-file">Browse ...
+        @Html.TextBoxFor(m => m.PhotoData, new { type = "file", @id = "file-upload" })
+    </span>
+
+    <input type="submit" class="btn btn-default btn-primary" value="Add Photo"/>
 }
+
+<script>
+    
+</script>

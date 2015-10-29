@@ -64,7 +64,7 @@
 
             if (contest.ParticipationStrategy == ParticipationStrategy.Closed && !contest.RegisteredParticipants.Contains(user))
             {
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Index");
             }
 
             contest.Participants.Add(user);
