@@ -232,5 +232,14 @@
 
             return this.RedirectToAction("OwnContests", "Contests");
         }
+
+        [HttpPost]
+        public ActionResult DismissContest(int id)
+        {
+            var contest = this.Data.Contests.Find(id);
+            contest.Dismiss();            
+            this.Data.SaveChanges();
+            return this.RedirectToAction("OwnContests", "Contests");
+        }
     }
 }

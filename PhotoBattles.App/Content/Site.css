@@ -45,3 +45,10 @@
     min-width: 400px;
     display: none;
 }
+
+.dismiss {
+    padding-top: 0;
+    padding-bottom: 15px;
+    color: red;
+    font-size: 30px
+}

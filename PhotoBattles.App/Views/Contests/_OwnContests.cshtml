@@ -14,14 +14,31 @@
     if (context.EndDate != null)
     {
         <p>End date: @context.EndDate</p>
-        @Html.ActionLink("Edit", "EditContest", "Contests", new {id = context.Id}, new {@class = "btn btn-primary"})
     }
     else
     {
         <p>Participant limit: @context.ParticipantsLimit</p>
-        @Html.ActionLink("Edit", "EditContest", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
     }
 
+    if (@context.IsActive == true)
+    {
+        @Html.ActionLink("Edit", "EditContest", "Contests", new {id = context.Id}, new {@class = "btn btn-primary"})
+        <br/>
+        <br/>
+
+        using (Html.BeginForm("DismissContest", "Contests", FormMethod.Post, new {role = "form"}))
+        {
+            @Html.Hidden("id", context.Id)
+            ;
+            <input type="submit" class="btn btn-default btn-primary" value="Dismiss"/>
+        }
+    }
+    else
+    {
+        <p class ="dismiss">
+            The contest is dismissed!
+        </p>
+    }
 
 
 }
