@@ -27,6 +27,8 @@
 
         public DateTime? EndDate { get; set; }
 
+        public bool IsActive { get; set; }
+
         // I don't know, if we should make new ViewModel
 
         // Shut up!
