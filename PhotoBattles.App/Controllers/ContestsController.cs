@@ -58,7 +58,7 @@
         [HttpGet]
         public ActionResult Participate(int id)
         {
-            var userId = this.User.Identity.GetUserId();
+            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
             var contest = this.Data.Contests.Find(id);
             var user = this.Data.Users.Find(userId);
 
@@ -71,7 +71,7 @@
 
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction("ParticipateContests");
         }
 
         [AllowAnonymous]
@@ -92,7 +92,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return null;
+                return this.RedirectToAction("Index");
             }
 
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();

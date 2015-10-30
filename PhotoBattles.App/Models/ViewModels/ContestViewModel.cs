@@ -2,9 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+
     using AutoMapper;
-    using Contracts;
+
+    using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;
     using PhotoBattles.Models.Enumerations;
 
@@ -26,16 +27,20 @@
 
         public DateTime? EndDate { get; set; }
 
-        //I don't know, if we should make new ViewModel
+        // I don't know, if we should make new ViewModel
+
+        // Shut up!
         public ICollection<UserViewModel> Winners { get; set; }
 
-        public ICollection<string> InvitedUsers { get; set; }
+        public ICollection<UserViewModel> InvitedUsers { get; set; }
+
+        public ICollection<UserViewModel> Participants { get; set; }
 
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<Contest, ContestViewModel>()
-                .ForMember(c => c.InvitedUsers,
-                    opt => opt.MapFrom(c => c.RegisteredParticipants.Select(u => u.UserName)));
+                .ForMember(c => c.InvitedUsers, opt => opt.MapFrom(c => c.RegisteredParticipants))
+                .ForMember(c => c.Participants, opt => opt.MapFrom(c => c.Participants));
         }
     }
 }

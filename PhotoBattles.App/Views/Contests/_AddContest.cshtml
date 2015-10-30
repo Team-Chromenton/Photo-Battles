@@ -4,16 +4,13 @@
     ViewBag.Title = "Add Contest";
 }
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-
 @using (Html.BeginForm("AddContest", "Contests", FormMethod.Post, new { role = "form" }))
 {
     <div class="panel panel-default panel-primary">
         <div class="panel-body">
 
-            @Html.TextBoxFor(m => m.Title)
-            <br />
-            @Html.TextAreaFor(m => m.Description)
+            @Html.TextBoxFor(m => m.Title, new {@class = "form-control" })
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
 
             <div>
                 <p>Voting Strategy</p>

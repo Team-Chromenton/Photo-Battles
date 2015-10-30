@@ -6,7 +6,7 @@
     ViewBag.Title = "Index";
 }
 
-@if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+@if (this.User != null && this.User.Identity.IsAuthenticated)
 {
     Html.RenderAction("AddContest", "Contests");
 }
@@ -19,29 +19,26 @@
                 <p>@contest.Title</p>
                 <p>@contest.Description</p>
                 <p>@contest.CreatedOn</p>
-                <p>@contest.Organizer.UserName</p> 
+                <p>@contest.Organizer.UserName</p>
             </div>
             <div class="col-lg-6 text-right">
-                @if (this.User.Identity.IsAuthenticated)
+                @if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
                 {
                     if (contest.ParticipationStrategy == ParticipationStrategy.Open ||
-                        (contest.ParticipationStrategy == ParticipationStrategy.Closed && contest.InvitedUsers.Any(c => c.Equals(this.User.Identity.GetUserName()))))
+                        (contest.ParticipationStrategy == ParticipationStrategy.Closed && contest.InvitedUsers.Any(iu => iu.UserName == this.User.Identity.GetUserName())))
                     {
-                        @Html.ActionLink("Participate", "Participate", "Contests", new { area = "", id = contest.Id }, new { @class = "btn btn-primary" })
+                        if (!contest.Participants.Any() || !contest.Participants.Any(p => p.UserName == this.User.Identity.GetUserName()))
+                        {
+                            @Html.ActionLink("Participate", "Participate", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                        }
                     }
                 }
 
-                @Html.ActionLink("Details", "Details", "Contests", new { area = "", id = contest.Id }, new { @class = "btn btn-primary" })
-                
+                @Html.ActionLink("Details", "Details", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+
             </div>
         </div>
     </div>
 }
-@if(Request.IsAuthenticated)
-{
-        @Html.ActionLink("Own contests", "OwnContests", "Contests", new { @class = "btn btn-primary" })
-        <br/>
-        <br/>
-        @Html.ActionLink("Contest you are in", "ParticipateContests", "Contests", new { @class = "btn btn-primary" })
-}
+
 

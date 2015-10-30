@@ -13,33 +13,36 @@
             <img class="img-thumbnail" src="@photo.Url" style="width: 400px; height: 100%"/>
         </div>
 
-        <div class="panel-footer">
-            @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
-            {
-                @Html.ActionLink("Upvote", "Upvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-default" })
-            }
-            else
-            {
-                <a class="btn btn-default disabled">Upvote</a>
-            }
+        @if (photo.Contest.Participants.Any(p => p.UserName == User.Identity.GetUserName()))
+        {
+            <div class="panel-footer">
+                @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
+                {
+                    @Html.ActionLink("Upvote", "Upvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-default" })
+                }
+                else
+                {
+                    <a class="btn btn-default disabled">Upvote</a>
+                }
 
-            @if (photo.Votes == null)
-            {
-                <button type="button" class="btn btn-default disabled">0</button>
-            }
-            else
-            {
-                <button type="button" class="btn btn-default disabled">@photo.Votes.Sum(v => v.Score)</button>
-            }
+                @if (photo.Votes == null)
+                {
+                    <button type="button" class="btn btn-default disabled">0</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-default disabled">@photo.Votes.Sum(v => v.Score)</button>
+                }
 
-            @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
-            {
-                @Html.ActionLink("Downvote", "Downvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-default" })
-            }
-            else
-            {
-                <a class="btn btn-default disabled">Downvote</a>
-            }
-        </div>
+                @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
+                {
+                    @Html.ActionLink("Downvote", "Downvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-default" })
+                }
+                else
+                {
+                    <a class="btn btn-default disabled">Downvote</a>
+                }
+            </div>
+        }
     </div>
 }
