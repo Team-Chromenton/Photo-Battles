@@ -22,9 +22,12 @@
                 <p>@contest.Organizer.UserName</p>
             </div>
             <div class="col-lg-6 text-right">
-
                 @Html.ActionLink("Details", "Details", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
-                @Html.ActionLink("Winners", "Winners", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                @if (!contest.IsActive)
+                {
+                    @Html.ActionLink("Winners", "Winners", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                }
+
             </div>
         </div>
     </div>

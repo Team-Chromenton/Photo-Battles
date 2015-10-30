@@ -241,5 +241,34 @@
             this.Data.SaveChanges();
             return this.RedirectToAction("OwnContests", "Contests");
         }
+
+        [HttpPost]
+        public ActionResult Finalize(int id)
+        {
+            var contextFinalize = this.Data.Contests.Find(id);
+            contextFinalize.End();
+            if (contextFinalize.NumberOfWinners > 1)
+            {
+                var winners =
+                    contextFinalize.Participants.Where(p => p.Votes.Count > 0)
+                    .OrderByDescending(p => p.Votes.Count)
+                        .Take(contextFinalize.NumberOfWinners);
+                contextFinalize.Winners = winners.ToList();
+            }
+            else
+            {
+                var winner =
+                    contextFinalize.Participants.Where(p => p.Votes.Count > 0)
+                    .OrderByDescending(p => p.Votes.Count)
+                        .FirstOrDefault();
+                contextFinalize.Winners = new List<User>(){
+                    winner
+                };
+                
+            }
+
+            this.Data.SaveChanges();
+            return this.RedirectToAction("OwnContests", "Contests");
+        }
     }
 }

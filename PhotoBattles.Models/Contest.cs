@@ -145,7 +145,6 @@
         {
             this.IsActive = false;
             this.IsOpen = false;
-            //this.RewardStrategy.GetWiners();
         }
     }
 }
