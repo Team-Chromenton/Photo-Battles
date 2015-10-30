@@ -9,63 +9,102 @@
     <div class="panel panel-default panel-primary">
         <div class="panel-body">
 
-            @Html.TextBoxFor(m => m.Title, new {@class = "form-control" })
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control", @style = "margin-bottom: 10px; padding-left: 27px", @placeholder = "Title" })
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @style = "margin-bottom: 10px; padding-left: 27px", @placeholder = "Description" })
 
-            <div>
-                <p>Voting Strategy</p>
-                @Html.RadioButtonFor(m => m.VotingStartegy, 0, new { @checked = "checked", @onclick = "hide('voters')" })
-                @Html.LabelFor(m => m.VotingStartegy, "Open")
-
-                @Html.RadioButtonFor(m => m.VotingStartegy, 1, new { @onclick = "show('voters')" })
-                @Html.LabelFor(m => m.VotingStartegy, "Closed")
-
-                <select multiple id="voters" name="Voters" style="display: none">
-                    @foreach (var user in Model.AvailableVoters)
-                    {
-                        <option value="@user.UserName">@user.UserName</option>
-                    }
-                </select>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        Voting Strategy:
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.VotingStartegy, 0, new { @checked = "checked", @onclick = "hide('voters')", @id = "voting-strategy-open" })
+                            @Html.LabelFor(m => m.VotingStartegy, "Open", new { @for = "voting-strategy-open" })
+                        </div>
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.VotingStartegy, 1, new { @onclick = "show('voters')", @id = "voting-strategy-closed" })
+                            @Html.LabelFor(m => m.VotingStartegy, "Closed", new { @for = "voting-strategy-closed" })
+                        </div>
+                        <div class="row">
+                            <select multiple id="voters" name="Voters" style="width: 100%; display: none">
+                                @foreach (var user in Model.AvailableVoters)
+                                {
+                                    <option value="@user.UserName" style="padding: 0 20px">@user.UserName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <p>Participation Strategy</p>
-                @Html.RadioButtonFor(m => m.ParticipationStrategy, 0, new { @checked = "checked", @onclick = "hide('participants')" })
-                @Html.LabelFor(m => m.ParticipationStrategy, "Open")
-
-                @Html.RadioButtonFor(m => m.ParticipationStrategy, 1, new { @onclick = "show('participants')" })
-                @Html.LabelFor(m => m.ParticipationStrategy, "Closed")
-
-                <select multiple id="participants" name="Participants" style="display: none">
-                    @foreach (var participant in Model.AvailableParticipants)
-                    {
-                        <option value="@participant.UserName">@participant.UserName</option>
-                    }
-                </select>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        Participation Strategy:
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.ParticipationStrategy, 0, new { @checked = "checked", @onclick = "hide('participants')", @id = "participation-strategy-open" })
+                            @Html.LabelFor(m => m.ParticipationStrategy, "Open", new { @for = "participation-strategy-open" })
+                        </div>
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.ParticipationStrategy, 1, new { @onclick = "show('participants')", @id = "participation-strategy-closed" })
+                            @Html.LabelFor(m => m.ParticipationStrategy, "Closed", new { @for = "participation-strategy-closed" })
+                        </div>
+                        <div class="row">
+                            <select multiple id="participants" name="Participants" style="width: 100%; display: none">
+                                @foreach (var participant in Model.AvailableParticipants)
+                                {
+                                    <option value="@participant.UserName">@participant.UserName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <p>Reward Strategy</p>
-                @Html.RadioButtonFor(m => m.RewardStrategy, 0, new { @checked = "checked", @onclick = "hide('number-of-winners')" })
-                @Html.LabelFor(m => m.RewardStrategy, "Single Winner")
-
-                @Html.RadioButtonFor(m => m.RewardStrategy, 1, new { @onclick = "show('number-of-winners')" })
-                @Html.LabelFor(m => m.RewardStrategy, "Multiple Winners")
-
-                @Html.TextBoxFor(m => m.NumberOfWinners, new { @id = "number-of-winners", @style = "display:none", @type = "number" })
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        Reward Strategy:
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.RewardStrategy, 0, new { @checked = "checked", @onclick = "hide('number-of-winners')", @id = "reward-strategy-single" })
+                            @Html.LabelFor(m => m.RewardStrategy, "Single Winner", new { @for = "reward-strategy-single" })
+                        </div>
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.RewardStrategy, 1, new { @onclick = "show('number-of-winners')", @id = "reward-strategy-multiple" })
+                            @Html.LabelFor(m => m.RewardStrategy, "Multiple Winners", new { @for = "reward-strategy-multiple" })
+                        </div>
+                        <div class="row">
+                            @Html.TextBoxFor(m => m.NumberOfWinners, new { @id = "number-of-winners", @style = "display:none", @type = "number" })
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <p>Deadline Strategy</p>
-                @Html.RadioButtonFor(m => m.DeadlineStrategy, 0, new { @checked = "checked", @onclick = "hide('participants-limit'); show('end-date')" })
-                @Html.LabelFor(m => m.DeadlineStrategy, "End date")
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        Deadline Strategy:
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.DeadlineStrategy, 0, new { @checked = "checked", @onclick = "hide('participants-limit'); show('end-date')", @id = "deadline-strategy-date" })
+                            @Html.LabelFor(m => m.DeadlineStrategy, "End date", new { @for = "deadline-strategy-date" })
 
-                @Html.TextBoxFor(m => m.EndDate, new { @id = "end-date", @type = "date" })
+                            @Html.TextBoxFor(m => m.EndDate, new { @id = "end-date", @type = "date" })
+                        </div>
+                        <div class="row">
+                            @Html.RadioButtonFor(m => m.DeadlineStrategy, 1, new { @onclick = "hide('end-date'); show('participants-limit')", @id = "deadline-strategy-limit" })
+                            @Html.LabelFor(m => m.DeadlineStrategy, "Participants limit", new { @for = "deadline-strategy-limit" })
 
-                @Html.LabelFor(m => m.DeadlineStrategy, "Participants limit")
-                @Html.RadioButtonFor(m => m.DeadlineStrategy, 1, new { @onclick = "hide('end-date'); show('participants-limit')" })
-
-                @Html.TextBoxFor(m => m.ParticipantsLimit, new { @id = "participants-limit", @style = "display:none", @type = "number" })
+                            @Html.TextBoxFor(m => m.ParticipantsLimit, new { @id = "participants-limit", @style = "display:none", @type = "number" })
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="panel-footer">
