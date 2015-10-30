@@ -2,10 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
     using AutoMapper;
-
     using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;
 

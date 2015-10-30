@@ -245,9 +245,12 @@
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Admin\Controllers\OverviewController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PicturesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\BindingModels\AdminContestBindingModel.cs" />
     <Compile Include="Areas\Admin\Models\BindingModels\AdminUserBindingModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\AdminContestPicturesViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\AdminEditPicturesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\AdminOverviewViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\AdminContestViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\AdminUserViewModel.cs" />
@@ -298,6 +301,8 @@
     <None Include="Areas\Admin\Views\Overview\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Users\EditUser.cshtml" />
+    <None Include="Areas\Admin\Views\Pictures\DeletePictureConfirmation.cshtml" />
+    <None Include="Areas\Admin\Views\Pictures\EditContestPictures.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />

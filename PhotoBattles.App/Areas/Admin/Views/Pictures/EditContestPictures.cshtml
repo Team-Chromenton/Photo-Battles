@@ -1,0 +1,23 @@
+﻿@model PhotoBattles.App.Areas.Admin.Models.ViewModels.AdminEditPicturesViewModel
+
+<h1>Manage Contest [@Model.ContestName] Pictures</h1>
+<h3>Pictures: </h3>
+
+@foreach (var photo in Model.Pictures)
+{
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <img class="img-thumbnail" src="@photo.Url" style="width: 400px; height: 100%" />
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("Delete", "DeletePictureConfirmation", "Pictures", new { area = "Admin", id = photo.Id }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+    
+    
+}

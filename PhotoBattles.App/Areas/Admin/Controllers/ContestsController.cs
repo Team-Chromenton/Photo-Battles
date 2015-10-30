@@ -60,6 +60,10 @@
 
             contest.Title = model.Title;
             contest.Description = model.Description;
+            contest.VotingStrategy = model.VotingStrategy;
+            contest.ParticipationStrategy = model.ParticipationStrategy;
+            contest.RewardStrategy = model.RewardStrategy;
+            contest.DeadlineStrategy = model.DeadlineStrategy;
 
             this.Data.SaveChanges();
 

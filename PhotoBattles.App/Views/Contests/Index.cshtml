@@ -27,9 +27,12 @@
                     if (contest.ParticipationStrategy == ParticipationStrategy.Open ||
                         (contest.ParticipationStrategy == ParticipationStrategy.Closed && contest.InvitedUsers.Any(iu => iu.UserName == this.User.Identity.GetUserName())))
                     {
-                        if (!contest.Participants.Any() || !contest.Participants.Any(p => p.UserName == this.User.Identity.GetUserName()))
+                        if (!contest.Participants.Any() || contest.Participants.All(p => p.UserName != this.User.Identity.GetUserName()))
                         {
-                            @Html.ActionLink("Participate", "Participate", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                            if (contest.IsActive)
+                            {
+                                @Html.ActionLink("Participate", "Participate", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                            }
                         }
                     }
                 }

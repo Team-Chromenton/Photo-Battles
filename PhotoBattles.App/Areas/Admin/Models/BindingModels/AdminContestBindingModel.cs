@@ -20,5 +20,11 @@
 
         [Required]
         public ParticipationStrategy ParticipationStrategy { get; set; }
+
+        [Required]
+        public RewardStrategy RewardStrategy { get; set; }
+
+        [Required]
+        public DeadlineStrategy DeadlineStrategy { get; set; }
     }
 }
