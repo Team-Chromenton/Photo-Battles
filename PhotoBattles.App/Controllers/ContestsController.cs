@@ -264,7 +264,7 @@
                 contextFinalize.Winners = new List<User>(){
                     winner
                 };
-                
+
             }
 
             this.Data.SaveChanges();
