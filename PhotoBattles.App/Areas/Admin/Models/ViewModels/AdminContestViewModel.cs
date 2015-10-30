@@ -1,9 +1,11 @@
 ﻿namespace PhotoBattles.App.Areas.Admin.Models.ViewModels
 {
     using System;
+    using System.Collections.Generic;
 
     using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;
+    using PhotoBattles.Models.Enumerations;
 
     public class AdminContestViewModel : IMapFrom<Contest>
     {
@@ -13,12 +15,20 @@
 
         public string Description { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public VotingStrategy VotingStrategy { get; set; }
 
-        public bool IsActive { get; set; }
+        public ParticipationStrategy ParticipationStrategy { get; set; }
 
-        public bool IsOpen { get; set; }
+        public int? NumberOfWinners { get; set; }
 
-        public string OrganizerId { get; set; }
+        public RewardStrategy RewardStrategy { get; set; }
+
+        public DeadlineStrategy DeadlineStrategy { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public int? ParticipantsLimit { get; set; }
+
+        public IEnumerable<AdminUserViewModel> Users { get; set; }
     }
 }

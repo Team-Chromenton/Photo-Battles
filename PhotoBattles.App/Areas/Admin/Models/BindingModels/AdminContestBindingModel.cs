@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using PhotoBattles.Models.Enumerations;
+
     public class AdminContestBindingModel
     {
         [Required]
@@ -12,5 +14,11 @@
 
         [Required]
         public string Description { get; set; }
+
+        [Required]
+        public VotingStrategy VotingStrategy { get; set; }
+
+        [Required]
+        public ParticipationStrategy ParticipationStrategy { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace PhotoBattles.App.Areas.Admin.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -26,6 +27,13 @@
             {
                 return this.HttpNotFound();
             }
+
+            contest.Users = new List<AdminUserViewModel>(
+                this.Data
+                    .Users
+                    .GetAll()
+                    .ProjectTo<AdminUserViewModel>()
+                    .ToList());
 
             this.ViewBag.Title = contest.Title;
             return this.View(contest);
