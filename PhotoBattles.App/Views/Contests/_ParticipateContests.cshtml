@@ -9,9 +9,11 @@
 {
     <div class="panel panel-default">
         <div class="panel-heading">
-            @{
+            @if (contest.IsActive)
+            {
                 Html.RenderAction("AddPhoto", "Photos", new { contestId = contest.Id });
             }
+           
         </div>
 
         <div class="panel-body">
