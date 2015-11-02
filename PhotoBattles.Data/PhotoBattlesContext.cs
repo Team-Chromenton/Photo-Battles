@@ -34,6 +34,11 @@ namespace PhotoBattles.Data
                         .HasMany(u => u.OrganizedContests)
                         .WithRequired(c => c.Organizer);
 
+            modelBuilder.Entity<Vote>()
+                .HasRequired(v => v.Photo)
+                .WithMany(p => p.Votes)
+                .WillCascadeOnDelete();
+
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.RegisteredParticipants)
                         .WithMany(u => u.ContestsAllowedToParticipate)
