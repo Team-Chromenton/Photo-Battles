@@ -10,14 +10,25 @@
 
     using Microsoft.AspNet.Identity;
 
-    using Models.BindingModels;
-    using Models.ViewModels;
+    using PhotoBattles.App.Contracts;
+    using PhotoBattles.App.Models.BindingModels;
+    using PhotoBattles.App.Models.ViewModels;
+    using PhotoBattles.Data.Contracts;
     using PhotoBattles.Models;
     using PhotoBattles.Models.Enumerations;
 
     [Authorize]
     public class ContestsController : BaseController
     {
+        public ContestsController()
+        {
+        }
+
+        public ContestsController(IPhotoBattlesData data, IUserIdProvider userIdProvider)
+            : base(data, userIdProvider)
+        {
+        }
+
         [AllowAnonymous]
         public ActionResult Index()
         {
@@ -34,22 +45,24 @@
         public ActionResult AddContest()
         {
             var model = new ContestBindingModel
-            {
-                Title = string.Empty,
-                Description = string.Empty,
-                AvailableParticipants = new List<UserViewModel>(),
-                AvailableVoters = new List<UserViewModel>()
-            };
+                {
+                    Title = string.Empty,
+                    Description = string.Empty,
+                    AvailableParticipants = new List<UserViewModel>(),
+                    AvailableVoters = new List<UserViewModel>()
+                };
 
             string currentUserName = System.Web.HttpContext.Current.User.Identity.GetUserName();
 
             var availableParticipants = this.Data.Users
-                .GetAll()
-                .ProjectTo<UserViewModel>()
-                .ToList();
+                                            .GetAll()
+                                            .ProjectTo<UserViewModel>()
+                                            .ToList();
             availableParticipants.ForEach(p => model.AvailableParticipants.Add(p));
 
-            var availableVoters = availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator").ToList();
+            var availableVoters =
+                availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
+                                     .ToList();
             availableVoters.ForEach(u => model.AvailableVoters.Add(u));
 
             return this.PartialView("~/Views/Contests/_AddContest.cshtml", model);
@@ -62,7 +75,8 @@
             var contest = this.Data.Contests.Find(id);
             var user = this.Data.Users.Find(userId);
 
-            if (contest.ParticipationStrategy == ParticipationStrategy.Closed && !contest.RegisteredParticipants.Contains(user))
+            if (contest.ParticipationStrategy == ParticipationStrategy.Closed
+                && !contest.RegisteredParticipants.Contains(user))
             {
                 return this.RedirectToAction("Index");
             }
@@ -79,33 +93,33 @@
         public ActionResult Details(int id)
         {
             var contest = this.Data.Contests.GetAll()
-                .Where(c => c.Id == id)
-                .OrderByDescending(c => c.CreatedOn)
-                .ProjectTo<ContestDetailsViewModel>()
-                .FirstOrDefault();
+                              .Where(c => c.Id == id)
+                              .OrderByDescending(c => c.CreatedOn)
+                              .ProjectTo<ContestDetailsViewModel>()
+                              .FirstOrDefault();
 
             return this.View(contest);
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddContest(ContestBindingModel model)
+        public ActionResult AddContest(ContestBindingModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.RedirectToAction("Index");
             }
 
-            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            string currentUserId = this.User.Identity.GetUserId();
 
             var newContest = new Contest
-            {
-                Title = model.Title,
-                Description = model.Description,
-                CreatedOn = DateTime.Now,
-                IsActive = true,
-                IsOpen = true,
-                OrganizerId = currentUserId
-            };
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    CreatedOn = DateTime.Now,
+                    IsActive = true,
+                    IsOpen = true,
+                    OrganizerId = currentUserId
+                };
 
             this.Data.Contests.Add(newContest);
 
@@ -173,9 +187,9 @@
             var userId = this.User.Identity.GetUserId();
 
             IQueryable<ContestViewModel> partContests = this.Data.Contests.GetAll()
-                .Where(p => p.Participants.Any(u => u.Id == userId))
-                .OrderByDescending(c => c.CreatedOn)
-                .ProjectTo<ContestViewModel>();
+                                                            .Where(p => p.Participants.Any(u => u.Id == userId))
+                                                            .OrderByDescending(c => c.CreatedOn)
+                                                            .ProjectTo<ContestViewModel>();
 
             return this.View("~/Views/Contests/_ParticipateContests.cshtml", partContests);
         }
@@ -186,8 +200,8 @@
             var userId = this.User.Identity.GetUserId();
 
             var winnContests = this.Data.Contests.GetAll()
-                .Where(p => p.Participants.Any(u => u.Id == userId) && p.Id == id)
-                .ProjectTo<ContestViewModel>().FirstOrDefault();
+                                   .Where(p => p.Participants.Any(u => u.Id == userId) && p.Id == id)
+                                   .ProjectTo<ContestViewModel>().FirstOrDefault();
 
             return this.View("~/Views/Contests/_Winners.cshtml", winnContests);
         }
@@ -203,8 +217,8 @@
 
             //This if we want to show only the from user created  contests should be discuss
             IQueryable<ContestViewModel> ownContests = this.Data.Contests.GetAll()
-                .Where(p => p.Organizer.Id == userId)
-                .ProjectTo<ContestViewModel>();
+                                                           .Where(p => p.Organizer.Id == userId)
+                                                           .ProjectTo<ContestViewModel>();
 
             return this.View("~/Views/Contests/_OwnContests.cshtml", ownContests);
         }
@@ -214,8 +228,8 @@
         {
             var contest = this.Data.Contests.GetAll().Where(c => c.Id == id).FirstOrDefault();
 
-            ViewBag.Limit = contest.ParticipantsLimit;
-            ViewBag.Id = contest.Id;
+            this.ViewBag.Limit = contest.ParticipantsLimit;
+            this.ViewBag.Id = contest.Id;
             return this.View("~/Views/Contests/_EditContest.cshtml");
         }
 
@@ -237,7 +251,7 @@
         public ActionResult DismissContest(int id)
         {
             var contest = this.Data.Contests.Find(id);
-            contest.Dismiss();            
+            contest.Dismiss();
             this.Data.SaveChanges();
             return this.RedirectToAction("OwnContests", "Contests");
         }
@@ -251,20 +265,20 @@
             {
                 var winners =
                     contextFinalize.Participants.Where(p => p.Votes.Count > 0)
-                    .OrderByDescending(p => p.Votes.Count)
-                        .Take(contextFinalize.NumberOfWinners);
+                                   .OrderByDescending(p => p.Votes.Count)
+                                   .Take(contextFinalize.NumberOfWinners);
                 contextFinalize.Winners = winners.ToList();
             }
             else
             {
                 var winner =
                     contextFinalize.Participants.Where(p => p.Votes.Count > 0)
-                    .OrderByDescending(p => p.Votes.Count)
-                        .FirstOrDefault();
-                contextFinalize.Winners = new List<User>(){
-                    winner
-                };
-
+                                   .OrderByDescending(p => p.Votes.Count)
+                                   .FirstOrDefault();
+                contextFinalize.Winners = new List<User>()
+                    {
+                        winner
+                    };
             }
 
             this.Data.SaveChanges();

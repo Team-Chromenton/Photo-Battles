@@ -1,5 +1,4 @@
 @using PhotoBattles.App.Extensions
-
 @{
     var errorList = Html.GetNotifications(NotificationType.ERROR);
     var warningList = Html.GetNotifications(NotificationType.WARNING);
@@ -11,7 +10,8 @@
 {
     <div class="alert alert-danger alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        @if(errorList.Count() > 1){
+        @if (errorList.Count() > 1)
+        {
             <strong><span class="glyphicon glyphicon-remove"></span> There are @errorList.Count() errors: </strong>
             <ul>
                 @foreach (String message in errorList)
@@ -20,7 +20,8 @@
                 }
             </ul>
         }
-        else{
+        else
+        {
             <strong><span class="glyphicon glyphicon-remove"></span> Error: </strong>
             @Html.Raw(errorList.First())
         }
@@ -32,7 +33,8 @@
 {
     <div class="alert alert-warning alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        @if(warningList.Count() > 1){
+        @if (warningList.Count() > 1)
+        {
             <strong><span class="glyphicon glyphicon-warning-sign"></span> There are @warningList.Count() warnings: </strong>
             <ul>
                 @foreach (String message in warningList)
@@ -41,7 +43,8 @@
                 }
             </ul>
         }
-        else{
+        else
+        {
             <strong><span class="glyphicon glyphicon-warning-sign"></span> Warning: </strong>
             @Html.Raw(warningList.First())
         }
@@ -53,7 +56,8 @@
 {
     <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        @if(successList.Count() > 1){
+        @if (successList.Count() > 1)
+        {
             <strong><span class="glyphicon glyphicon-ok"></span> There are @successList.Count() successful notifications: </strong>
             <ul>
                 @foreach (String message in successList)
@@ -62,7 +66,8 @@
                 }
             </ul>
         }
-        else{
+        else
+        {
             <strong><span class="glyphicon glyphicon-ok"></span> Success! </strong>
             @Html.Raw(successList.First())
         }
@@ -74,7 +79,8 @@
 {
     <div class="alert alert-info alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        @if(infoList.Count() > 1){
+        @if (infoList.Count() > 1)
+        {
             <strong><span class="glyphicon glyphicon-info-sign"></span> There are @infoList.Count() notifications: </strong>
             <ul>
                 @foreach (String message in infoList)
@@ -83,8 +89,10 @@
                 }
             </ul>
         }
-        else{
-            <strong><span class="glyphicon glyphicon-info-sign"></span> </strong>
+        else
+        {
+            <strong>
+                <span class="glyphicon glyphicon-info-sign"></span> </strong>
             @Html.Raw(infoList.First())
         }
     </div>

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace PhotoBattles.App.Models.BindingModels
+﻿namespace PhotoBattles.App.Models.BindingModels
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class ContestEditBindigModel

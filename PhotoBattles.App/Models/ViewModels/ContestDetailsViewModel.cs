@@ -4,6 +4,6 @@
 
     public class ContestDetailsViewModel : ContestViewModel
     {
-        public ICollection<PhotoViewModel> Photos { get; set; } 
+        public ICollection<PhotoViewModel> Photos { get; set; }
     }
 }

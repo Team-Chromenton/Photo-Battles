@@ -39,11 +39,11 @@ namespace PhotoBattles.Data
                         .WithMany(u => u.ContestsAllowedToParticipate)
                         .Map(
                             m =>
-                            {
-                                m.MapLeftKey("ContestId");
-                                m.MapRightKey("UserId");
-                                m.ToTable("ContestsRegisteredParticipants");
-                            });
+                                {
+                                    m.MapLeftKey("ContestId");
+                                    m.MapRightKey("UserId");
+                                    m.ToTable("ContestsRegisteredParticipants");
+                                });
 
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Participants)
@@ -57,15 +57,15 @@ namespace PhotoBattles.Data
                                 });
 
             modelBuilder.Entity<Contest>()
-                       .HasMany(c => c.RegisteredVoters)
-                       .WithMany(u => u.ContestsAllowedToVote)
-                       .Map(
-                           m =>
-                           {
-                               m.MapLeftKey("ContestId");
-                               m.MapRightKey("UserId");
-                               m.ToTable("ContestsRegisteredVoters");
-                           });
+                        .HasMany(c => c.RegisteredVoters)
+                        .WithMany(u => u.ContestsAllowedToVote)
+                        .Map(
+                            m =>
+                                {
+                                    m.MapLeftKey("ContestId");
+                                    m.MapRightKey("UserId");
+                                    m.ToTable("ContestsRegisteredVoters");
+                                });
 
             modelBuilder.Entity<Contest>()
                         .HasMany(c => c.Winners)

@@ -13,7 +13,6 @@
             this.commiteeMembers = committeeMembers;
         }
 
-
         public bool CanVote(string user)
         {
             if (this.commiteeMembers.Contains(user))

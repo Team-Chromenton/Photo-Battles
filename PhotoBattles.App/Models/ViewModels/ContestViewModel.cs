@@ -41,8 +41,8 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<Contest, ContestViewModel>()
-                .ForMember(c => c.InvitedUsers, opt => opt.MapFrom(c => c.RegisteredParticipants))
-                .ForMember(c => c.Participants, opt => opt.MapFrom(c => c.Participants));
+                         .ForMember(c => c.InvitedUsers, opt => opt.MapFrom(c => c.RegisteredParticipants))
+                         .ForMember(c => c.Participants, opt => opt.MapFrom(c => c.Participants));
         }
     }
 }

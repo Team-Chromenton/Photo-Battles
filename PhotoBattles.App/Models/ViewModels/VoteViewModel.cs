@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace PhotoBattles.App.Models.ViewModels
+﻿namespace PhotoBattles.App.Models.ViewModels
 {
     using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;

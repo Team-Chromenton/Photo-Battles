@@ -18,7 +18,6 @@
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.App.Services;
     using PhotoBattles.Models;
-    using File = Google.Apis.Drive.v2.Data.File;
 
     public class PhotosController : BaseController
     {
@@ -26,9 +25,9 @@
         public ActionResult Index(int contestId = 0)
         {
             var photos = this.Data.Photos.GetAll()
-                    .Where(p => p.ContestId == contestId)
-                    .OrderByDescending(p => p.Uploaded)
-                    .ProjectTo<PhotoViewModel>();
+                             .Where(p => p.ContestId == contestId)
+                             .OrderByDescending(p => p.Uploaded)
+                             .ProjectTo<PhotoViewModel>();
 
             return this.View(photos);
         }
@@ -53,21 +52,21 @@
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
 
             var currentUser = this.Data.Users.GetAll()
-                    .Where(u => u.Id == currentUserId)
-                    .ProjectTo<UserViewModel>()
-                    .FirstOrDefault();
+                                  .Where(u => u.Id == currentUserId)
+                                  .ProjectTo<UserViewModel>()
+                                  .FirstOrDefault();
 
             string[] uploadResults = this.UploadPhotoToGoogleDrive(model.PhotoData);
 
             if (uploadResults[0] == "success")
             {
                 var newPhoto = new Photo()
-                {
-                    Url = uploadResults[1],
-                    Uploaded = DateTime.Now,
-                    AuthorId = currentUserId,
-                    ContestId = (int)model.ContestId
-                };
+                    {
+                        Url = uploadResults[1],
+                        Uploaded = DateTime.Now,
+                        AuthorId = currentUserId,
+                        ContestId = (int)model.ContestId
+                    };
 
                 this.Data.Photos.Add(newPhoto);
                 this.Data.SaveChanges();
@@ -88,19 +87,22 @@
             var service = GoogleDriveService.Get();
 
             File body = new File
-            {
-                Title = fileName,
-                MimeType = photoMimeType,
-                Parents =
+                {
+                    Title = fileName,
+                    MimeType = photoMimeType,
+                    Parents =
                         new List<ParentReference>
                             {
                                 new ParentReference { Id = "0ByDHCWWSmvcLRlNrcEh2QVF3cnM" }
                             }
-            };
+                };
 
             try
             {
-                FilesResource.InsertMediaUpload request = service.Files.Insert(body, fileData.InputStream, photoMimeType);
+                FilesResource.InsertMediaUpload request = service.Files.Insert(
+                    body,
+                    fileData.InputStream,
+                    photoMimeType);
                 request.Upload();
 
                 return new[] { "success", "http://docs.google.com/uc?export=open&id=" + request.ResponseBody.Id };

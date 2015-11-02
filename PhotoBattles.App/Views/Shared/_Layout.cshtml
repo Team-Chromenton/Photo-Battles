@@ -1,49 +1,49 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Photo Battles</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-    <meta name="description" content="Photo Battles" />
+    <meta name="description" content="Photo Battles"/>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Photo Battles", "Index", "Contests", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Contests", "Index", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
-                    @if (Request.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Own contests", "OwnContests", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
-                        <li>@Html.ActionLink("Contest you are in", "ParticipateContests", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Photo Battles", "Index", "Contests", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Contests", "Index", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
+                @if (Request.IsAuthenticated)
+                {
+                    <li>@Html.ActionLink("Own contests", "OwnContests", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
+                    <li>@Html.ActionLink("Contest you are in", "ParticipateContests", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
+                }
+            </ul>
+            @Html.Partial("_LoginPartial")
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-    </div>
+</div>
+<div class="container body-content">
+    @RenderBody()
+</div>
 
-    <footer class="container">
-        <hr />
-        <p>&copy; @DateTime.Now.Year - Photo Battles</p>
-    </footer>
+<footer class="container">
+    <hr/>
+    <p>&copy; @DateTime.Now.Year - Photo Battles</p>
+</footer>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </body>
 </html>

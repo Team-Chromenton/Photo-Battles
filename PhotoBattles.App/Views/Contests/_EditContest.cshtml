@@ -5,18 +5,17 @@
 }
 
 <form action="" method="POST">
-    @Html.TextBoxFor(m => m.Title, new {@class = "form-control", placeholder = "Title"})
-    @Html.TextBoxFor(m => m.Description, new {@class = "form-control", placeholder = "Description"})
+    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
+    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
     @if (ViewBag.Limit == null)
     {
         <input type="date" class="form-control" placeholder="End date" name="enddate"/>
-
     }
     else
     {
-        <input type="number" class="form-control" placeholder="Participants limit" name="participantslimit" />
+        <input type="number" class="form-control" placeholder="Participants limit" name="participantslimit"/>
     }
-    <input type="hidden" value="@ViewBag.Id" />
-    <input type="submit" />
+    <input type="hidden" value="@ViewBag.Id"/>
+    <input type="submit"/>
 </form>
 

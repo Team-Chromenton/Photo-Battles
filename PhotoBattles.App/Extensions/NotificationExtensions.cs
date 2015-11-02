@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
 namespace PhotoBattles.App.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+
     /*                                                                      *
      *      This extension was derive from Brad Christie's answer           *
      *      on StackOverflow.                                               *
@@ -18,13 +15,12 @@ namespace PhotoBattles.App.Extensions
     public static class NotificationExtensions
     {
         private static IDictionary<String, String> NotificationKey = new Dictionary<String, String>
-        {
-            { "Error",      "App.Notifications.Error" }, 
-            { "Warning",    "App.Notifications.Warning" },
-            { "Success",    "App.Notifications.Success" },
-            { "Info",       "App.Notifications.Info" }
-        };
-
+            {
+                { "Error", "App.Notifications.Error" },
+                { "Warning", "App.Notifications.Warning" },
+                { "Success", "App.Notifications.Success" },
+                { "Info", "App.Notifications.Info" }
+            };
 
         public static void AddNotification(this ControllerBase controller, String message, String notificationType)
         {
@@ -62,9 +58,11 @@ namespace PhotoBattles.App.Extensions
     public static class NotificationType
     {
         public const string ERROR = "Error";
-        public const string WARNING = "Warning";
-        public const string SUCCESS = "Success";
-        public const string INFO = "Info";
 
+        public const string WARNING = "Warning";
+
+        public const string SUCCESS = "Success";
+
+        public const string INFO = "Info";
     }
 }

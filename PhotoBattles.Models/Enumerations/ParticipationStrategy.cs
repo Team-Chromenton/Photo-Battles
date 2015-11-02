@@ -2,7 +2,7 @@
 {
     public enum ParticipationStrategy
     {
-        Open = 0, 
+        Open = 0,
 
         Closed = 1
     }

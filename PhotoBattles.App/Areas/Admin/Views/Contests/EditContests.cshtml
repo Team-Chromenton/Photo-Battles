@@ -31,7 +31,7 @@
                     <div class="col-lg-6">
                         <div class="row">
                             @Html.RadioButtonFor(m => m.VotingStrategy, 0, new { @checked = "checked", @onclick = "hide('voters')", id = "VotingStrategyOpen" })
-                            @Html.LabelFor(m => m.VotingStrategy, "Open", new {@for = "VotingStrategyOpen" })
+                            @Html.LabelFor(m => m.VotingStrategy, "Open", new { @for = "VotingStrategyOpen" })
                         </div>
                         <div class="row">
                             @Html.RadioButtonFor(m => m.VotingStrategy, 1, new { @onclick = "show('voters')", id = "VotingStrategyClosed" })
@@ -57,11 +57,11 @@
                     <div class="col-lg-6">
                         <div class="row">
                             @Html.RadioButtonFor(m => m.ParticipationStrategy, 0, new { @checked = "checked", @onclick = "hide('participants')", id = "ParticipationStrategyOpen" })
-                            @Html.LabelFor(m => m.ParticipationStrategy, "Open", new {@for = "ParticipationStrategyOpen"})
+                            @Html.LabelFor(m => m.ParticipationStrategy, "Open", new { @for = "ParticipationStrategyOpen" })
                         </div>
                         <div class="row">
                             @Html.RadioButtonFor(m => m.ParticipationStrategy, 1, new { @onclick = "show('participants')", id = "ParticipationStrategyClosed" })
-                            @Html.LabelFor(m => m.ParticipationStrategy, "Closed", new {@for = "ParticipationStrategyClosed"})
+                            @Html.LabelFor(m => m.ParticipationStrategy, "Closed", new { @for = "ParticipationStrategyClosed" })
                         </div>
                         <div class="row">
                             <select class="form-control" multiple id="participants" name="Participants" style="display: none">
@@ -83,11 +83,11 @@
                     <div class="col-lg-6">
                         <div class="row">
                             @Html.RadioButtonFor(m => m.RewardStrategy, 0, new { @checked = "checked", @onclick = "hide('number-of-winners')", id = "RewardStrategySingleWinner" })
-                            @Html.LabelFor(m => m.RewardStrategy, "Single Winner", new {@for = "RewardStrategySingleWinner" })
+                            @Html.LabelFor(m => m.RewardStrategy, "Single Winner", new { @for = "RewardStrategySingleWinner" })
                         </div>
                         <div class="row">
                             @Html.RadioButtonFor(m => m.RewardStrategy, 1, new { @onclick = "show('number-of-winners')", id = "RewardStrategyMultipleWinners" })
-                            @Html.LabelFor(m => m.RewardStrategy, "Multiple Winners", new {@for = "RewardStrategyMultipleWinners" })
+                            @Html.LabelFor(m => m.RewardStrategy, "Multiple Winners", new { @for = "RewardStrategyMultipleWinners" })
                         </div>
                         <div class="row">
                             @Html.TextBoxFor(m => m.NumberOfWinners, new { @id = "number-of-winners", @style = "display:none", @type = "number" })
@@ -104,7 +104,7 @@
                     <div class="col-lg-6">
                         <div class="row">
                             @Html.RadioButtonFor(m => m.DeadlineStrategy, 0, new { @checked = "checked", @onclick = "hide('participants-limit'); show('end-date')", id = "DeadlineStrategyEndDate" })
-                            @Html.LabelFor(m => m.DeadlineStrategy, "End date", new {@for = "DeadlineStrategyEndDate"})
+                            @Html.LabelFor(m => m.DeadlineStrategy, "End date", new { @for = "DeadlineStrategyEndDate" })
                         </div>
                         <div class="row">
                             @Html.TextBoxFor(m => m.EndDate, new { @id = "end-date", @type = "date" })
@@ -128,7 +128,7 @@
                     <input type="submit" value="Edit contest" class="btn btn-default btn-block"/>
                 </div>
             </div>
-            
+
             @Html.ActionLink("Manage Pictures", "EditContestPictures", "Pictures", new { area = "Admin", id = Model.Id }, new { @class = "btn btn-primary btn-block" })
         }
     </div>

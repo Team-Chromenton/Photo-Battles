@@ -1,4 +1,4 @@
-﻿@model System.Linq.IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
+﻿@model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
 
 @{
     ViewBag.Title = "OwnContests";
@@ -29,18 +29,18 @@
         else
         {
             @Html.ActionLink("Edit", "EditContest", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
-            <br />
-            <br />
+            <br/>
+            <br/>
             using (Html.BeginForm("DismissContest", "Contests", FormMethod.Post, new { role = "form" }))
             {
                 @Html.Hidden("id", context.Id)
-                <input type="submit" class="btn btn-default btn-primary" value="Dismiss" />
+                <input type="submit" class="btn btn-default btn-primary" value="Dismiss"/>
             }
-            <br />
+            <br/>
             using (Html.BeginForm("Finalize", "Contests", FormMethod.Post, new { role = "form" }))
             {
                 @Html.Hidden("id", context.Id)
-                <input type="submit" class="btn btn-default btn-primary" value="Finalize" />
+                <input type="submit" class="btn btn-default btn-primary" value="Finalize"/>
             }
         }
     }
@@ -51,6 +51,4 @@
             The contest is dismissed or have no winners!
         </p>
     }
-
-
 }

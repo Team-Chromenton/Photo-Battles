@@ -283,6 +283,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\VotingHub.cs" />
+    <Compile Include="Infrastructure\AspNetUserIdProvider.cs" />
+    <Compile Include="Contracts\IUserIdProvider.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BindingModels\ContestBindingModel.cs" />
     <Compile Include="Models\BindingModels\ContestEditBindigModel.cs" />

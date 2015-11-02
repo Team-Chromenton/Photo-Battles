@@ -5,6 +5,7 @@
     public class AdminEditPicturesViewModel
     {
         public string ContestName { get; set; }
-        public ICollection<AdminContestPicturesViewModel> Pictures { get; set; } 
+
+        public ICollection<AdminContestPicturesViewModel> Pictures { get; set; }
     }
 }

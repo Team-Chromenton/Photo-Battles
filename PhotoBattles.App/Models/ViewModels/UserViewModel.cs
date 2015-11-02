@@ -1,9 +1,5 @@
 ﻿namespace PhotoBattles.App.Models.ViewModels
 {
-    using System.Linq;
-
-    using AutoMapper;
-
     using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;
 

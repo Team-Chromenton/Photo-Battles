@@ -2,7 +2,7 @@
 {
     public enum RewardStrategy
     {
-        SingleWinner = 0, 
+        SingleWinner = 0,
 
         MultipleWinners = 1
     }

@@ -6,7 +6,7 @@
     @using (Html.BeginForm("DeletePicture", "Pictures", new { id = ViewBag.PictureId }, FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        <input type="submit" name="name" value="Yes" class="btn btn-danger btn-block" />
+        <input type="submit" name="name" value="Yes" class="btn btn-danger btn-block"/>
     }
-    @Html.ActionLink("No", "EditContestPictures", "Pictures", new {area = "Admin", id = ViewBag.ContestId}, new {@class = "btn btn-default btn-block"})
+    @Html.ActionLink("No", "EditContestPictures", "Pictures", new { area = "Admin", id = ViewBag.ContestId }, new { @class = "btn btn-default btn-block" })
 </div>
