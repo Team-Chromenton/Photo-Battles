@@ -41,7 +41,7 @@
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> AddPhoto(PhotoBindingModel model)
+        public ActionResult AddPhoto(PhotoBindingModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -49,26 +49,24 @@
             }
 
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-
-            var currentUser = this.Data.Users.GetAll()
-                                  .Where(u => u.Id == currentUserId)
-                                  .ProjectTo<UserViewModel>()
-                                  .FirstOrDefault();
 
             string[] uploadResults = this.UploadPhotoToGoogleDrive(model.PhotoData);
 
             if (uploadResults[0] == "success")
             {
-                var newPhoto = new Photo()
-                    {
-                        Url = uploadResults[1],
-                        Uploaded = DateTime.Now,
-                        AuthorId = currentUserId,
-                        ContestId = (int)model.ContestId
-                    };
+                if (model.ContestId != null)
+                {
+                    var newPhoto = new Photo()
+                        {
+                            Url = uploadResults[1],
+                            Uploaded = DateTime.Now,
+                            AuthorId = currentUserId,
+                            ContestId = (int)model.ContestId
+                        };
 
-                this.Data.Photos.Add(newPhoto);
+                    this.Data.Photos.Add(newPhoto);
+                }
+
                 this.Data.SaveChanges();
 
                 return this.RedirectToAction("Details", "Contests", new { id = model.ContestId });

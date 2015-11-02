@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Mvc;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -60,7 +61,6 @@
 
             var newContest = new ContestBindingModel()
                 {
-                    Id = 3,
                     Title = "Contest three",
                     Description = "Contests three description",
                     VotingStartegy = VotingStrategy.Open,
@@ -71,6 +71,17 @@
                 };
 
             var response = contestController.AddContest(newContest);
+
+            var expected = contests.FirstOrDefault(c => c.Title == newContest.Title);
+            if (expected == null)
+            {
+                Assert.Fail();
+            }
+
+            Assert.IsNotInstanceOfType(response, typeof(ViewResult));
+            Assert.IsInstanceOfType(response, typeof(RedirectToRouteResult));
+            Assert.AreEqual(1, contests.Count);
+            Assert.AreEqual(newContest.Description, expected.Description);
         }
     }
 }

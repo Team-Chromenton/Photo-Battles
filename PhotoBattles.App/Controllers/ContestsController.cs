@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     using AutoMapper.QueryableExtensions;
@@ -11,6 +10,7 @@
     using Microsoft.AspNet.Identity;
 
     using PhotoBattles.App.Contracts;
+    using PhotoBattles.App.Extensions;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data.Contracts;
@@ -102,14 +102,16 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddContest(ContestBindingModel model)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid || model == null)
             {
+                this.AddNotification("Incorrect title or description", NotificationType.ERROR);
                 return this.RedirectToAction("Index");
             }
 
-            string currentUserId = this.User.Identity.GetUserId();
+            string currentUserId = this.UserIdProvider.GetUserId();
 
             var newContest = new Contest
                 {
@@ -121,63 +123,18 @@
                     OrganizerId = currentUserId
                 };
 
+            if (!(this.SetVotingStrategy(model, newContest) && 
+                this.SetParticipatingStrategy(model, newContest) && 
+                this.SetRewardStrategy(model, newContest) && 
+                this.SetDeadlineStrategy(model, newContest)))
+            {
+                return this.RedirectToAction("Index");
+            }
+
             this.Data.Contests.Add(newContest);
-
-            // Voting Strategy
-            if (model.VotingStartegy == VotingStrategy.Open)
-            {
-                newContest.VotingStrategy = VotingStrategy.Open;
-            }
-            else if (model.VotingStartegy == VotingStrategy.Closed)
-            {
-                newContest.VotingStrategy = VotingStrategy.Closed;
-
-                var voters = this.Data.Users.GetAll().Where(u => model.Voters.Contains(u.UserName)).ToList();
-
-                voters.ForEach(v => newContest.RegisteredVoters.Add(v));
-            }
-
-            // Participation Strategy
-            if (model.ParticipationStrategy == ParticipationStrategy.Open)
-            {
-                newContest.ParticipationStrategy = ParticipationStrategy.Open;
-            }
-            else if (model.ParticipationStrategy == ParticipationStrategy.Closed)
-            {
-                newContest.ParticipationStrategy = ParticipationStrategy.Closed;
-
-                var participants = this.Data.Users.GetAll().Where(u => model.Participants.Contains(u.UserName)).ToList();
-
-                participants.ForEach(p => newContest.RegisteredParticipants.Add(p));
-                newContest.IsOpen = false;
-            }
-
-            // Reward Strategy
-            if (model.RewardStrategy == RewardStrategy.SingleWinner)
-            {
-                newContest.RewardStrategy = RewardStrategy.SingleWinner;
-                newContest.NumberOfWinners = 1;
-            }
-            else if (model.RewardStrategy == RewardStrategy.MultipleWinners)
-            {
-                newContest.RewardStrategy = RewardStrategy.MultipleWinners;
-                newContest.NumberOfWinners = (int)model.NumberOfWinners;
-            }
-
-            // Deadline Strategy
-            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
-            {
-                newContest.DeadlineStrategy = DeadlineStrategy.EndDate;
-                newContest.EndDate = (DateTime)model.EndDate;
-            }
-            else if (model.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
-            {
-                newContest.DeadlineStrategy = DeadlineStrategy.ParticipantsLimit;
-                newContest.ParticipantsLimit = (int)model.ParticipantsLimit;
-            }
-
             this.Data.SaveChanges();
 
+            this.AddNotification("Contest created!", NotificationType.SUCCESS);
             return this.RedirectToAction("Index", "Contests");
         }
 
@@ -226,7 +183,12 @@
         [HttpGet]
         public ActionResult EditContest(int id)
         {
-            var contest = this.Data.Contests.GetAll().Where(c => c.Id == id).FirstOrDefault();
+            var contest = this.Data.Contests.GetAll().FirstOrDefault(c => c.Id == id);
+            if (contest == null)
+            {
+                this.AddNotification("Cannot edit contest #" + id, NotificationType.ERROR);
+                return this.View("~/Views/Contests/_EditContest.cshtml");
+            }
 
             this.ViewBag.Limit = contest.ParticipantsLimit;
             this.ViewBag.Id = contest.Id;
@@ -234,9 +196,15 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult> EditContest(ContestEditBindigModel model, int id)
+        public ActionResult EditContest(ContestEditBindigModel model, int id)
         {
             var contest = this.Data.Contests.GetAll().FirstOrDefault(c => c.Id == id);
+
+            if (contest == null)
+            {
+                this.AddNotification("Cannot edit contest #" + id, NotificationType.ERROR);
+                return this.View("~/Views/Contests/_EditContest.cshtml");
+            }
 
             contest.Title = model.Title;
             contest.Description = model.Description;
@@ -283,6 +251,106 @@
 
             this.Data.SaveChanges();
             return this.RedirectToAction("OwnContests", "Contests");
+        }
+
+        private bool SetDeadlineStrategy(ContestBindingModel model, Contest newContest)
+        {
+            // Deadline Strategy
+            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
+            {
+                if (model.EndDate == null)
+                {
+                    this.AddNotification("Incorect end date", NotificationType.ERROR);
+                    return false;
+                }
+
+                newContest.DeadlineStrategy = DeadlineStrategy.EndDate;
+                newContest.EndDate = (DateTime)model.EndDate;
+            }
+            else if (model.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
+            {
+                if (model.ParticipantsLimit == null || model.ParticipantsLimit <= 0)
+                {
+                    this.AddNotification("Incorect number of participants", NotificationType.ERROR);
+                    return false;
+                }
+
+                newContest.DeadlineStrategy = DeadlineStrategy.ParticipantsLimit;
+                newContest.ParticipantsLimit = (int)model.ParticipantsLimit;
+            }
+
+            return true;
+        }
+
+        private bool SetRewardStrategy(ContestBindingModel model, Contest newContest)
+        {
+            if (model.RewardStrategy == RewardStrategy.SingleWinner)
+            {
+                newContest.RewardStrategy = RewardStrategy.SingleWinner;
+                newContest.NumberOfWinners = 1;
+            }
+            else if (model.RewardStrategy == RewardStrategy.MultipleWinners)
+            {
+                if (model.NumberOfWinners == null || model.NumberOfWinners <= 0)
+                {
+                    this.AddNotification("Incorect number of winners", NotificationType.ERROR);
+                    return false;
+                }
+
+                newContest.RewardStrategy = RewardStrategy.MultipleWinners;
+                newContest.NumberOfWinners = (int)model.NumberOfWinners;
+            }
+
+            return true;
+        }
+
+        private bool SetParticipatingStrategy(ContestBindingModel model, Contest newContest)
+        {
+            if (model.ParticipationStrategy == ParticipationStrategy.Open)
+            {
+                newContest.ParticipationStrategy = ParticipationStrategy.Open;
+            }
+            else if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            {
+                if (model.Participants == null || !model.Participants.Any())
+                {
+                    this.AddNotification("Please select participants.", NotificationType.ERROR);
+                    return false;
+                }
+
+                newContest.ParticipationStrategy = ParticipationStrategy.Closed;
+
+                var participants = this.Data.Users.GetAll().Where(u => model.Participants.Contains(u.UserName)).ToList();
+
+                participants.ForEach(p => newContest.RegisteredParticipants.Add(p));
+                newContest.IsOpen = false;
+            }
+
+            return true;
+        }
+
+        private bool SetVotingStrategy(ContestBindingModel model, Contest newContest)
+        {
+            if (model.VotingStartegy == VotingStrategy.Open)
+            {
+                newContest.VotingStrategy = VotingStrategy.Open;
+            }
+            else if (model.VotingStartegy == VotingStrategy.Closed)
+            {
+                if (model.Voters == null || !model.Voters.Any())
+                {
+                    this.AddNotification("Please select voters.", NotificationType.ERROR);
+                    return false;
+                }
+
+                newContest.VotingStrategy = VotingStrategy.Closed;
+
+                var voters = this.Data.Users.GetAll().Where(u => model.Voters.Contains(u.UserName)).ToList();
+
+                voters.ForEach(v => newContest.RegisteredVoters.Add(v));
+            }
+
+            return true;
         }
     }
 }

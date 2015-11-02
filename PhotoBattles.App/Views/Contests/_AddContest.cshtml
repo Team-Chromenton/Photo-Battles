@@ -8,6 +8,7 @@
 {
     <div class="panel panel-default panel-primary">
         <div class="panel-body">
+            @Html.AntiForgeryToken()
 
             @Html.TextBoxFor(m => m.Title, new { @class = "form-control", @style = "margin-bottom: 10px; padding-left: 27px", @placeholder = "Title" })
             @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @style = "margin-bottom: 10px; padding-left: 27px", @placeholder = "Description" })
