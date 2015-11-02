@@ -46,3 +46,11 @@
         }
     </div>
 }
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/ajax")
+    @Scripts.Render("~/bundles/signalr")
+    @Scripts.Render("~/signalr/hubs")
+    @Scripts.Render("~/bundles/scripts")
+}
