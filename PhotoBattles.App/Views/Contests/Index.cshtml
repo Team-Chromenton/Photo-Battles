@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-@using PhotoBattles.Models.Enumerations
+﻿@using PhotoBattles.App.Controllers
 @model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
 
 @{
@@ -11,18 +10,46 @@
     Html.RenderAction("AddContest", "Contests");
 }
 
-@foreach (var contest in Model)
-{
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="col-lg-6">
-                <p>@contest.Title</p>
-                <p>@contest.Description</p>
-                <p>@contest.CreatedOn</p>
-                <p>@contest.Organizer.UserName</p>
-            </div>
-            <div class="col-lg-6 text-right">
-                @if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+<table class="infinite-scroll">
+    <tbody>
+    @Html.Partial("_CustomerRow", ViewBag.Customers as Dictionary<int, Customer>)
+    </tbody>
+</table>
+<div id="loading">
+    <img src='@Url.Content("~/images/spin.gif")'/>
+    <p>
+        <b>Loading the next @ViewBag.RecordsPerPage&hellip;</b>
+    </p>
+</div>
+@section scripts{
+    <script src="~/Scripts/infiniteScroll.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("div#loading").hide();
+        });
+        var moreRowsUrl = "/InfiniteScrollDemo/GetCustomers"; //the URL to your ActionMethod
+        //var moreRowsUrl = ' Url.RouteUrl("CustomerList")'; //if you have a route defined, you can use an Html helper like Url.RouteUrl
+        $(window).scroll(scrollHandler);
+    </script>
+}
+
+
+
+
+
+
+@*@foreach (var contest in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-lg-6">
+                    <p>@contest.Title</p>
+                    <p>@contest.Description</p>
+                    <p>@contest.CreatedOn</p>
+                    <p>@contest.Organizer.UserName</p>
+                </div>
+                <div class="col-lg-6 text-right">
+                    @if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
                 {
                     if (contest.ParticipationStrategy == ParticipationStrategy.Open ||
                         (contest.ParticipationStrategy == ParticipationStrategy.Closed && contest.InvitedUsers.Any(iu => iu.UserName == User.Identity.GetUserName())))
@@ -31,15 +58,15 @@
                         {
                             if (contest.IsActive)
                             {
-                                @Html.ActionLink("Participate", "Participate", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("Participate", "Participate", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                                }
                             }
                         }
                     }
-                }
 
-                @Html.ActionLink("Details", "Details", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Details", "Details", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
 
+                </div>
             </div>
         </div>
-    </div>
-}
+    }*@

@@ -20,8 +20,11 @@
     [Authorize]
     public class ContestsController : BaseController
     {
+        public const int RecordsPerPage = 3;
+
         public ContestsController()
         {
+            this.ViewBag.RecordsPerPage = RecordsPerPage;
         }
 
         public ContestsController(IPhotoBattlesData data, IUserIdProvider userIdProvider)
@@ -32,6 +35,40 @@
         [AllowAnonymous]
         public ActionResult Index()
         {
+            return this.RedirectToAction("GetContests");
+
+            //IQueryable<ContestViewModel> contests =
+            //    this.Data.Contests.GetAll()
+            //        .OrderByDescending(c => c.IsActive)
+            //        .ThenByDescending(c => c.IsOpen)
+            //        .ThenByDescending(c => c.CreatedOn)
+            //        .ProjectTo<ContestViewModel>();
+
+            //return this.View(contests);
+        }
+
+        public ActionResult GetContests(int? pageNum)
+        {
+            pageNum = pageNum ?? 0;
+            this.ViewBag.IsEndOfRecords = false;
+
+            if (this.Request.IsAjaxRequest())
+            {
+                var contests = this.GetRecordsForPage(pageNum.Value);
+
+                this.ViewBag.IsEndOfRecords = contests.Any() && ((pageNum.Value * RecordsPerPage) >= contests.Last().Key);
+                return this.PartialView("_ContestRow", contests);
+            }
+            else
+            {
+                this.LoadAllContestsToSession();
+                this.ViewBag.Contests = this.GetRecordsForPage(pageNum.Value);
+                return this.View("Index");
+            }
+        }
+
+        public void LoadAllContestsToSession()
+        {
             IQueryable<ContestViewModel> contests =
                 this.Data.Contests.GetAll()
                     .OrderByDescending(c => c.IsActive)
@@ -39,8 +76,34 @@
                     .ThenByDescending(c => c.CreatedOn)
                     .ProjectTo<ContestViewModel>();
 
-            return this.View(contests);
+            int contestIndex = 1;
+
+            this.Session["Contests"] = contests.ToDictionary(c => contestIndex++, c => c);
+            this.ViewBag.TotalNumberOfContests = contests.Count();
         }
+
+        public Dictionary<int, ContestViewModel> GetRecordsForPage(int pageNum)
+        {
+            Dictionary<int, ContestViewModel> contests = this.Session["Contests"] as Dictionary<int, ContestViewModel>;
+
+            int from = pageNum * RecordsPerPage;
+            int to = from + RecordsPerPage;
+            
+            return contests
+                .Where(c => c.Key > from && c.Key <= to)
+                .OrderBy(c => c.Key)
+                .ToDictionary(c => c.Key, c => c.Value);
+        }
+
+
+
+
+
+
+
+
+
+
 
         public ActionResult AddContest()
         {

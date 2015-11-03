@@ -1,0 +1,13 @@
+﻿@model Dictionary<int, PhotoBattles.App.Models.ViewModels.ContestViewModel>
+
+@foreach (var contest in Model)
+{
+    <tr>
+        <td>
+            <p>@contest.Value.Title</p>
+            <p>@contest.Value.Description</p>
+            <p>@contest.Value.CreatedOn</p>
+            <p>@contest.Value.Organizer.UserName</p>
+        </td>
+    </tr>
+}
