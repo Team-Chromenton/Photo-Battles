@@ -56,3 +56,11 @@
 .finalize {
     color: green;
 }
+
+html {
+    overflow-y: scroll;
+}
+
+p {
+    margin: 0;
+}

@@ -8,6 +8,7 @@ namespace PhotoBattles.Data.Migrations
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using PhotoBattles.Models;
+    using PhotoBattles.Models.Enumerations;
 
     public sealed class Configuration : DbMigrationsConfiguration<PhotoBattlesContext>
     {
@@ -62,13 +63,23 @@ namespace PhotoBattles.Data.Migrations
                     {
                         Title = "Contest " + i, 
                         Description = "This is sample contest No. " + i + ".", 
-                        CreatedOn = DateTime.Now, 
+                        CreatedOn = DateTime.Now.AddDays(i * -1), 
                         IsActive = true, 
                         IsOpen = true, 
                         OrganizerId = dbo.Users.OrderBy(r => Guid.NewGuid()).Select(u => u.Id).FirstOrDefault(), 
-                        NumberOfWinners = 1, 
-                        EndDate = DateTime.Now.AddDays(14)
+                        NumberOfWinners = 1
                     };
+
+                if (i % 2 == 0)
+                {
+                    contest.DeadlineStrategy = DeadlineStrategy.EndDate;
+                    contest.EndDate = DateTime.Now.AddDays(i);
+                }
+                else
+                {
+                    contest.DeadlineStrategy = DeadlineStrategy.ParticipantsLimit;
+                    contest.ParticipantsLimit = i + 5;
+                }
 
                 dbo.Contests.Add(contest);
             }
