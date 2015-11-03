@@ -9,8 +9,11 @@
 
     using Microsoft.AspNet.Identity;
 
+    using Ninject.Infrastructure.Language;
+
     using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Extensions;
+    using PhotoBattles.App.Models;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data.Contracts;
@@ -36,8 +39,6 @@
         public ActionResult Index()
         {
             return this.RedirectToAction("GetContests");
-
-
         }
 
         [AllowAnonymous]
@@ -89,16 +90,6 @@
                 .ToDictionary(c => c.Key, c => c.Value);
         }
 
-
-
-
-
-
-
-
-
-
-
         public ActionResult AddContest()
         {
             var model = new ContestBindingModel
@@ -123,6 +114,43 @@
             availableVoters.ForEach(u => model.AvailableVoters.Add(u));
 
             return this.View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddContest(ContestBindingModel model)
+        {
+            if (!this.ModelState.IsValid || model == null)
+            {
+                this.AddNotification("Incorrect title or description", NotificationType.ERROR);
+                return this.RedirectToAction("AddContest");
+            }
+
+            string currentUserId = this.UserIdProvider.GetUserId();
+
+            var newContest = new Contest
+            {
+                Title = model.Title,
+                Description = model.Description,
+                CreatedOn = DateTime.Now,
+                IsActive = true,
+                IsOpen = true,
+                OrganizerId = currentUserId
+            };
+
+            if (!(this.SetVotingStrategy(model, newContest) &&
+                this.SetParticipatingStrategy(model, newContest) &&
+                this.SetRewardStrategy(model, newContest) &&
+                this.SetDeadlineStrategy(model, newContest)))
+            {
+                return this.RedirectToAction("AddContest");
+            }
+
+            this.Data.Contests.Add(newContest);
+            this.Data.SaveChanges();
+
+            this.AddNotification("Contest created!", NotificationType.SUCCESS);
+            return this.RedirectToAction("Index", "Contests");
         }
 
         [HttpGet]
@@ -158,41 +186,16 @@
             return this.View(contest);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddContest(ContestBindingModel model)
+        [HttpGet]
+        public ActionResult OwnContests()
         {
-            if (!this.ModelState.IsValid || model == null)
-            {
-                this.AddNotification("Incorrect title or description", NotificationType.ERROR);
-                return this.View(model);
-            }
+            var userId = this.User.Identity.GetUserId();
 
-            string currentUserId = this.UserIdProvider.GetUserId();
+            IQueryable<ContestViewModel> ownContests = this.Data.Contests.GetAll()
+                                                           .Where(p => p.Organizer.Id == userId)
+                                                           .ProjectTo<ContestViewModel>();
 
-            var newContest = new Contest
-                {
-                    Title = model.Title,
-                    Description = model.Description,
-                    CreatedOn = DateTime.Now,
-                    IsActive = true,
-                    IsOpen = true,
-                    OrganizerId = currentUserId
-                };
-
-            if (!(this.SetVotingStrategy(model, newContest) && 
-                this.SetParticipatingStrategy(model, newContest) && 
-                this.SetRewardStrategy(model, newContest) && 
-                this.SetDeadlineStrategy(model, newContest)))
-            {
-                return this.View(model);
-            }
-
-            this.Data.Contests.Add(newContest);
-            this.Data.SaveChanges();
-
-            this.AddNotification("Contest created!", NotificationType.SUCCESS);
-            return this.RedirectToAction("Index", "Contests");
+            return this.View("~/Views/Contests/_OwnContests.cshtml", ownContests);
         }
 
         [HttpGet]
@@ -221,52 +224,56 @@
         }
 
         [HttpGet]
-        public ActionResult OwnContests()
-        {
-            var userId = this.User.Identity.GetUserId();
-
-            //IQueryable<ContestViewModel> ownContests = this.Data.Contests.GetAll()
-            //    .Where(p => p.Participants.Any(u => u.Id == user.Id))
-            //    .ProjectTo<ContestViewModel>();
-
-            //This if we want to show only the from user created  contests should be discuss
-            IQueryable<ContestViewModel> ownContests = this.Data.Contests.GetAll()
-                                                           .Where(p => p.Organizer.Id == userId)
-                                                           .ProjectTo<ContestViewModel>();
-
-            return this.View("~/Views/Contests/_OwnContests.cshtml", ownContests);
-        }
-
-        [HttpGet]
         public ActionResult EditContest(int id)
         {
-            var contest = this.Data.Contests.GetAll().FirstOrDefault(c => c.Id == id);
+            var contest = this.Data
+                              .Contests
+                              .GetAll()
+                              .Where(c => c.Id == id)
+                              .ProjectTo<EditContestViewModel>()
+                              .FirstOrDefault();
+
             if (contest == null)
             {
-                this.AddNotification("Cannot edit contest #" + id, NotificationType.ERROR);
-                return this.View("~/Views/Contests/_EditContest.cshtml");
+                return this.HttpNotFound();
             }
 
-            this.ViewBag.Limit = contest.ParticipantsLimit;
-            this.ViewBag.Id = contest.Id;
-            return this.View("~/Views/Contests/_EditContest.cshtml");
+            contest.Users = new List<UserViewModel>(
+                this.Data
+                    .Users
+                    .GetAll()
+                    .ProjectTo<UserViewModel>()
+                    .ToList());
+
+            this.ViewBag.Title = contest.Title;
+            return this.View("~/Views/Contests/_EditContest.cshtml", contest);
         }
 
         [HttpPost]
         public ActionResult EditContest(EditContestViewModel model, int id)
         {
-            var contest = this.Data.Contests.GetAll().FirstOrDefault(c => c.Id == id);
+            if (!this.ModelState.IsValid)
+            {
+                return this.PartialView("_EditContest");
+            }
+
+            var contest = this.Data
+                              .Contests
+                              .GetAll()
+                              .FirstOrDefault(c => c.Id == model.Id);
 
             if (contest == null)
             {
-                this.AddNotification("Cannot edit contest #" + id, NotificationType.ERROR);
-                return this.View("~/Views/Contests/_EditContest.cshtml");
+                return this.HttpNotFound();
             }
 
             contest.Title = model.Title;
             contest.Description = model.Description;
-            contest.EndDate = model.EndDate;
-            contest.ParticipantsLimit = model.ParticipantsLimit;
+            contest.VotingStrategy = model.VotingStrategy;
+            contest.ParticipationStrategy = model.ParticipationStrategy;
+            contest.RewardStrategy = model.RewardStrategy;
+            contest.DeadlineStrategy = model.DeadlineStrategy;
+
             this.Data.SaveChanges();
 
             return this.RedirectToAction("OwnContests", "Contests");
@@ -388,11 +395,11 @@
 
         private bool SetVotingStrategy(ContestBindingModel model, Contest newContest)
         {
-            if (model.VotingStartegy == VotingStrategy.Open)
+            if (model.VotingStrategy == VotingStrategy.Open)
             {
                 newContest.VotingStrategy = VotingStrategy.Open;
             }
-            else if (model.VotingStartegy == VotingStrategy.Closed)
+            else if (model.VotingStrategy == VotingStrategy.Closed)
             {
                 if (model.Voters == null || !model.Voters.Any())
                 {

@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
 
-    using PhotoBattles.App.Areas.Admin.Models.ViewModels;
     using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;
     using PhotoBattles.Models.Enumerations;
@@ -30,6 +29,6 @@
 
         public int? ParticipantsLimit { get; set; }
 
-        public IEnumerable<AdminUserViewModel> Users { get; set; }
+        public IEnumerable<UserViewModel> Users { get; set; }
     }
 }

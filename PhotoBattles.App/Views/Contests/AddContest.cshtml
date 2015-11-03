@@ -20,12 +20,12 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="row">
-                            @Html.RadioButtonFor(m => m.VotingStartegy, 0, new { @checked = "checked", @onclick = "hide('voters')", @id = "voting-strategy-open" })
-                            @Html.LabelFor(m => m.VotingStartegy, "Open", new { @for = "voting-strategy-open" })
+                            @Html.RadioButtonFor(m => m.VotingStrategy, 0, new { @checked = "checked", @onclick = "hide('voters')", @id = "voting-strategy-open" })
+                            @Html.LabelFor(m => m.VotingStrategy, "Open", new { @for = "voting-strategy-open" })
                         </div>
                         <div class="row">
-                            @Html.RadioButtonFor(m => m.VotingStartegy, 1, new { @onclick = "show('voters')", @id = "voting-strategy-closed" })
-                            @Html.LabelFor(m => m.VotingStartegy, "Closed", new { @for = "voting-strategy-closed" })
+                            @Html.RadioButtonFor(m => m.VotingStrategy, 1, new { @onclick = "show('voters')", @id = "voting-strategy-closed" })
+                            @Html.LabelFor(m => m.VotingStrategy, "Closed", new { @for = "voting-strategy-closed" })
                         </div>
                         <div class="row">
                             <select multiple id="voters" name="Voters" style="width: 100%; display: none">
