@@ -1,5 +1,6 @@
 ﻿namespace PhotoBattles.App.Controllers
 {
+    using System;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -7,6 +8,7 @@
 
     using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Infrastructure;
+    using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
     using PhotoBattles.Models.Enumerations;
@@ -27,6 +29,40 @@
         public IPhotoBattlesData Data { get; set; }
 
         public IUserIdProvider UserIdProvider { get; set; }
+
+        public void CheckActive()
+        {
+            var contests = this.Data.Contests.GetAll();
+
+            foreach (var contest in contests)
+            {
+                if (contest.DeadlineStrategy == DeadlineStrategy.EndDate)
+                {
+                    if (DateTime.Now > contest.EndDate)
+                    {
+                        contest.IsActive = false;
+                    }
+                    else
+                    {
+                        contest.IsActive = true;
+                    }
+                }
+                else if (contest.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
+                {
+                    if (contest.RegisteredParticipants.Count > contest.ParticipantsLimit)
+                    {
+                        contest.IsActive = false;
+                    }
+                    else
+                    {
+                        contest.IsActive = true;
+                    }
+                }
+
+            }
+
+            this.Data.SaveChanges();
+        }
 
         public bool CanVote(int contestId, int photoId)
         {

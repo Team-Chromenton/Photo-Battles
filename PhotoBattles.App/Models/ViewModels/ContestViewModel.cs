@@ -38,6 +38,10 @@
 
         public ICollection<UserViewModel> Participants { get; set; }
 
+        public DeadlineStrategy DeadlineStrategy { get; set; }
+
+        public ICollection<UserViewModel> RegisteredParticipants { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<Contest, ContestViewModel>()

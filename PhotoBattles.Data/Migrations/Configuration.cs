@@ -60,20 +60,19 @@ namespace PhotoBattles.Data.Migrations
             for (int i = 1; i < 25; i++)
             {
                 var contest = new Contest
-                    {
-                        Title = "Contest " + i, 
-                        Description = "This is sample contest No. " + i + ".", 
-                        CreatedOn = DateTime.Now.AddDays(i * -1), 
-                        IsActive = true, 
-                        IsOpen = true, 
-                        OrganizerId = dbo.Users.OrderBy(r => Guid.NewGuid()).Select(u => u.Id).FirstOrDefault(), 
-                        NumberOfWinners = 1
-                    };
+                {
+                    Title = "Contest " + i,
+                    Description = "This is sample contest No. " + i + ".",
+                    CreatedOn = DateTime.Now.AddDays(i * -1),
+                    IsOpen = true,
+                    OrganizerId = dbo.Users.OrderBy(r => Guid.NewGuid()).Select(u => u.Id).FirstOrDefault(),
+                    NumberOfWinners = 1
+                };
 
                 if (i % 2 == 0)
                 {
                     contest.DeadlineStrategy = DeadlineStrategy.EndDate;
-                    contest.EndDate = DateTime.Now.AddDays(i);
+                    contest.EndDate = contest.CreatedOn.AddDays(14);
                 }
                 else
                 {

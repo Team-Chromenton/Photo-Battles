@@ -65,6 +65,8 @@
 
         public void LoadAllContestsToSession()
         {
+            this.CheckActive();
+
             IQueryable<ContestViewModel> contests =
                 this.Data.Contests.GetAll()
                     .OrderByDescending(c => c.IsActive)
@@ -133,7 +135,6 @@
                 Title = model.Title,
                 Description = model.Description,
                 CreatedOn = DateTime.Now,
-                IsActive = true,
                 IsOpen = true,
                 OrganizerId = currentUserId
             };
