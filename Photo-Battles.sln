@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoBattles.Models", "PhotoBattles.Models\PhotoBattles.Models.csproj", "{D9DB586C-E5DC-4950-9890-1054200E74D0}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoBattles.App", "PhotoBattles.App\PhotoBattles.App.csproj", "{0E59F235-A0DD-496F-8481-D39F9FCEF974}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoBattles.Tests", "PhotoBattles.Tests\PhotoBattles.Tests.csproj", "{3C061466-04E0-4C14-B019-D01B7B5C804B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AB495597-0BDF-4F86-A941-D4B3682C3907}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

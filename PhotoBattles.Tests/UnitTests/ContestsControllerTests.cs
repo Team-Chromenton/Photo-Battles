@@ -63,7 +63,7 @@
                 {
                     Title = "Contest three",
                     Description = "Contests three description",
-                    VotingStartegy = VotingStrategy.Open,
+                    VotingStrategy = VotingStrategy.Open,
                     ParticipationStrategy = ParticipationStrategy.Open,
                     RewardStrategy = RewardStrategy.SingleWinner,
                     DeadlineStrategy = DeadlineStrategy.ParticipantsLimit,

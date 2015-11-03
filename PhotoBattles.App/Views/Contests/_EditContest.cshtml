@@ -1,4 +1,5 @@
-﻿@model PhotoBattles.App.Models.ViewModels.EditContestViewModel
+﻿@using Microsoft.AspNet.Identity
+@model PhotoBattles.App.Models.ViewModels.EditContestViewModel
 
 @{
     ViewBag.Title = "EditContest";
@@ -6,7 +7,7 @@
 
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
-        @using (Html.BeginForm("EditContests", "Contests", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("EditContest", "Contests", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })
@@ -131,9 +132,21 @@
                     <input type="submit" value="Edit contest" class="btn btn-default btn-block" />
                 </div>
             </div>
-
-            @Html.ActionLink("Manage Pictures", "EditContestPictures", "Pictures", new { area = "Admin", id = Model.Id }, new { @class = "btn btn-primary btn-block" })
         }
     </div>
 </div>
 
+@section scripts{
+    <script>
+        function hide(obj) {
+            var el = document.getElementById(obj);
+            el.style.display = 'none';
+
+        }
+
+        function show(obj) {
+            var el = document.getElementById(obj);
+            el.style.display = '';
+        }
+    </script>
+}

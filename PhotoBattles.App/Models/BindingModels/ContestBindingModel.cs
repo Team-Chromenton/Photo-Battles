@@ -17,15 +17,15 @@
         [Required]
         public string Description { get; set; }
 
-        public VotingStrategy VotingStartegy { get; set; }
+        public VotingStrategy VotingStrategy { get; set; }
 
-        public IList<UserViewModel> AvailableVoters { get; set; }
+        public ICollection<UserViewModel> AvailableVoters { get; set; }
 
         public string[] Voters { get; set; }
 
         public ParticipationStrategy ParticipationStrategy { get; set; }
 
-        public IList<UserViewModel> AvailableParticipants { get; set; }
+        public ICollection<UserViewModel> AvailableParticipants { get; set; }
 
         public string[] Participants { get; set; }
 
