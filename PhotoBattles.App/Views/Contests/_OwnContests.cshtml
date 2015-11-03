@@ -5,50 +5,63 @@
 }
 
 <h2>OwnContests</h2>
-<h3>The contest of the user are:</h3>
 @foreach (var context in Model)
 {
-    <p>@context.Title</p>
-    <p>@context.Description</p>
-    <p>Created on: @context.CreatedOn</p>
-    if (context.EndDate != null)
-    {
-        <p>End date: @context.EndDate</p>
-    }
-    else
-    {
-        <p>Participant limit: @context.ParticipantsLimit</p>
-    }
-
-    if (@context.IsActive || @context.Winners.Count > 0)
-    {
-        if (@context.Winners.Count > 0)
-        {
-            <p class="finalize">The contest is finalize</p>
-        }
-        else
-        {
-            @Html.ActionLink("Edit", "EditContest", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
-            <br/>
-            <br/>
-            using (Html.BeginForm("DismissContest", "Contests", FormMethod.Post, new { role = "form" }))
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h3>@context.Title</h3>
+        </div>
+        <div class="panel-body">
+            <p>@context.Description</p>
+            <p>Created on: @context.CreatedOn</p>
+            @if (context.EndDate != null)
             {
-                @Html.Hidden("id", context.Id)
-                <input type="submit" class="btn btn-default btn-primary" value="Dismiss"/>
+                <p>End date: @context.EndDate</p>
             }
-            <br/>
-            using (Html.BeginForm("Finalize", "Contests", FormMethod.Post, new { role = "form" }))
+            else
             {
-                @Html.Hidden("id", context.Id)
-                <input type="submit" class="btn btn-default btn-primary" value="Finalize"/>
+                <p>Participant limit: @context.ParticipantsLimit</p>
             }
-        }
-    }
-    else
-    {
-        <p class="dismiss">
-            @*This should be styled correctly*@
-            The contest is dismissed or have no winners!
-        </p>
-    }
+        </div>
+        <div class="panel-footer">
+            @if (context.IsActive || context.Winners.Count > 0)
+            {
+                if (context.Winners.Count > 0)
+                {
+                    <p class="finalize">The contest is finalize</p>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-lg-4">
+                            @Html.ActionLink("Edit", "EditContest", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
+                        </div>
+                        <div class="col-lg-3 col-lg-offset-5">
+                            <div class="col-lg-6 text-right">
+                                @using (Html.BeginForm("DismissContest", "Contests", FormMethod.Post, new { role = "form" }))
+                                {
+                                    @Html.Hidden("id", context.Id)
+                                    <input type="submit" class="btn btn-default btn-primary" value="Dismiss" />
+                                }
+                            </div>
+                            <div class="col-lg-6 text-right">
+                                @using (Html.BeginForm("Finalize", "Contests", FormMethod.Post, new { role = "form" }))
+                                {
+                                    @Html.Hidden("id", context.Id)
+                                    <input type="submit" class="btn btn-default btn-primary" value="Finalize" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="dismiss">
+                    @*This should be styled correctly*@
+                    The contest is dismissed or have no winners!
+                </p>
+            }
+        </div>
+    </div>
 }

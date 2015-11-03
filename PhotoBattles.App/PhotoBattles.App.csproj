@@ -287,7 +287,7 @@
     <Compile Include="Contracts\IUserIdProvider.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BindingModels\ContestBindingModel.cs" />
-    <Compile Include="Models\BindingModels\ContestEditBindigModel.cs" />
+    <Compile Include="Models\ViewModels\EditContestViewModel.cs" />
     <Compile Include="Models\BindingModels\PhotoBindingModel.cs" />
     <Compile Include="Models\ManageModels.cs" />
     <Compile Include="Models\ViewModels\ContestDetailsViewModel.cs" />

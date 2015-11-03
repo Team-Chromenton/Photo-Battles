@@ -253,7 +253,7 @@
         }
 
         [HttpPost]
-        public ActionResult EditContest(ContestEditBindigModel model, int id)
+        public ActionResult EditContest(EditContestViewModel model, int id)
         {
             var contest = this.Data.Contests.GetAll().FirstOrDefault(c => c.Id == id);
 
