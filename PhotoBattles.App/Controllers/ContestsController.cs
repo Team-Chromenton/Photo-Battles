@@ -47,6 +47,7 @@
             //return this.View(contests);
         }
 
+        [AllowAnonymous]
         public ActionResult GetContests(int? pageNum)
         {
             pageNum = pageNum ?? 0;

@@ -1,5 +1,6 @@
 namespace PhotoBattles.Data.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -43,8 +44,30 @@ namespace PhotoBattles.Data.Migrations
                     var identityUserRole = new IdentityUserRole { RoleId = userRole.Id, UserId = user.Id };
                     userRole.Users.Add(identityUserRole);
                 }
+            }
 
-                context.SaveChanges();
+            this.SeedContests(context);
+
+            context.SaveChanges();
+        }
+
+        private void SeedContests(PhotoBattlesContext dbo)
+        {
+            for (int i = 1; i < 25; i++)
+            {
+                var contest = new Contest
+                    {
+                        Title = "Contest " + i, 
+                        Description = "This is sample contest No. " + i + ".", 
+                        CreatedOn = DateTime.Now, 
+                        IsActive = true, 
+                        IsOpen = true, 
+                        OrganizerId = dbo.Users.OrderBy(r => Guid.NewGuid()).Select(u => u.Id).FirstOrDefault(), 
+                        NumberOfWinners = 1, 
+                        EndDate = DateTime.Now.AddDays(14)
+                    };
+
+                dbo.Contests.AddOrUpdate(contest);
             }
         }
     }
