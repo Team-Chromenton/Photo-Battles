@@ -20,7 +20,7 @@
     [Authorize]
     public class ContestsController : BaseController
     {
-        public const int RecordsPerPage = 3;
+        public const int RecordsPerPage = 5;
 
         public ContestsController()
         {
@@ -37,14 +37,7 @@
         {
             return this.RedirectToAction("GetContests");
 
-            //IQueryable<ContestViewModel> contests =
-            //    this.Data.Contests.GetAll()
-            //        .OrderByDescending(c => c.IsActive)
-            //        .ThenByDescending(c => c.IsOpen)
-            //        .ThenByDescending(c => c.CreatedOn)
-            //        .ProjectTo<ContestViewModel>();
 
-            //return this.View(contests);
         }
 
         [AllowAnonymous]

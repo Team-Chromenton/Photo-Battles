@@ -319,7 +319,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Contests\EditContests.cshtml" />
-    <Content Include="App_Data\Customers.csv" />
     <None Include="Areas\Admin\Views\Overview\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Users\EditUser.cshtml" />

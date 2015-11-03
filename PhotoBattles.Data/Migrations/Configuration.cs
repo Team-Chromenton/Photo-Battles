@@ -46,7 +46,10 @@ namespace PhotoBattles.Data.Migrations
                 }
             }
 
-            this.SeedContests(context);
+            if (!context.Contests.Any())
+            {
+                this.SeedContests(context);
+            }
 
             context.SaveChanges();
         }
@@ -67,7 +70,7 @@ namespace PhotoBattles.Data.Migrations
                         EndDate = DateTime.Now.AddDays(14)
                     };
 
-                dbo.Contests.AddOrUpdate(contest);
+                dbo.Contests.Add(contest);
             }
         }
     }
