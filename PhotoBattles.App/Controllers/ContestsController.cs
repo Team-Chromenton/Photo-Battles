@@ -7,6 +7,7 @@
 
     using AutoMapper.QueryableExtensions;
 
+    using Microsoft.Ajax.Utilities;
     using Microsoft.AspNet.Identity;
 
     using Ninject.Infrastructure.Language;
@@ -182,7 +183,7 @@
                               .ProjectTo<ContestDetailsViewModel>()
                               .FirstOrDefault();
 
-            contest.UserCanVote = this.CanVote(contestId);
+            contest.Photos.ForEach(p => p.UserCanVote = this.CanVote(contestId, p.Id));
 
             return this.View(contest);
         }

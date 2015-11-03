@@ -19,16 +19,18 @@
     using PhotoBattles.App.Services;
     using PhotoBattles.Models;
 
+    using WebGrease.Css.Extensions;
+
     public class PhotosController : BaseController
     {
         [AllowAnonymous]
-        public ActionResult Index(int contestId = 0)
+        public ActionResult Index(int contestId)
         {
             var photos = this.Data.Photos.GetAll()
                              .Where(p => p.ContestId == contestId)
                              .OrderByDescending(p => p.Uploaded)
                              .ProjectTo<PhotoViewModel>();
-
+            
             return this.View(photos);
         }
 

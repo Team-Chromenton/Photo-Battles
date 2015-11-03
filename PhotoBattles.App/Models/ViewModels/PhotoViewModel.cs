@@ -19,5 +19,7 @@
         public ContestViewModel Contest { get; set; }
 
         public ICollection<VoteViewModel> Votes { get; set; }
+
+        public bool UserCanVote { get; set; }
     }
 }

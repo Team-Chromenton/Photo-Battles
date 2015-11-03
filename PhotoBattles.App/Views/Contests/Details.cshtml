@@ -19,15 +19,15 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-4" style="text-align: left">
-                            @if (Model.UserCanVote)
+                            @if (photo.UserCanVote)
                             {
                                 @Ajax.ActionLink("Upvote", "Upvote", "Votes",
                                     new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions()
                                     {
-                                        //OnSuccess = "increaseScore(" + photo.Id + ")"
+                                        OnSuccess = "disableVoting"
                                     },
-                                    new { @class = "btn btn-success" })
+                                    new { @class = "btn btn-success", @id = "upvote-button" })
                             }
                             else
                             {
@@ -48,15 +48,15 @@
                         </div>
 
                         <div class="col-lg-4" style="text-align: right">
-                            @if (Model.UserCanVote)
+                            @if (photo.UserCanVote)
                             {
                                 @Ajax.ActionLink("Downvote", "Downvote", "Votes",
                                     new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions
                                     {
-                                        OnSuccess = "decreaseScore(photoId)"
+                                        OnSuccess = "disableVoting"
                                     },
-                                    new { @class = "btn btn-danger" })
+                                    new { @class = "btn btn-danger", @id = "downvote-button" })
                             }
                             else
                             {
@@ -86,9 +86,9 @@ else
     @Scripts.Render("~/bundles/scripts")
 }
 
-@*<script>
-        function increaseScore(photoId) {
-            var value = parseInt($('#photo-' + photoId + '-score').text(), 10) + 1;
-            $('#photo-' + photoId + '-score').text(value);
-        }
-    </script>*@
+<script>
+    function disableVoting() {
+        $('#downvote-button').attr('disabled', 'disabled');
+        $('#upvote-button').attr('disabled', 'disabled');
+    }
+</script>

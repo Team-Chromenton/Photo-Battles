@@ -28,7 +28,7 @@
 
         public IUserIdProvider UserIdProvider { get; set; }
 
-        public bool CanVote(int contestId)
+        public bool CanVote(int contestId, int photoId)
         {
             var currentUserId = this.User.Identity.GetUserId();
             var currentUser = this.Data.Users.Find(currentUserId);
@@ -37,8 +37,7 @@
 
             if (contest.VotingStrategy == VotingStrategy.Closed)
             {
-                if (contest.RegisteredVoters.Contains(currentUser)
-                    && !contest.Photos.Any(p => p.Votes.Any(v => v.AuthorId == currentUserId)))
+                if (contest.RegisteredVoters.Contains(currentUser) && !contest.Photos.FirstOrDefault(p => p.Id == photoId).Votes.Any(v => v.AuthorId == currentUserId))
                 {
                     return true;
                 }
@@ -46,7 +45,7 @@
             }
             else
             {
-                if (!contest.Photos.Any(p => p.Votes.Any(v => v.AuthorId == currentUserId)))
+                if (!contest.Photos.First(p => p.Id == photoId).Votes.Any(v => v.AuthorId == currentUserId))
                 {
                     return true;
                 }

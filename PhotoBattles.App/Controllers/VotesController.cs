@@ -14,7 +14,7 @@
     {
         public ActionResult Upvote(int contestId, int photoId)
         {
-            if (!this.CanVote(contestId))
+            if (!this.CanVote(contestId, photoId))
             {
                 return this.RedirectToAction("Details", "Contests", new { id = contestId });
             }
@@ -34,7 +34,7 @@
 
         public ActionResult Downvote(int contestId, int photoId)
         {
-            if (!this.CanVote(contestId))
+            if (!this.CanVote(contestId, photoId))
             {
                 return this.RedirectToAction("Details", "Contests", new { id = contestId });
             }

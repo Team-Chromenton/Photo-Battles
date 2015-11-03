@@ -11,8 +11,6 @@
 
     public class ContestDetailsViewModel : ContestViewModel, ICustomMappings
     {
-        public bool UserCanVote { get; set; }
-
         public ICollection<PhotoViewModel> Photos { get; set; }
 
         public void CreateMappings(IConfiguration configuration)
