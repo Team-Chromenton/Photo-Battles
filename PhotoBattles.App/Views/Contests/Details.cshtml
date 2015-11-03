@@ -8,7 +8,7 @@
     {
         <div class="panel panel-default">
             <div class="panel-heading">
-                <p><span style="color: #337ab7">@photo.Author.UserName</span> added this to contest on @photo.Uploaded</p>
+                <p><span style="color: #337ab7">@photo.Author.UserName</span> added to contest on @photo.Uploaded</p>
             </div>
 
             <div class="panel-body" style="text-align: center">
@@ -22,7 +22,13 @@
                         <div class="col-lg-4" style="text-align: left">
                             @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
                             {
-                                @Html.ActionLink("Upvote", "Upvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-success" })
+                                @Ajax.ActionLink("Upvote", "Upvote", "Votes",
+                                    new { photoId = photo.Id },
+                                    new AjaxOptions()
+                                    {
+                                        //OnSuccess = "increaseScore(" + photo.Id + ")"
+                                    },
+                                    new { @class = "btn btn-success" })
                             }
                             else
                             {
@@ -34,18 +40,24 @@
 
                             @if (photo.Votes == null)
                             {
-                                <button type="button" class="btn btn-default disabled">0</button>
+                                <span id="photo-@photo.Id-score" type="button" class="btn btn-default disabled" style="cursor: default">0</span>
                             }
                             else
                             {
-                                <button type="button" class="btn btn-default disabled">@photo.Votes.Sum(v => v.Score)</button>
+                                <span id="photo-@photo.Id-score" type="button" class="btn btn-default disabled" style="cursor: default">@photo.Votes.Sum(v => v.Score)</span>
                             }
                         </div>
 
                         <div class="col-lg-4" style="text-align: right">
                             @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
                             {
-                                @Html.ActionLink("Downvote", "Downvote", "Votes", new { area = string.Empty, photoId = photo.Id, contestId = photo.Contest.Id }, new { @class = "btn btn-danger" })
+                                @Ajax.ActionLink("Downvote", "Downvote", "Votes",
+                                    new { photoId = photo.Id },
+                                    new AjaxOptions
+                                    {
+                                        OnSuccess = "decreaseScore(photoId)"
+                                    },
+                                    new { @class = "btn btn-danger" })
                             }
                             else
                             {
@@ -67,7 +79,6 @@ else
     </div>
 }
 
-
 @section scripts
 {
     @Scripts.Render("~/bundles/ajax")
@@ -75,3 +86,10 @@ else
     @Scripts.Render("~/signalr/hubs")
     @Scripts.Render("~/bundles/scripts")
 }
+
+@*<script>
+    function increaseScore(photoId) {
+        var value = parseInt($('#photo-' + photoId + '-score').text(), 10) + 1;
+        $('#photo-' + photoId + '-score').text(value);
+    }
+</script>*@

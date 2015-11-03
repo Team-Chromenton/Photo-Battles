@@ -117,8 +117,7 @@
                                             .ToList();
             availableParticipants.ForEach(p => model.AvailableParticipants.Add(p));
 
-            var availableVoters =
-                availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
+            var availableVoters = availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
                                      .ToList();
             availableVoters.ForEach(u => model.AvailableVoters.Add(u));
 
@@ -400,11 +399,11 @@
                     return false;
                 }
 
-                newContest.VotingStrategy = VotingStrategy.Closed;
-
                 var voters = this.Data.Users.GetAll().Where(u => model.Voters.Contains(u.UserName)).ToList();
 
                 voters.ForEach(v => newContest.RegisteredVoters.Add(v));
+
+                newContest.VotingStrategy = VotingStrategy.Closed;
             }
 
             return true;

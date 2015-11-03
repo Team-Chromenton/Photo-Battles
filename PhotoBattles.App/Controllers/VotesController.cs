@@ -1,16 +1,19 @@
 ﻿namespace PhotoBattles.App.Controllers
 {
     using System.Threading.Tasks;
+    using System.Web.Helpers;
     using System.Web.Mvc;
 
     using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.SignalR;
 
+    using PhotoBattles.App.Hubs;
     using PhotoBattles.Models;
 
     public class VotesController : BaseController
     {
-        [Authorize]
-        public async Task<ActionResult> Upvote(int photoId, int contestId)
+        [System.Web.Mvc.Authorize]
+        public ActionResult Upvote(int photoId)
         {
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
 
@@ -19,11 +22,14 @@
             this.Data.Votes.Add(newVote);
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Details", "Contests", new { id = contestId });
+            var hub = new VotingHub();
+            hub.IncreaseScore(photoId);
+
+            return this.Json(new { success = true}, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize]
-        public async Task<ActionResult> Downvote(int photoId, int contestId)
+        [System.Web.Mvc.Authorize]
+        public ActionResult Downvote(int photoId)
         {
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
 
@@ -32,7 +38,10 @@
             this.Data.Votes.Add(newVote);
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Details", "Contests", new { id = contestId });
+            var hub = new VotingHub();
+            hub.DecreaseScore(photoId);
+
+            return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

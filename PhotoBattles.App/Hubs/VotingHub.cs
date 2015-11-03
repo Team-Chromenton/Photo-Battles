@@ -6,10 +6,16 @@
     [HubName("votingHub")]
     public class VotingHub : Hub
     {
-        public void UpdateVote(int id)
+        public void IncreaseScore(int photoId)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<VotingHub>();
-            hubContext.Clients.All.updateVote(id);
+            hubContext.Clients.All.increaseScore(photoId);
+        }
+
+        public void DecreaseScore(int photoId)
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<VotingHub>();
+            hubContext.Clients.All.decreaseScore(photoId);
         }
     }
 }
