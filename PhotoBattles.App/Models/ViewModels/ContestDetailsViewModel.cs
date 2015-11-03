@@ -7,9 +7,12 @@
 
     using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;
+    using PhotoBattles.Models.Enumerations;
 
     public class ContestDetailsViewModel : ContestViewModel, ICustomMappings
     {
+        public bool UserCanVote { get; set; }
+
         public ICollection<PhotoViewModel> Photos { get; set; }
 
         public void CreateMappings(IConfiguration configuration)

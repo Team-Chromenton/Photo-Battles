@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-@model PhotoBattles.App.Models.ViewModels.ContestDetailsViewModel
+﻿@model PhotoBattles.App.Models.ViewModels.ContestDetailsViewModel
 <h1>@Model.Title Images</h1>
 
 @if (Model.Photos.Any())
@@ -15,15 +14,15 @@
                 <img class="img-thumbnail" src="@photo.Url" style="width: 400px; height: 100%" />
             </div>
 
-            @if (photo.Contest.Participants.Any(p => p.UserName == User.Identity.GetUserName()))
+            @if (Request.IsAuthenticated)
             {
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-4" style="text-align: left">
-                            @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
+                            @if (Model.UserCanVote)
                             {
                                 @Ajax.ActionLink("Upvote", "Upvote", "Votes",
-                                    new { photoId = photo.Id },
+                                    new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions()
                                     {
                                         //OnSuccess = "increaseScore(" + photo.Id + ")"
@@ -49,10 +48,10 @@
                         </div>
 
                         <div class="col-lg-4" style="text-align: right">
-                            @if (photo.Votes.All(v => v.AuthorId != User.Identity.GetUserId()))
+                            @if (Model.UserCanVote)
                             {
                                 @Ajax.ActionLink("Downvote", "Downvote", "Votes",
-                                    new { photoId = photo.Id },
+                                    new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions
                                     {
                                         OnSuccess = "decreaseScore(photoId)"
@@ -88,8 +87,8 @@ else
 }
 
 @*<script>
-    function increaseScore(photoId) {
-        var value = parseInt($('#photo-' + photoId + '-score').text(), 10) + 1;
-        $('#photo-' + photoId + '-score').text(value);
-    }
-</script>*@
+        function increaseScore(photoId) {
+            var value = parseInt($('#photo-' + photoId + '-score').text(), 10) + 1;
+            $('#photo-' + photoId + '-score').text(value);
+        }
+    </script>*@

@@ -174,13 +174,15 @@
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(int contestId)
         {
             var contest = this.Data.Contests.GetAll()
-                              .Where(c => c.Id == id)
+                              .Where(c => c.Id == contestId)
                               .OrderByDescending(c => c.CreatedOn)
                               .ProjectTo<ContestDetailsViewModel>()
                               .FirstOrDefault();
+
+            contest.UserCanVote = this.CanVote(contestId);
 
             return this.View(contest);
         }

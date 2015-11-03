@@ -1,21 +1,25 @@
 ﻿namespace PhotoBattles.App.Controllers
 {
-    using System.Threading.Tasks;
-    using System.Web.Helpers;
+    using System.Linq;
     using System.Web.Mvc;
 
     using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.SignalR;
 
     using PhotoBattles.App.Hubs;
     using PhotoBattles.Models;
+    using PhotoBattles.Models.Enumerations;
 
+    [Authorize]
     public class VotesController : BaseController
     {
-        [System.Web.Mvc.Authorize]
-        public ActionResult Upvote(int photoId)
+        public ActionResult Upvote(int contestId, int photoId)
         {
-            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            if (!this.CanVote(contestId))
+            {
+                return this.RedirectToAction("Details", "Contests", new { id = contestId });
+            }
+
+            string currentUserId = this.User.Identity.GetUserId();
 
             var newVote = new Vote { Score = 1, AuthorId = currentUserId, PhotoId = photoId };
 
@@ -28,10 +32,14 @@
             return this.Json(new { success = true}, JsonRequestBehavior.AllowGet);
         }
 
-        [System.Web.Mvc.Authorize]
-        public ActionResult Downvote(int photoId)
+        public ActionResult Downvote(int contestId, int photoId)
         {
-            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            if (!this.CanVote(contestId))
+            {
+                return this.RedirectToAction("Details", "Contests", new { id = contestId });
+            }
+
+            string currentUserId = this.User.Identity.GetUserId();
 
             var newVote = new Vote { Score = -1, AuthorId = currentUserId, PhotoId = photoId };
 
