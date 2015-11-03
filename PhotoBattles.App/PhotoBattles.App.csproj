@@ -386,7 +386,6 @@
     <Content Include="Views\Contests\AddContest.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />
     <Content Include="Views\Contests\Details.cshtml" />
-    <None Include="Views\Contests\Participate.cshtml" />
     <Content Include="Views\Contests\_EditContest.cshtml" />
     <Content Include="Views\Contests\_OwnContests.cshtml" />
     <Content Include="Views\Contests\_Winners.cshtml" />

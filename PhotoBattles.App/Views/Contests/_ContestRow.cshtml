@@ -12,33 +12,34 @@
                     <h3 style="margin-top: 11px">@contest.Title</h3>
                 </div>
 
+                
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <h4>@contest.Description</h4>
+        </div>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-lg-6"><h5><span style="color: #337ab7">@contest.Organizer.UserName</span> created this on @contest.CreatedOn</h5></div>
                 <div class="col-lg-6 text-right" style="margin-top: 5px">
                     @if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    if (contest.ParticipationStrategy == ParticipationStrategy.Open || (contest.ParticipationStrategy == ParticipationStrategy.Closed && contest.InvitedUsers.Any(iu => iu.UserName == User.Identity.GetUserName())))
                     {
-                        if (contest.ParticipationStrategy == ParticipationStrategy.Open || (contest.ParticipationStrategy == ParticipationStrategy.Closed && contest.InvitedUsers.Any(iu => iu.UserName == User.Identity.GetUserName())))
+                        if (!contest.Participants.Any() || contest.Participants.All(p => p.UserName != User.Identity.GetUserName()))
                         {
-                            if (!contest.Participants.Any() || contest.Participants.All(p => p.UserName != User.Identity.GetUserName()))
+                            if (contest.IsActive)
                             {
-                                if (contest.IsActive)
-                                {
                                     @Html.ActionLink("Participate", "Participate", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary", @style = "margin-right: 15px" })
                                 }
                             }
                         }
                     }
-
                     @Html.ActionLink("Details", "Details", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
-
                 </div>
             </div>
-        </div>
-
-        <div class="panel-body">
-            <p>@contest.Description</p>
-        </div>
-
-        <div class="panel-footer">
-            <p><span style="color: #337ab7">@contest.Organizer.UserName</span> created this on @contest.CreatedOn</p>
         </div>
     </div>
 }

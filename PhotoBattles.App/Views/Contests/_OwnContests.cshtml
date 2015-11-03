@@ -1,10 +1,10 @@
 ﻿@model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
 
 @{
-    ViewBag.Title = "OwnContests";
+    ViewBag.Title = "My Contests";
 }
 
-<h2>OwnContests</h2>
+<h2>My Contests</h2>
 @foreach (var context in Model)
 {
     <div class="panel panel-default">
@@ -29,12 +29,12 @@
                 if (context.Winners.Count > 0)
                 {
                     <div class="row">
-                        <div class="col-md-1">
-                            @Html.ActionLink("Details", "Details", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
-
+                        <div class="col-md-3">
+                            <h4 class="finalize">This contest was finalized!</h4>
                         </div>
-                        <div class="col-md-7">
-                            <h4 class="finalize text-center">The contest is finalized - click "Details" to see the winners!</h4>
+                        <div class="col-md-9">
+                            @Html.ActionLink("Details", "Details", "Contests", new { id = context.Id }, new { @class = "btn btn-primary", @style = "margin: 0 10px 0 -15px;" })
+                            @Html.ActionLink("Winners", "Winners", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
                         </div>
                     </div>
                 }
@@ -67,8 +67,7 @@
             else
             {
                 <h4 class="dismiss">
-                    @*This should be styled correctly*@
-                    The contest is dismissed or has no winners!
+                    This contest was dismissed!
                 </h4>
             }
         </div>

@@ -1,35 +1,42 @@
 ﻿@model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
 @{
-    ViewBag.Title = "ParticipateContests";
+    ViewBag.Title = "My Participations";
 }
 
-<h2>The contest you are participate in:</h2>
+<h2>My Participations</h2>
 
 @foreach (var contest in Model)
 {
     <div class="panel panel-default">
-        <div class="panel-heading">
-            @if (contest.IsActive)
-            {
-                Html.RenderAction("AddPhoto", "Photos", new { contestId = contest.Id });
-            }
-
+        <div class="panel-heading text-center">
+            <h3>@contest.Title</h3>
+        </div>
+        <div class="panel-body text-center">
+            <h4>@contest.Description</h4>
         </div>
 
-        <div class="panel-body">
-            <div class="col-lg-6">
-                <p>@contest.Title</p>
-                <p>@contest.Description</p>
-                <p>@contest.CreatedOn</p>
-                <p>@contest.Organizer.UserName</p>
+        @if (contest.IsActive)
+        {
+            <div class="panel-body text-center">
+                @{ Html.RenderAction("AddPhoto", "Photos", new { contestId = contest.Id }); }
             </div>
-            <div class="col-lg-6 text-right">
-                @Html.ActionLink("Details", "Details", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
-                @if (!contest.IsActive)
-                {
-                    @Html.ActionLink("Winners", "Winners", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
-                }
+        }
 
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-6">
+                        <h5><span style="color: #337ab7">@contest.Organizer.UserName</span> created this on @contest.CreatedOn</h5>
+                    </div>
+
+                    <div class="col-lg-6 text-right">
+                        @Html.ActionLink("Details", "Details", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                        @if (!contest.IsActive)
+                        {
+                            @Html.ActionLink("Winners", "Winners", "Contests", new { area = string.Empty, id = contest.Id }, new { @class = "btn btn-primary" })
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
