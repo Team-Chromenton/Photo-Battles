@@ -1,5 +1,24 @@
-﻿@model PhotoBattles.App.Models.ViewModels.ContestDetailsViewModel
+﻿@using System.Security.Cryptography
+@model PhotoBattles.App.Models.ViewModels.ContestDetailsViewModel
 <h1>@Model.Title Images</h1>
+
+@if (!Model.IsActive)
+{
+    if (Model.Winners.Any())
+    {
+        <h1>Finalized!</h1>
+        <h3>Winners:</h3>
+        
+        foreach (var winner in Model.Winners)
+        {
+            <p>@winner.UserName</p>
+        }
+    }
+    else
+    {
+        <h1>Dismissed!</h1>
+    }
+}
 
 @if (Model.Photos.Any())
 {

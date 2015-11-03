@@ -71,7 +71,7 @@
 
                 this.Data.SaveChanges();
 
-                return this.RedirectToAction("Details", "Contests", new { contestId = model.ContestId });
+                return this.RedirectToAction("Details", "Contests", new { id = model.ContestId });
             }
             else
             {

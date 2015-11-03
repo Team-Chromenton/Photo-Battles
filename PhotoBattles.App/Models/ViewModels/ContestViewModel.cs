@@ -29,9 +29,6 @@
 
         public bool IsActive { get; set; }
 
-        // I don't know, if we should make new ViewModel
-
-        // Shut up!
         public ICollection<UserViewModel> Winners { get; set; }
 
         public ICollection<UserViewModel> InvitedUsers { get; set; }
