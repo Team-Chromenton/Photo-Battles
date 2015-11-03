@@ -10,11 +10,8 @@
     using Microsoft.Ajax.Utilities;
     using Microsoft.AspNet.Identity;
 
-    using Ninject.Infrastructure.Language;
-
     using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Extensions;
-    using PhotoBattles.App.Models;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data.Contracts;
@@ -52,7 +49,8 @@
             {
                 var contests = this.GetRecordsForPage(pageNum.Value);
 
-                this.ViewBag.IsEndOfRecords = contests.Any() && ((pageNum.Value * RecordsPerPage) >= contests.Last().Key);
+                this.ViewBag.IsEndOfRecords = contests.Any()
+                                              && ((pageNum.Value * RecordsPerPage) >= contests.Last().Key);
                 return this.PartialView("_ContestRow", contests);
             }
             else
@@ -86,7 +84,7 @@
 
             int from = pageNum * RecordsPerPage;
             int to = from + RecordsPerPage;
-            
+
             return contests
                 .Where(c => c.Key > from && c.Key <= to)
                 .OrderBy(c => c.Key)
@@ -111,7 +109,8 @@
                                             .ToList();
             availableParticipants.ForEach(p => model.AvailableParticipants.Add(p));
 
-            var availableVoters = availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
+            var availableVoters =
+                availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
                                      .ToList();
             availableVoters.ForEach(u => model.AvailableVoters.Add(u));
 
@@ -131,18 +130,19 @@
             string currentUserId = this.UserIdProvider.GetUserId();
 
             var newContest = new Contest
-            {
-                Title = model.Title,
-                Description = model.Description,
-                CreatedOn = DateTime.Now,
-                IsOpen = true,
-                OrganizerId = currentUserId
-            };
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    CreatedOn = DateTime.Now,
+                    IsActive = true,
+                    IsOpen = true,
+                    OrganizerId = currentUserId
+                };
 
             if (!(this.SetVotingStrategy(model, newContest) &&
-                this.SetParticipatingStrategy(model, newContest) &&
-                this.SetRewardStrategy(model, newContest) &&
-                this.SetDeadlineStrategy(model, newContest)))
+                  this.SetParticipatingStrategy(model, newContest) &&
+                  this.SetRewardStrategy(model, newContest) &&
+                  this.SetDeadlineStrategy(model, newContest)))
             {
                 return this.RedirectToAction("AddContest");
             }
@@ -378,7 +378,10 @@
         public ActionResult DismissContest(int id)
         {
             var contest = this.Data.Contests.Find(id);
-            contest.Dismiss();
+
+            contest.IsActive = false;
+            contest.IsOpen = false;
+
             this.Data.SaveChanges();
             return this.RedirectToAction("OwnContests", "Contests");
         }
@@ -387,7 +390,6 @@
         public ActionResult Finalize(int id)
         {
             var contextFinalize = this.Data.Contests.Find(id);
-            contextFinalize.End();
             if (contextFinalize.NumberOfWinners > 1)
             {
                 var winners =
@@ -407,6 +409,9 @@
                         winner
                     };
             }
+
+            contextFinalize.IsActive = false;
+            contextFinalize.IsOpen = false;
 
             this.Data.SaveChanges();
             return this.RedirectToAction("OwnContests", "Contests");

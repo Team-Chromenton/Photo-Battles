@@ -1,13 +1,11 @@
 ﻿namespace PhotoBattles.App.Controllers
 {
-    using System.Linq;
     using System.Web.Mvc;
 
     using Microsoft.AspNet.Identity;
 
     using PhotoBattles.App.Hubs;
     using PhotoBattles.Models;
-    using PhotoBattles.Models.Enumerations;
 
     [Authorize]
     public class VotesController : BaseController
@@ -29,7 +27,7 @@
             var hub = new VotingHub();
             hub.IncreaseScore(photoId);
 
-            return this.Json(new { success = true}, JsonRequestBehavior.AllowGet);
+            return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Downvote(int contestId, int photoId)

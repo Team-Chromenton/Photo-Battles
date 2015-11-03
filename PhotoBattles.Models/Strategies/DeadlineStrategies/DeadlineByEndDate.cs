@@ -18,7 +18,8 @@
         {
             if (DateTime.Now > this.contest.EndDate)
             {
-                this.contest.End();
+                this.contest.IsActive = false;
+                this.contest.IsOpen = false;
             }
         }
     }

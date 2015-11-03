@@ -7,7 +7,6 @@
 
     using PhotoBattles.App.Contracts;
     using PhotoBattles.Models;
-    using PhotoBattles.Models.Enumerations;
 
     public class ContestDetailsViewModel : ContestViewModel, ICustomMappings
     {

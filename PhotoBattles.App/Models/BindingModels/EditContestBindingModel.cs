@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
+    using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models.Enumerations;
-    using ViewModels;
 
     public class EditContestBindingModel
     {

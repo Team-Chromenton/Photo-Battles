@@ -103,7 +103,7 @@
             {
                 if (model.NumberOfWinners != null)
                 {
-                    contest.NumberOfWinners = (int) model.NumberOfWinners;
+                    contest.NumberOfWinners = (int)model.NumberOfWinners;
                 }
             }
             else

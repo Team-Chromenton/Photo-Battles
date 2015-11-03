@@ -8,7 +8,6 @@
 
     using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Infrastructure;
-    using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
     using PhotoBattles.Models.Enumerations;
@@ -36,29 +35,23 @@
 
             foreach (var contest in contests)
             {
-                if (contest.DeadlineStrategy == DeadlineStrategy.EndDate)
+                if (contest.IsActive)
                 {
-                    if (DateTime.Now > contest.EndDate)
+                    if (contest.DeadlineStrategy == DeadlineStrategy.EndDate)
                     {
-                        contest.IsActive = false;
+                        if (DateTime.Now > contest.EndDate)
+                        {
+                            contest.IsActive = false;
+                        }
                     }
-                    else
+                    else if (contest.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
                     {
-                        contest.IsActive = true;
+                        if (contest.RegisteredParticipants.Count > contest.ParticipantsLimit)
+                        {
+                            contest.IsActive = false;
+                        }
                     }
                 }
-                else if (contest.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
-                {
-                    if (contest.RegisteredParticipants.Count > contest.ParticipantsLimit)
-                    {
-                        contest.IsActive = false;
-                    }
-                    else
-                    {
-                        contest.IsActive = true;
-                    }
-                }
-
             }
 
             this.Data.SaveChanges();
@@ -73,11 +66,11 @@
 
             if (contest.VotingStrategy == VotingStrategy.Closed)
             {
-                if (contest.RegisteredVoters.Contains(currentUser) && !contest.Photos.FirstOrDefault(p => p.Id == photoId).Votes.Any(v => v.AuthorId == currentUserId))
+                if (contest.RegisteredVoters.Contains(currentUser)
+                    && !contest.Photos.FirstOrDefault(p => p.Id == photoId).Votes.Any(v => v.AuthorId == currentUserId))
                 {
                     return true;
                 }
-
             }
             else
             {

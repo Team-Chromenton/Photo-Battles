@@ -37,14 +37,12 @@
                             <h4 class="finalize text-center">The contest is finalized - click "Details" to see the winners!</h4>
                         </div>
                     </div>
-                    
-                    
                 }
                 else
                 {
                     <div class="row">
                         <div class="col-lg-4">
-                            @Html.ActionLink("Edit", "EditContest", "Contests", new {id = context.Id}, new {@class = "btn btn-primary"})
+                            @Html.ActionLink("Edit", "EditContest", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
                             @Html.ActionLink("Details", "Details", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
                         </div>
                         <div class="col-lg-3 col-lg-offset-5">
@@ -52,14 +50,14 @@
                                 @using (Html.BeginForm("DismissContest", "Contests", FormMethod.Post, new { role = "form" }))
                                 {
                                     @Html.Hidden("id", context.Id)
-                                    <input type="submit" class="btn btn-default btn-primary" value="Dismiss" />
+                                    <input type="submit" class="btn btn-default btn-primary" value="Dismiss"/>
                                 }
                             </div>
                             <div class="col-lg-6 text-right">
                                 @using (Html.BeginForm("Finalize", "Contests", FormMethod.Post, new { role = "form" }))
                                 {
                                     @Html.Hidden("id", context.Id)
-                                    <input type="submit" class="btn btn-default btn-primary" value="Finalize" />
+                                    <input type="submit" class="btn btn-default btn-primary" value="Finalize"/>
                                 }
                             </div>
                         </div>

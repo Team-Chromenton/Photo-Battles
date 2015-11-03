@@ -1,5 +1,4 @@
-﻿@using System.Security.Cryptography
-@model PhotoBattles.App.Models.ViewModels.ContestDetailsViewModel
+﻿@model PhotoBattles.App.Models.ViewModels.ContestDetailsViewModel
 <h1>@Model.Title Images</h1>
 
 @if (!Model.IsActive)
@@ -8,7 +7,7 @@
     {
         <h1>Finalized!</h1>
         <h3>Winners:</h3>
-        
+
         foreach (var winner in Model.Winners)
         {
             <p>@winner.UserName</p>
@@ -30,7 +29,7 @@
             </div>
 
             <div class="panel-body" style="text-align: center">
-                <img class="img-thumbnail" src="@photo.Url" style="width: 400px; height: 100%" />
+                <img class="img-thumbnail" src="@photo.Url" style="width: 400px; height: 100%"/>
             </div>
 
             @if (Request.IsAuthenticated)
@@ -43,9 +42,9 @@
                                 @Ajax.ActionLink("Upvote", "Upvote", "Votes",
                                     new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions()
-                                    {
-                                        OnSuccess = "disableVoting"
-                                    },
+                                        {
+                                            OnSuccess = "disableVoting"
+                                        },
                                     new { @class = "btn btn-success", @id = "upvote-button" })
                             }
                             else
@@ -72,9 +71,9 @@
                                 @Ajax.ActionLink("Downvote", "Downvote", "Votes",
                                     new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions
-                                    {
-                                        OnSuccess = "disableVoting"
-                                    },
+                                        {
+                                            OnSuccess = "disableVoting"
+                                        },
                                     new { @class = "btn btn-danger", @id = "downvote-button" })
                             }
                             else

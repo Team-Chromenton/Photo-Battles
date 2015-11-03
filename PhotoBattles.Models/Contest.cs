@@ -133,18 +133,5 @@
                 this.registeredVoters = value;
             }
         }
-
-        public void Dismiss()
-        {
-            this.IsActive = false;
-            this.IsOpen = false;
-            this.NumberOfWinners = 0;
-        }
-
-        public void End()
-        {
-            this.IsActive = false;
-            this.IsOpen = false;
-        }
     }
 }

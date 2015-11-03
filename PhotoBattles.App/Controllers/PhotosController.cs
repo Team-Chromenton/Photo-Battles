@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
 
@@ -19,8 +18,6 @@
     using PhotoBattles.App.Services;
     using PhotoBattles.Models;
 
-    using WebGrease.Css.Extensions;
-
     public class PhotosController : BaseController
     {
         [AllowAnonymous]
@@ -30,7 +27,7 @@
                              .Where(p => p.ContestId == contestId)
                              .OrderByDescending(p => p.Uploaded)
                              .ProjectTo<PhotoViewModel>();
-            
+
             return this.View(photos);
         }
 

@@ -1,5 +1,4 @@
-﻿@using PhotoBattles.App.Controllers
-@using PhotoBattles.App.Models.ViewModels
+﻿@using PhotoBattles.App.Models.ViewModels
 @model IQueryable<PhotoBattles.App.Models.ViewModels.ContestViewModel>
 
 @{
@@ -8,11 +7,11 @@
 
 <table class="infinite-scroll" style="width: 100%">
     <tbody>
-        @Html.Partial("_ContestRow", ViewBag.Contests as Dictionary<int, ContestViewModel>)
+    @Html.Partial("_ContestRow", ViewBag.Contests as Dictionary<int, ContestViewModel>)
     </tbody>
 </table>
 <div id="loading">
-    <img src='@Url.Content("~/images/spin.gif")' />
+    <img src='@Url.Content("~/images/spin.gif")'/>
     <p>
         <b>Loading the next @ViewBag.RecordsPerPage&hellip;</b>
     </p>
@@ -20,7 +19,7 @@
 @section scripts{
     <script src="~/Scripts/infiniteScroll.js"></script>
     <script type="text/javascript">
-        $(function () {
+        $(function() {
             $("div#loading").hide();
         });
         var moreRowsUrl = "/Contests/GetContests"; //the URL to your ActionMethod
