@@ -28,13 +28,24 @@
             {
                 if (context.Winners.Count > 0)
                 {
-                    <p class="finalize">The contest is finalize</p>
+                    <div class="row">
+                        <div class="col-md-1">
+                            @Html.ActionLink("Details", "Details", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
+
+                        </div>
+                        <div class="col-md-7">
+                            <h4 class="finalize text-center">The contest is finalized - click "Details" to see the winners!</h4>
+                        </div>
+                    </div>
+                    
+                    
                 }
                 else
                 {
                     <div class="row">
                         <div class="col-lg-4">
-                            @Html.ActionLink("Edit", "EditContest", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "EditContest", "Contests", new {id = context.Id}, new {@class = "btn btn-primary"})
+                            @Html.ActionLink("Details", "Details", "Contests", new { id = context.Id }, new { @class = "btn btn-primary" })
                         </div>
                         <div class="col-lg-3 col-lg-offset-5">
                             <div class="col-lg-6 text-right">
@@ -57,10 +68,10 @@
             }
             else
             {
-                <p class="dismiss">
+                <h4 class="dismiss">
                     @*This should be styled correctly*@
-                    The contest is dismissed or have no winners!
-                </p>
+                    The contest is dismissed or has no winners!
+                </h4>
             }
         </div>
     </div>

@@ -175,15 +175,15 @@
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Details(int contestId)
+        public ActionResult Details(int id)
         {
             var contest = this.Data.Contests.GetAll()
-                              .Where(c => c.Id == contestId)
+                              .Where(c => c.Id == id)
                               .OrderByDescending(c => c.CreatedOn)
                               .ProjectTo<ContestDetailsViewModel>()
                               .FirstOrDefault();
 
-            contest.Photos.ForEach(p => p.UserCanVote = this.CanVote(contestId, p.Id));
+            contest.Photos.ForEach(p => p.UserCanVote = this.CanVote(id, p.Id));
 
             return this.View(contest);
         }
