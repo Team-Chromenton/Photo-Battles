@@ -384,7 +384,7 @@
     <Content Include="Views\Profile\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Profile\EditProfile.cshtml" />
     <Content Include="Views\Photos\Index.cshtml" />
-    <Content Include="Views\Contests\_AddContest.cshtml" />
+    <Content Include="Views\Contests\AddContest.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />
     <Content Include="Views\Contests\Details.cshtml" />
     <None Include="Views\Contests\Participate.cshtml" />
