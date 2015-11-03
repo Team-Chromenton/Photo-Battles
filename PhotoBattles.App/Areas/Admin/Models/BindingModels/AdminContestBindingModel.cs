@@ -31,6 +31,7 @@
 
         public RewardStrategy RewardStrategy { get; set; }
 
+        [Range(1, int.MaxValue)]
         public int? NumberOfWinners { get; set; }
 
         public DeadlineStrategy DeadlineStrategy { get; set; }

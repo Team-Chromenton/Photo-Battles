@@ -67,22 +67,58 @@
             contest.Description = model.Description;
 
             if (!(this.EditAvailableVoters(model, contest) &&
-                  this.EditAvailableParticipants(model, contest)))
+                  this.EditAvailableParticipants(model, contest) &&
+                  this.EditRewardStrategy(model, contest) &&
+                  this.EditDeadlineStartegy(model, contest)))
             {
                 this.RedirectToAction("EditContests");
             }
-
-            contest.RewardStrategy = model.RewardStrategy;
-            contest.DeadlineStrategy = model.DeadlineStrategy;
 
             this.Data.SaveChanges();
 
             return this.RedirectToAction("Index", "Overview");
         }
 
+        private bool EditDeadlineStartegy(AdminContestBindingModel model, Contest contest)
+        {
+            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
+            {
+                contest.EndDate = model.EndDate;
+                contest.ParticipantsLimit = null;
+            }
+            else
+            {
+                contest.ParticipantsLimit = model.ParticipantsLimit;
+                contest.EndDate = null;
+            }
+
+            contest.DeadlineStrategy = model.DeadlineStrategy;
+
+            return true;
+        }
+
+        private bool EditRewardStrategy(AdminContestBindingModel model, Contest contest)
+        {
+            if (model.RewardStrategy == RewardStrategy.MultipleWinners)
+            {
+                if (model.NumberOfWinners != null)
+                {
+                    contest.NumberOfWinners = (int) model.NumberOfWinners;
+                }
+            }
+            else
+            {
+                contest.NumberOfWinners = 1;
+            }
+
+            contest.RewardStrategy = model.RewardStrategy;
+
+            return true;
+        }
+
         private bool EditAvailableParticipants(AdminContestBindingModel model, Contest contest)
         {
-            contest.RegisteredParticipants = new List<User>();
+            contest.RegisteredParticipants.Clear();
 
             if (model.ParticipationStrategy == ParticipationStrategy.Closed)
             {
@@ -109,7 +145,7 @@
 
         private bool EditAvailableVoters(AdminContestBindingModel model, Contest contest)
         {
-            contest.RegisteredVoters = null;
+            contest.RegisteredVoters.Clear();
 
             if (model.VotingStrategy == VotingStrategy.Closed)
             {
