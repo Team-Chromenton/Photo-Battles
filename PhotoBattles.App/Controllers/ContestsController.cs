@@ -65,7 +65,7 @@
                                      .ToList();
             availableVoters.ForEach(u => model.AvailableVoters.Add(u));
 
-            return this.PartialView("~/Views/Contests/_AddContest.cshtml", model);
+            return this.View(model);
         }
 
         [HttpGet]
@@ -108,7 +108,7 @@
             if (!this.ModelState.IsValid || model == null)
             {
                 this.AddNotification("Incorrect title or description", NotificationType.ERROR);
-                return this.RedirectToAction("Index");
+                return this.View(model);
             }
 
             string currentUserId = this.UserIdProvider.GetUserId();
@@ -128,7 +128,7 @@
                 this.SetRewardStrategy(model, newContest) && 
                 this.SetDeadlineStrategy(model, newContest)))
             {
-                return this.RedirectToAction("Index");
+                return this.View(model);
             }
 
             this.Data.Contests.Add(newContest);

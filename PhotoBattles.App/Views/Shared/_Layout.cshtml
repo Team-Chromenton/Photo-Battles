@@ -22,9 +22,9 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Contests", "Index", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
                 @if (Request.IsAuthenticated)
                 {
+                    <li>@Html.ActionLink("Create", "AddContest", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
                     <li>@Html.ActionLink("Own contests", "OwnContests", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
                     <li>@Html.ActionLink("Contest you are in", "ParticipateContests", "Contests", new { area = "" }, new { @class = "btn btn-default" })</li>
                 }

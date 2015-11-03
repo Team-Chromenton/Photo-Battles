@@ -6,11 +6,6 @@
     ViewBag.Title = "Index";
 }
 
-@if (User != null && User.Identity.IsAuthenticated)
-{
-    Html.RenderAction("AddContest", "Contests");
-}
-
 @foreach (var contest in Model)
 {
     <div class="panel panel-default">

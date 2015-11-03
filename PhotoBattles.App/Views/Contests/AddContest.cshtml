@@ -29,9 +29,12 @@
                         </div>
                         <div class="row">
                             <select multiple id="voters" name="Voters" style="width: 100%; display: none">
-                                @foreach (var user in Model.AvailableVoters)
+                                @if (Model.AvailableVoters != null)
                                 {
-                                    <option value="@user.UserName" style="padding: 0 20px">@user.UserName</option>
+                                    foreach (var user in Model.AvailableVoters)
+                                    {
+                                        <option value="@user.UserName" style="padding: 0 20px">@user.UserName</option>
+                                    }
                                 }
                             </select>
                         </div>
@@ -55,9 +58,12 @@
                         </div>
                         <div class="row">
                             <select multiple id="participants" name="Participants" style="width: 100%; display: none">
-                                @foreach (var participant in Model.AvailableParticipants)
+                                @if (Model.AvailableParticipants != null)
                                 {
-                                    <option value="@participant.UserName">@participant.UserName</option>
+                                    foreach (var participant in Model.AvailableParticipants)
+                                    {
+                                        <option value="@participant.UserName">@participant.UserName</option>
+                                    }
                                 }
                             </select>
                         </div>
