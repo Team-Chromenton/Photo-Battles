@@ -43,7 +43,7 @@
                     if (DateTime.Now > contest.EndDate)
                     {
                         contest.IsActive = false;
-                        hub.InfoExpiredContest(contest.Title);
+                        hub.InfoExpiredContest(contest.Title, contest.Id);
                     }
                 }
                 else if (contest.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
@@ -51,7 +51,7 @@
                     if (contest.RegisteredParticipants.Count > contest.ParticipantsLimit)
                     {
                         contest.IsActive = false;
-                        hub.InfoExpiredContest(contest.Title);
+                        hub.InfoExpiredContest(contest.Title, contest.Id);
                     }
                 }
             }

@@ -1,10 +1,11 @@
-﻿$(function () {
+﻿$(function() {
     $.connection.hub.start().done(function() {
         console.log("Hub component initiated ...");
     });
 
     // Voting Hub
     var votingHub = $.connection.votingHub;
+    var contestInfoHub = $.connection.contestInfoHub;
 
     function increaseScore(photoId) {
         var value = parseInt($('#photo-' + photoId + '-score').text(), 10) + 1;
@@ -20,11 +21,14 @@
     votingHub.client.decreaseScore = decreaseScore;
 
     // Contest Information Hub
-    var contestInfoHub = $.connection.contestInfoHub;
 
-    function infoExpiredContest(contestTitle) {
+    function infoExpiredContest(contestTitle, contestId) {
+        $("#info-messages-container").attr('style', 'display: block');
+
         $("#info-messages").append("<li>Contest " + contestTitle + " has expired.</li>");
+        $("#contest-" + contestId).attr('class', 'panel panel-default');
+
     }
 
     contestInfoHub.client.infoExpiredContest = infoExpiredContest;
-})
+});

@@ -74,7 +74,12 @@
     </div>
 }
 
-<!-- display success -->
+<!-- display information -->
+<div class="alert alert-info alert-dismissable" id="info-messages-container" style="display: none">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <ul id="info-messages" style="list-style-type: none; padding-left: 0"></ul>
+</div>
+
 @if (infoList != null)
 {
     <div class="alert alert-info alert-dismissable">
@@ -82,19 +87,19 @@
         @if (infoList.Count() > 1)
         {
             <strong><span class="glyphicon glyphicon-info-sign"></span> There are @infoList.Count() notifications: </strong>
-            <ul id="info-messages">
-                @foreach (String message in infoList)
-                {
-                    <li>@Html.Raw(message)</li>
-                }
-            </ul>
+                <ul>
+                    @foreach (String message in infoList)
+                    {
+                        <li>@Html.Raw(message)</li>
+                    }
+                </ul>
         }
         else
         {
             <strong>
-                <span class="glyphicon glyphicon-info-sign"></span> </strong>
-            @Html.Raw(infoList.First())
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </strong>
+                @Html.Raw(infoList.First())
         }
     </div>
 }
-

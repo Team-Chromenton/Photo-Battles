@@ -4,7 +4,7 @@
 
 @foreach (var contest in Model.Values)
 {
-    <div class="panel @(contest.IsActive ? "panel-success" : "panel-default")">
+    <div class="panel @(contest.IsActive ? "panel-success" : "panel-default")" id="contest-@contest.Id">
 
         <div class="panel-heading">
             <div class="row">
