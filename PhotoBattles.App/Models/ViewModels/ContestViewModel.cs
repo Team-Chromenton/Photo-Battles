@@ -54,6 +54,8 @@
 
         public ICollection<UserViewModel> AvailableVoters { get; set; }
 
+        public ICollection<UserViewModel> Winners { get; set; }
+
         //// Strategies
         public IVotingStrategy GetVotingStrategy(IContest contest)
         {
