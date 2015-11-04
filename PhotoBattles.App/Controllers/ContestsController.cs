@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Configuration;
     using System.Web.Mvc;
 
     using AutoMapper.QueryableExtensions;
@@ -50,7 +49,8 @@
             {
                 var contests = this.GetRecordsForPage(pageNum.Value);
 
-                this.ViewBag.IsEndOfRecords = contests.Any() && ((pageNum.Value * RecordsPerPage) >= contests.Last().Key);
+                this.ViewBag.IsEndOfRecords = contests.Any()
+                                              && ((pageNum.Value * RecordsPerPage) >= contests.Last().Key);
                 return this.PartialView("_ContestRow", contests);
             }
             else
@@ -170,7 +170,8 @@
         [HttpGet]
         public ActionResult Participate(int id)
         {
-            var contest = this.Data.Contests.GetAll().Where(c => c.Id == id).ProjectTo<ContestViewModel>().FirstOrDefault();
+            var contest =
+                this.Data.Contests.GetAll().Where(c => c.Id == id).ProjectTo<ContestViewModel>().FirstOrDefault();
 
             var deadlineStrategy = contest.GetDeadlineStrategy(this.Data.Contests.Find(contest.Id));
             bool hasExpired = deadlineStrategy.Expire();
@@ -190,7 +191,9 @@
 
             if (!participationStrategy.CanParticipate(currentUserName))
             {
-                this.AddNotification("You are currently participating in contest " + contest.Title, NotificationType.ERROR);
+                this.AddNotification(
+                    "You are currently participating in contest " + contest.Title,
+                    NotificationType.ERROR);
                 return this.RedirectToAction("Index");
             }
 
@@ -271,7 +274,7 @@
             {
                 return this.HttpNotFound();
             }
-            
+
             string currentUserName = this.User.Identity.GetUserName();
 
             var availableParticipants = this.Data.Users
@@ -337,13 +340,16 @@
             contest.IsOpen = false;
 
             this.Data.SaveChanges();
+
+            this.AddNotification("The contest was dismised", NotificationType.SUCCESS);
             return this.RedirectToAction("OwnContests", "Contests");
         }
 
         [HttpPost]
         public ActionResult Finalize(int id)
         {
-            var contest = this.Data.Contests.GetAll().Where(c => c.Id == id).ProjectTo<ContestViewModel>().FirstOrDefault();
+            var contest =
+                this.Data.Contests.GetAll().Where(c => c.Id == id).ProjectTo<ContestViewModel>().FirstOrDefault();
 
             var rewardStrategy = contest.GetRewardStrategy(this.Data.Contests.Find(contest.Id));
             rewardStrategy.SetWinners();
@@ -352,6 +358,8 @@
             this.Data.Contests.Find(contest.Id).IsOpen = false;
 
             this.Data.SaveChanges();
+
+            this.AddNotification("The contest was finalized", NotificationType.SUCCESS);
             return this.RedirectToAction("OwnContests", "Contests");
         }
 

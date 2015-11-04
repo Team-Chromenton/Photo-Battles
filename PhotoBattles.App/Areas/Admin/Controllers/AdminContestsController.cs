@@ -83,7 +83,7 @@
             this.Data.SaveChanges();
 
             this.AddNotification("Contest edited", NotificationType.SUCCESS);
-            return this.RedirectToAction("Index", "Overview");
+            return this.RedirectToAction("Index", "AdminOverview");
         }
 
         private bool EditDeadlineStartegy(ContestBindingModel model, Contest contest)

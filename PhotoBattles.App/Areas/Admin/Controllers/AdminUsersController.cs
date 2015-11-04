@@ -59,7 +59,7 @@
             this.Data.SaveChanges();
 
             this.AddNotification("User edited", NotificationType.SUCCESS);
-            return this.RedirectToAction("Index", "Overview");
+            return this.RedirectToAction("Index", "AdminOverview");
         }
     }
 }
