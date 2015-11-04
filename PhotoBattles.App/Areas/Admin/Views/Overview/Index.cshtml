@@ -24,7 +24,7 @@
             <div class="panel-body">
                 @foreach (var contest in Model.Contests)
                 {
-                    @Html.ActionLink(contest.Title, "EditContests", "Contests",
+                    @Html.ActionLink(contest.Title, "AdminEditContest", "Contests",
                         new { area = "Admin", id = contest.Id },
                         new { @class = "btn btn-default btn-block" })
                 }

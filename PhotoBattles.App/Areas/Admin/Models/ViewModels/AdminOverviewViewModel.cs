@@ -2,10 +2,12 @@
 {
     using System.Collections.Generic;
 
+    using PhotoBattles.App.Models.ViewModels;
+
     public class AdminOverviewViewModel
     {
-        public IEnumerable<AdminUserViewModel> Users { get; set; }
+        public IEnumerable<UserViewModel> Users { get; set; }
 
-        public IEnumerable<AdminContestViewModel> Contests { get; set; }
+        public IEnumerable<ContestViewModel> Contests { get; set; }
     }
 }

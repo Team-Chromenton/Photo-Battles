@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
 
-    public class AdminEditPicturesViewModel
+    public class AdminPicturesViewModel
     {
         public string ContestName { get; set; }
 
-        public ICollection<AdminContestPicturesViewModel> Pictures { get; set; }
+        public ICollection<AdminPictureViewModel> Pictures { get; set; }
     }
 }

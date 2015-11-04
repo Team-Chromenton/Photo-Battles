@@ -6,12 +6,12 @@
     using AutoMapper.QueryableExtensions;
 
     using PhotoBattles.App.Areas.Admin.Models.BindingModels;
-    using PhotoBattles.App.Areas.Admin.Models.ViewModels;
+    using PhotoBattles.App.Extensions;
+    using PhotoBattles.App.Models.ViewModels;
 
     [Authorize(Roles = "Admin")]
     public class UsersController : BaseController
     {
-        // GET: Admin/Users
         [HttpGet]
         public ActionResult EditUser(string username)
         {
@@ -21,7 +21,7 @@
                            .Users
                            .GetAll()
                            .Where(u => u.UserName == username)
-                           .ProjectTo<AdminUserViewModel>()
+                           .ProjectTo<UserViewModel>()
                            .FirstOrDefault();
 
             if (user == null)
@@ -32,14 +32,14 @@
             return this.View(user);
         }
 
-        // POST: Admin/EditUser
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(AdminUserBindingModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                this.AddNotification("Invalid input data", NotificationType.ERROR);
+                return this.RedirectToAction("EditUser", new {username = model.UserName});
             }
 
             var user = this.Data
@@ -58,6 +58,7 @@
 
             this.Data.SaveChanges();
 
+            this.AddNotification("User edited", NotificationType.SUCCESS);
             return this.RedirectToAction("Index", "Overview");
         }
     }

@@ -16,14 +16,14 @@
                               .Where(c => c.Id == id)
                               .Select(
                                   c =>
-                                  new AdminEditPicturesViewModel
+                                  new AdminPicturesViewModel
                                       {
                                           ContestName = c.Title,
                                           Pictures = c.Photos
                                                       .Where(p => p.ContestId == id)
                                                       .Select(
                                                           p =>
-                                                          new AdminContestPicturesViewModel
+                                                          new AdminPictureViewModel
                                                               {
                                                                   Id = p.Id,
                                                                   Url = p.Url

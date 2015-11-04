@@ -263,13 +263,10 @@
     <Compile Include="Areas\Admin\Controllers\OverviewController.cs" />
     <Compile Include="Areas\Admin\Controllers\PicturesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
-    <Compile Include="Areas\Admin\Models\BindingModels\AdminContestBindingModel.cs" />
     <Compile Include="Areas\Admin\Models\BindingModels\AdminUserBindingModel.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\AdminContestPicturesViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\AdminEditPicturesViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\AdminPictureViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\AdminPicturesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\AdminOverviewViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\AdminContestViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\AdminUserViewModel.cs" />
     <Compile Include="Contracts\IMapFrom.cs" />
     <Compile Include="Contracts\ICustomMappings.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -318,7 +315,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\Contests\EditContests.cshtml" />
+    <Content Include="Areas\Admin\Views\Contests\AdminEditContest.cshtml" />
     <None Include="Areas\Admin\Views\Overview\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Users\EditUser.cshtml" />
@@ -326,6 +323,7 @@
     <None Include="Areas\Admin\Views\Pictures\EditContestPictures.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\dynamicRadioButton.js" />
     <Content Include="Scripts\infiniteScroll.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -393,9 +391,7 @@
     <Content Include="Views\Contests\_ContestRow.cshtml" />
     <Content Include="Views\Contests\_ContestForm.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Shared\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />

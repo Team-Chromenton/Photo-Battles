@@ -1,14 +1,13 @@
-﻿@model PhotoBattles.App.Areas.Admin.Models.ViewModels.AdminEditPicturesViewModel
+﻿@model PhotoBattles.App.Areas.Admin.Models.ViewModels.AdminPicturesViewModel
 
-<h1>Manage Contest [@Model.ContestName] Pictures</h1>
-<h3>Pictures: </h3>
+<h2>Manage Contest [@Model.ContestName] Pictures</h2>
 
 @foreach (var photo in Model.Pictures)
 {
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="row">
+                <div class="row text-center">
                     <img class="img-thumbnail" src="@photo.Url" style="width: 400px; height: 100%"/>
                 </div>
 

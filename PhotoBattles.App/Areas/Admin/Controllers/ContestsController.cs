@@ -6,24 +6,25 @@
 
     using AutoMapper.QueryableExtensions;
 
-    using PhotoBattles.App.Areas.Admin.Models.BindingModels;
-    using PhotoBattles.App.Areas.Admin.Models.ViewModels;
+    using Microsoft.AspNet.Identity;
+
     using PhotoBattles.App.Extensions;
+    using PhotoBattles.App.Models.BindingModels;
+    using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models;
     using PhotoBattles.Models.Enumerations;
 
     [Authorize(Roles = "Admin")]
     public class ContestsController : BaseController
     {
-        // GET: Admin/Contests
         [HttpGet]
-        public ActionResult EditContests(int id)
+        public ActionResult AdminEditContest(int id)
         {
             var contest = this.Data
                               .Contests
                               .GetAll()
                               .Where(c => c.Id == id)
-                              .ProjectTo<AdminContestViewModel>()
+                              .ProjectTo<ContestViewModel>()
                               .FirstOrDefault();
 
             if (contest == null)
@@ -31,12 +32,17 @@
                 return this.HttpNotFound();
             }
 
-            contest.Users = new List<AdminUserViewModel>(
-                this.Data
-                    .Users
-                    .GetAll()
-                    .ProjectTo<AdminUserViewModel>()
-                    .ToList());
+            string currentUserName = this.User.Identity.GetUserName();
+
+            var availableParticipants = this.Data.Users
+                                            .GetAll()
+                                            .ProjectTo<UserViewModel>()
+                                            .ToList();
+            contest.AvailableParticipants = new List<UserViewModel>(availableParticipants);
+
+            var availableVoters = availableParticipants.Where(u => u.UserName != currentUserName)
+                                                       .ToList();
+            contest.AvailableVoters = new List<UserViewModel>(availableVoters);
 
             this.ViewBag.Title = contest.Title;
             return this.View(contest);
@@ -44,12 +50,12 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditContests(AdminContestBindingModel model)
+        public ActionResult AdminEditContest(ContestBindingModel model)
         {
             if (!this.ModelState.IsValid || model == null)
             {
                 this.AddNotification("Invalid input data", NotificationType.ERROR);
-                return this.RedirectToAction("EditContests");
+                return this.RedirectToAction("AdminEditContest");
             }
 
             var contest = this.Data
@@ -60,7 +66,7 @@
             if (contest == null)
             {
                 this.AddNotification("Cannot find contest", NotificationType.ERROR);
-                return this.RedirectToAction("EditContests");
+                return this.RedirectToAction("AdminEditContest");
             }
 
             contest.Title = model.Title;
@@ -71,15 +77,16 @@
                   this.EditRewardStrategy(model, contest) &&
                   this.EditDeadlineStartegy(model, contest)))
             {
-                this.RedirectToAction("EditContests");
+                this.RedirectToAction("AdminEditContest");
             }
 
             this.Data.SaveChanges();
 
+            this.AddNotification("Contest edited", NotificationType.SUCCESS);
             return this.RedirectToAction("Index", "Overview");
         }
 
-        private bool EditDeadlineStartegy(AdminContestBindingModel model, Contest contest)
+        private bool EditDeadlineStartegy(ContestBindingModel model, Contest contest)
         {
             if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
             {
@@ -97,7 +104,7 @@
             return true;
         }
 
-        private bool EditRewardStrategy(AdminContestBindingModel model, Contest contest)
+        private bool EditRewardStrategy(ContestBindingModel model, Contest contest)
         {
             if (model.RewardStrategy == RewardStrategy.MultipleWinners)
             {
@@ -116,7 +123,7 @@
             return true;
         }
 
-        private bool EditAvailableParticipants(AdminContestBindingModel model, Contest contest)
+        private bool EditAvailableParticipants(ContestBindingModel model, Contest contest)
         {
             contest.RegisteredParticipants.Clear();
 
@@ -143,7 +150,7 @@
             return true;
         }
 
-        private bool EditAvailableVoters(AdminContestBindingModel model, Contest contest)
+        private bool EditAvailableVoters(ContestBindingModel model, Contest contest)
         {
             contest.RegisteredVoters.Clear();
 

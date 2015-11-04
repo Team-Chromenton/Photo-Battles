@@ -8,11 +8,12 @@
     using Microsoft.AspNet.Identity;
 
     using PhotoBattles.App.Areas.Admin.Models.ViewModels;
+    using PhotoBattles.App.Models.ViewModels;
 
     [Authorize(Roles = "Admin")]
     public class OverviewController : BaseController
     {
-        // GET: Admin/Overview
+        [HttpGet]
         public ActionResult Index()
         {
             this.ViewBag.Title = "Admin";
@@ -23,13 +24,13 @@
                             .Users
                             .GetAll()
                             .Where(u => u.Id != adminId)
-                            .ProjectTo<AdminUserViewModel>()
+                            .ProjectTo<UserViewModel>()
                             .ToList();
 
             var contests = this.Data
                                .Contests
                                .GetAll()
-                               .ProjectTo<AdminContestViewModel>()
+                               .ProjectTo<ContestViewModel>()
                                .ToList();
 
             var model = new AdminOverviewViewModel() { Users = users, Contests = contests };
