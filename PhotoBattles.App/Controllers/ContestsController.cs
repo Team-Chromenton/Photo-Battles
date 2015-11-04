@@ -301,7 +301,7 @@
             var contest = this.Data
                               .Contests
                               .GetAll()
-                              .FirstOrDefault(c => c.Id == model.Id);
+                              .FirstOrDefault(c => c.Id == id);
 
             if (contest == null)
             {

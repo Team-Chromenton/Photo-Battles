@@ -15,7 +15,7 @@
     using PhotoBattles.Models.Enumerations;
 
     [Authorize(Roles = "Admin")]
-    public class ContestsController : BaseController
+    public class AdminContestsController : AdminBaseController
     {
         [HttpGet]
         public ActionResult AdminEditContest(int id)

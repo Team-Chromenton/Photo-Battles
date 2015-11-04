@@ -9,7 +9,7 @@
             <div class="panel-body">
                 @foreach (var user in Model.Users)
                 {
-                    @Html.ActionLink(user.UserName, "EditUser", "Users",
+                    @Html.ActionLink(user.UserName, "EditUser", "AdminUsers",
                         new { area = "Admin", username = user.UserName },
                         new { @class = "btn btn-default btn-block" })
                 }
@@ -24,7 +24,7 @@
             <div class="panel-body">
                 @foreach (var contest in Model.Contests)
                 {
-                    @Html.ActionLink(contest.Title, "AdminEditContest", "Contests",
+                    @Html.ActionLink(contest.Title, "AdminEditContest", "AdminContests",
                         new { area = "Admin", id = contest.Id },
                         new { @class = "btn btn-default btn-block" })
                 }

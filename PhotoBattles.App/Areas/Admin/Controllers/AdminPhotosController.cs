@@ -6,10 +6,10 @@
     using PhotoBattles.App.Areas.Admin.Models.ViewModels;
 
     [Authorize(Roles = "Admin")]
-    public class PicturesController : BaseController
+    public class AdminPhotosController : AdminBaseController
     {
         [HttpGet]
-        public ActionResult EditContestPictures(int id)
+        public ActionResult EditContestPhotos(int id)
         {
             var contest = this.Data.Contests
                               .GetAll()
@@ -36,7 +36,7 @@
         }
 
         [HttpGet]
-        public ActionResult DeletePictureConfirmation(int id)
+        public ActionResult DeletePhotoConfirmation(int id)
         {
             var contestId = this.Data.Photos.Find(id).ContestId;
             this.ViewBag.PictureId = id;
@@ -46,13 +46,13 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePicture(int id)
+        public ActionResult DeletePhoto(int id)
         {
             var picture = this.Data.Photos.Find(id);
             var contestId = picture.ContestId;
             this.Data.Photos.Delete(picture);
             this.Data.SaveChanges();
-            return this.RedirectToAction("EditContestPictures", new { id = contestId });
+            return this.RedirectToAction("EditContestPhotos", new { id = contestId });
         }
     }
 }

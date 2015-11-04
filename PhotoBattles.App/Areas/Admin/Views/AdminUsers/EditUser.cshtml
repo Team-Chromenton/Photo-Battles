@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-4 col-lg-offset-4">
-        @using (Html.BeginForm("EditUser", "Users", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("EditUser", "AdminUsers", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })

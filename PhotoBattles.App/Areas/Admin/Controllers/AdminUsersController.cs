@@ -10,7 +10,7 @@
     using PhotoBattles.App.Models.ViewModels;
 
     [Authorize(Roles = "Admin")]
-    public class UsersController : BaseController
+    public class AdminUsersController : AdminBaseController
     {
         [HttpGet]
         public ActionResult EditUser(string username)

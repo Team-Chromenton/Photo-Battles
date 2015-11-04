@@ -1,0 +1,19 @@
+﻿@model PhotoBattles.App.Models.ViewModels.ContestViewModel
+
+@{
+    ViewBag.Title = "Edit Contest";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("AdminEditContest", "AdminContests", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.Partial("_ContestForm")
+}
+
+
+@Html.ActionLink("Manage Pictures", "EditContestPhotos", "AdminPhotos", new { area = "Admin", id = Model.Id }, new { @class = "btn btn-primary btn-block" })
+
+@section scripts{
+    @Scripts.Render("~/bundles/dynamicRadioButton")
+}

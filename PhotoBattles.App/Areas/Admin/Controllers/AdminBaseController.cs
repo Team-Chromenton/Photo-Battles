@@ -5,14 +5,15 @@
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
 
-    public class BaseController : Controller
+    [Authorize(Roles = "Admin")]
+    public class AdminBaseController : Controller
     {
-        public BaseController()
+        public AdminBaseController()
             : this(new PhotoBattlesData())
         {
         }
 
-        public BaseController(IPhotoBattlesData data)
+        public AdminBaseController(IPhotoBattlesData data)
         {
             this.Data = data;
         }

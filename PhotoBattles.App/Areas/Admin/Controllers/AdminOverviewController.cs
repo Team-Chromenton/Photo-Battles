@@ -11,7 +11,7 @@
     using PhotoBattles.App.Models.ViewModels;
 
     [Authorize(Roles = "Admin")]
-    public class OverviewController : BaseController
+    public class AdminOverviewController : AdminBaseController
     {
         [HttpGet]
         public ActionResult Index()
