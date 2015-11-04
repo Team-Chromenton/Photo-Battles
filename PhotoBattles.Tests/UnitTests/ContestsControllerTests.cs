@@ -60,15 +60,15 @@
             var contestController = new ContestsController(mockContext.Object, mockIdProvider.Object);
 
             var newContest = new ContestBindingModel()
-                {
-                    Title = "Contest three",
-                    Description = "Contests three description",
-                    VotingStrategy = VotingStrategy.Open,
-                    ParticipationStrategy = ParticipationStrategy.Open,
-                    RewardStrategy = RewardStrategy.SingleWinner,
-                    DeadlineStrategy = DeadlineStrategy.ParticipantsLimit,
-                    ParticipantsLimit = 3
-                };
+            {
+                Title = "Contest three",
+                Description = "Contests three description",
+                VotingStrategy = VotingStrategy.Open,
+                ParticipationStrategy = ParticipationStrategy.Open,
+                RewardStrategy = RewardStrategy.SingleWinner,
+                DeadlineStrategy = DeadlineStrategy.ParticipantsLimit,
+                ParticipantsLimit = 3
+            };
 
             var response = contestController.AddContest(newContest);
 
@@ -78,10 +78,41 @@
                 Assert.Fail();
             }
 
-            Assert.IsNotInstanceOfType(response, typeof(ViewResult));
+            mockContext.Verify(v => v.SaveChanges(), Times.Once);
             Assert.IsInstanceOfType(response, typeof(RedirectToRouteResult));
             Assert.AreEqual(1, contests.Count);
             Assert.AreEqual(newContest.Description, expected.Description);
+        }
+
+        [TestMethod]
+        public void EditContestShouldUpdateTheRecordCorrectly()
+        {
+            var fakeContest = this.mocks.FakeContestRepository.Object.GetAll().FirstOrDefault();
+            if (fakeContest == null)
+            {
+                Assert.Fail();
+            }
+
+            var fakeUser = this.mocks.FakeUserRepository.Object.GetAll().FirstOrDefault();
+            if (fakeUser == null)
+            {
+                Assert.Fail();
+            }
+
+            var mockContext = new Mock<IPhotoBattlesData>();
+            mockContext.Setup(c => c.Users)
+                       .Returns(this.mocks.FakeUserRepository.Object);
+            mockContext.Setup(c => c.Contests)
+                       .Returns(this.mocks.FakeContestRepository.Object);
+
+            var mockIdProvider = new Mock<IUserIdProvider>();
+            mockIdProvider.Setup(ip => ip.GetUserId())
+                          .Returns(fakeUser.Id);
+
+            var contestController = new ContestsController(mockContext.Object, mockIdProvider.Object);
+
+            fakeContest.Title = "updated contest title";
+            fakeContest.Description = "updated contest des";
         }
     }
 }
