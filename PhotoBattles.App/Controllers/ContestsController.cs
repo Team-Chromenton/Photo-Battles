@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Configuration;
     using System.Web.Mvc;
 
     using AutoMapper.QueryableExtensions;
@@ -12,7 +13,6 @@
 
     using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Extensions;
-    using PhotoBattles.App.Hubs;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data.Contracts;
@@ -69,6 +69,8 @@
                     .ThenByDescending(c => c.IsOpen)
                     .ThenByDescending(c => c.CreatedOn)
                     .ProjectTo<ContestViewModel>();
+
+            var currentUserName = this.User.Identity.GetUserName();
 
             foreach (var contest in contests)
             {
@@ -186,8 +188,9 @@
             var currentUser = this.Data.Users.Find(currentUserId);
             var participationStrategy = contest.GetParticipationStrategy(this.Data.Contests.Find(contest.Id));
 
-            if (participationStrategy.CanParticipate(currentUserName))
+            if (!participationStrategy.CanParticipate(currentUserName))
             {
+                this.AddNotification("You are currently participating in contest " + contest.Title, NotificationType.ERROR);
                 return this.RedirectToAction("Index");
             }
 
