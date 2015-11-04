@@ -25,7 +25,7 @@
     function infoExpiredContest(contestTitle, contestId) {
         $("#info-messages-container").attr('style', 'display: block');
 
-        $("#info-messages").append("<li>Contest " + contestTitle + " has expired.</li>");
+        $("#info-messages").append("<li>Contest " + contestTitle + " has just expired.</li>");
         $("#contest-" + contestId).attr('class', 'panel panel-default');
 
     }

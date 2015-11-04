@@ -159,15 +159,14 @@
         {
             this.CheckActive();
 
-            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
             var contest = this.Data.Contests.Find(id);
 
             if (!contest.IsActive)
             {
-                this.AddNotification("Contest " + contest.Title + " has expired.", NotificationType.INFO);
                 return this.RedirectToAction("Index");
             }
 
+            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
             var user = this.Data.Users.Find(userId);
 
             if (contest.ParticipationStrategy == ParticipationStrategy.Closed

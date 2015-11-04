@@ -13,6 +13,7 @@
 
     using Microsoft.AspNet.Identity;
 
+    using PhotoBattles.App.Extensions;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.App.Services;
@@ -42,6 +43,13 @@
         [HttpPost]
         public ActionResult AddPhoto(PhotoBindingModel model)
         {
+            this.CheckActive();
+
+            if (!this.Data.Contests.Find(model.ContestId).IsActive)
+            {
+                this.RedirectToAction("ParticipateContests", "Contests");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.ViewBag.StatusMessage("Error");
@@ -49,7 +57,7 @@
 
             string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
 
-            string[] uploadResults = this.UploadPhotoToGoogleDrive(model.PhotoData);
+            string[] uploadResults = this.UploadPhotoToGoogleDrive(model.PhotoData, model.ContestId);
 
             if (uploadResults[0] == "success")
             {
@@ -72,11 +80,12 @@
             }
             else
             {
-                return this.ViewBag.StatusMessage = "Error";
+                this.AddNotification("Photo did not upload. Please, try again later.", NotificationType.ERROR);
+                return this.RedirectToAction("AddPhoto", model.ContestId);
             }
         }
 
-        private string[] UploadPhotoToGoogleDrive(HttpPostedFileBase fileData)
+        private string[] UploadPhotoToGoogleDrive(HttpPostedFileBase fileData, int? contestId)
         {
             string photoMimeType = fileData.ContentType;
             string fileName = fileData.FileName;
@@ -106,7 +115,9 @@
             }
             catch (Exception exception)
             {
-                return new[] { "error", string.Format("Something happened.\r\n" + exception.Message) };
+                this.AddNotification(exception.Message, NotificationType.ERROR);
+
+                return null;
             }
         }
     }
