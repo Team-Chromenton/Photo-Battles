@@ -93,7 +93,7 @@
 
         public ActionResult AddContest()
         {
-            var model = new ContestBindingModel
+            var model = new ContestViewModel
                 {
                     Title = string.Empty,
                     Description = string.Empty,
@@ -206,7 +206,7 @@
                                                            .Where(p => p.Organizer.Id == userId)
                                                            .ProjectTo<ContestViewModel>();
 
-            return this.View("~/Views/Contests/_OwnContests.cshtml", ownContests);
+            return this.View("OwnContests", ownContests);
         }
 
         [HttpGet]
@@ -219,7 +219,7 @@
                                                             .OrderByDescending(c => c.CreatedOn)
                                                             .ProjectTo<ContestViewModel>();
 
-            return this.View("~/Views/Contests/_ParticipateContests.cshtml", partContests);
+            return this.View("ParticipateContests", partContests);
         }
 
         [HttpGet]
@@ -231,7 +231,7 @@
                                    .Where(p => p.Participants.Any(u => u.Id == userId) && p.Id == id)
                                    .ProjectTo<ContestViewModel>().FirstOrDefault();
 
-            return this.View("~/Views/Contests/_Winners.cshtml", winnContests);
+            return this.View("Winners", winnContests);
         }
 
         [HttpGet]
@@ -241,28 +241,34 @@
                               .Contests
                               .GetAll()
                               .Where(c => c.Id == id)
-                              .ProjectTo<EditContestViewModel>()
+                              .ProjectTo<ContestViewModel>()
                               .FirstOrDefault();
 
             if (contest == null)
             {
                 return this.HttpNotFound();
             }
+            
+            string currentUserName = System.Web.HttpContext.Current.User.Identity.GetUserName();
 
-            contest.Users = new List<UserViewModel>(
-                this.Data
-                    .Users
-                    .GetAll()
-                    .ProjectTo<UserViewModel>()
-                    .ToList());
+            var availableParticipants = this.Data.Users
+                                            .GetAll()
+                                            .ProjectTo<UserViewModel>()
+                                            .ToList();
+            contest.AvailableParticipants = new List<UserViewModel>(availableParticipants);
+
+            var availableVoters =
+                availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
+                                     .ToList();
+            contest.AvailableVoters = new List<UserViewModel>(availableVoters);
 
             this.ViewBag.Title = contest.Title;
-            return this.View("~/Views/Contests/_EditContest.cshtml", contest);
+            return this.View("EditContest", contest);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditContest(EditContestBindingModel model, int id)
+        public ActionResult EditContest(ContestBindingModel model, int id)
         {
             if (!this.ModelState.IsValid || model == null)
             {
@@ -295,91 +301,6 @@
             this.Data.SaveChanges();
 
             return this.RedirectToAction("Index", "Contests");
-        }
-
-        private bool EditDeadlineStartegy(EditContestBindingModel model, Contest contest)
-        {
-            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
-            {
-                contest.EndDate = model.EndDate;
-                contest.ParticipantsLimit = null;
-            }
-            else
-            {
-                contest.ParticipantsLimit = model.ParticipantsLimit;
-                contest.EndDate = null;
-            }
-
-            contest.DeadlineStrategy = model.DeadlineStrategy;
-
-            return true;
-        }
-
-        private bool EditRewardStrategy(EditContestBindingModel model, Contest contest)
-        {
-            if (model.RewardStrategy == RewardStrategy.MultipleWinners)
-            {
-                if (model.NumberOfWinners != null)
-                {
-                    contest.NumberOfWinners = (int)model.NumberOfWinners;
-                }
-            }
-            else
-            {
-                contest.NumberOfWinners = 1;
-            }
-
-            contest.RewardStrategy = model.RewardStrategy;
-
-            return true;
-        }
-
-        private bool EditAvailableParticipants(EditContestBindingModel model, Contest contest)
-        {
-            contest.RegisteredParticipants.Clear();
-
-            if (model.ParticipationStrategy == ParticipationStrategy.Closed)
-            {
-                if (model.Participants == null || !model.Participants.Any())
-                {
-                    this.AddNotification("Please select participants.", NotificationType.ERROR);
-                    return false;
-                }
-
-                var participants =
-                    this.Data.Users.GetAll().Where(u => model.Participants.Contains(u.UserName)).ToList();
-
-                contest.RegisteredParticipants = new List<User>(participants);
-                contest.IsOpen = false;
-            }
-            else
-            {
-                contest.IsOpen = true;
-            }
-
-            contest.ParticipationStrategy = model.ParticipationStrategy;
-            return true;
-        }
-
-        private bool EditAvailableVoters(EditContestBindingModel model, Contest contest)
-        {
-            contest.RegisteredVoters.Clear();
-
-            if (model.VotingStrategy == VotingStrategy.Closed)
-            {
-                if (model.Voters == null || !model.Voters.Any())
-                {
-                    this.AddNotification("Please select voters.", NotificationType.ERROR);
-                    return false;
-                }
-
-                var voters = this.Data.Users.GetAll().Where(u => model.Voters.Contains(u.UserName)).ToList();
-
-                contest.RegisteredVoters = new List<User>(voters);
-            }
-
-            contest.VotingStrategy = model.VotingStrategy;
-            return true;
         }
 
         [HttpPost]
@@ -425,9 +346,93 @@
             return this.RedirectToAction("OwnContests", "Contests");
         }
 
+        private bool EditDeadlineStartegy(ContestBindingModel model, Contest contest)
+        {
+            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
+            {
+                contest.EndDate = model.EndDate;
+                contest.ParticipantsLimit = null;
+            }
+            else
+            {
+                contest.ParticipantsLimit = model.ParticipantsLimit;
+                contest.EndDate = null;
+            }
+
+            contest.DeadlineStrategy = model.DeadlineStrategy;
+
+            return true;
+        }
+
+        private bool EditRewardStrategy(ContestBindingModel model, Contest contest)
+        {
+            if (model.RewardStrategy == RewardStrategy.MultipleWinners)
+            {
+                if (model.NumberOfWinners != null)
+                {
+                    contest.NumberOfWinners = (int)model.NumberOfWinners;
+                }
+            }
+            else
+            {
+                contest.NumberOfWinners = 1;
+            }
+
+            contest.RewardStrategy = model.RewardStrategy;
+
+            return true;
+        }
+
+        private bool EditAvailableParticipants(ContestBindingModel model, Contest contest)
+        {
+            contest.RegisteredParticipants.Clear();
+
+            if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            {
+                if (model.Participants == null || !model.Participants.Any())
+                {
+                    this.AddNotification("Please select participants.", NotificationType.ERROR);
+                    return false;
+                }
+
+                var participants =
+                    this.Data.Users.GetAll().Where(u => model.Participants.Contains(u.UserName)).ToList();
+
+                contest.RegisteredParticipants = new List<User>(participants);
+                contest.IsOpen = false;
+            }
+            else
+            {
+                contest.IsOpen = true;
+            }
+
+            contest.ParticipationStrategy = model.ParticipationStrategy;
+            return true;
+        }
+
+        private bool EditAvailableVoters(ContestBindingModel model, Contest contest)
+        {
+            contest.RegisteredVoters.Clear();
+
+            if (model.VotingStrategy == VotingStrategy.Closed)
+            {
+                if (model.Voters == null || !model.Voters.Any())
+                {
+                    this.AddNotification("Please select voters.", NotificationType.ERROR);
+                    return false;
+                }
+
+                var voters = this.Data.Users.GetAll().Where(u => model.Voters.Contains(u.UserName)).ToList();
+
+                contest.RegisteredVoters = new List<User>(voters);
+            }
+
+            contest.VotingStrategy = model.VotingStrategy;
+            return true;
+        }
+
         private bool SetDeadlineStrategy(ContestBindingModel model, Contest newContest)
         {
-            // Deadline Strategy
             if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
             {
                 if (model.EndDate == null)

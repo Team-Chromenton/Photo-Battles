@@ -21,11 +21,19 @@
 
         public UserViewModel Organizer { get; set; }
 
+        public VotingStrategy VotingStrategy { get; set; }
+
         public ParticipationStrategy ParticipationStrategy { get; set; }
+
+        public RewardStrategy RewardStrategy { get; set; }
+
+        public DeadlineStrategy DeadlineStrategy { get; set; }
 
         public int? ParticipantsLimit { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public int? NumberOfWinners { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -35,9 +43,9 @@
 
         public ICollection<UserViewModel> Participants { get; set; }
 
-        public DeadlineStrategy DeadlineStrategy { get; set; }
+        public ICollection<UserViewModel> AvailableParticipants { get; set; }
 
-        public ICollection<UserViewModel> RegisteredParticipants { get; set; }
+        public ICollection<UserViewModel> AvailableVoters { get; set; }
 
         public void CreateMappings(IConfiguration configuration)
         {

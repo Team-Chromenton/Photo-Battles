@@ -1,17 +1,15 @@
 ﻿@model PhotoBattles.App.Models.ViewModels.ContestViewModel
-
 @{
-    ViewBag.Title = "Add Contest";
+    ViewBag.Title = "Edit Contest";
 }
 
 <h2>@ViewBag.Title</h2>
-@using (Html.BeginForm("AddContest", "Contests", FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("EditContest", "Contests", FormMethod.Post, new { role = "form" }))
 {
     @Html.Partial("_ContestForm")
 }
 
-
-@section scripts {
+@section scripts{
     <script>
         function hide(obj) {
             var el = document.getElementById(obj);
