@@ -186,7 +186,7 @@
             var currentUser = this.Data.Users.Find(currentUserId);
             var participationStrategy = contest.GetParticipationStrategy(this.Data.Contests.Find(contest.Id));
 
-            if (participationStrategy.CanParticipate(currentUserName))
+            if (!participationStrategy.CanParticipate(currentUserName))
             {
                 return this.RedirectToAction("Index");
             }
