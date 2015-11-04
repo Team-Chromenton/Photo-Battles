@@ -10,6 +10,7 @@
 
 @using (Html.BeginForm("AddPhoto", "Photos", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
 {
+    @Html.AntiForgeryToken()
     <span>
         @Html.TextBoxFor(m => m.ContestId, new { type = "hidden" })
     </span>

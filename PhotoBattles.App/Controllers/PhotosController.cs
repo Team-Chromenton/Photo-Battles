@@ -41,6 +41,7 @@
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddPhoto(PhotoBindingModel model)
         {
             var contest = this.Data.Contests.GetAll().Where(c => c.Id == model.ContestId).ProjectTo<ContestViewModel>().FirstOrDefault();
