@@ -1,8 +1,9 @@
 ﻿$(function () {
     $.connection.hub.start().done(function() {
-        console.log("Voting Hub Started!");
+        console.log("Hub component initiated ...");
     });
 
+    // Voting Hub
     var votingHub = $.connection.votingHub;
 
     function increaseScore(photoId) {
@@ -17,4 +18,13 @@
 
     votingHub.client.increaseScore = increaseScore;
     votingHub.client.decreaseScore = decreaseScore;
+
+    // Contest Information Hub
+    var contestInfoHub = $.connection.contestInfoHub;
+
+    function infoExpiredContest(contestTitle) {
+        $("#info-messages").append("<li>Contest " + contestTitle + " has expired.</li>");
+    }
+
+    contestInfoHub.client.infoExpiredContest = infoExpiredContest;
 })

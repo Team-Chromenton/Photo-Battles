@@ -7,6 +7,7 @@
     using Microsoft.AspNet.Identity;
 
     using PhotoBattles.App.Contracts;
+    using PhotoBattles.App.Hubs;
     using PhotoBattles.App.Infrastructure;
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
@@ -31,25 +32,26 @@
 
         public void CheckActive()
         {
-            var contests = this.Data.Contests.GetAll();
+            var hub = new ContestInformationHub();
+
+            var contests = this.Data.Contests.GetAll().Where(c => c.IsActive);
 
             foreach (var contest in contests)
             {
-                if (contest.IsActive)
+                if (contest.DeadlineStrategy == DeadlineStrategy.EndDate)
                 {
-                    if (contest.DeadlineStrategy == DeadlineStrategy.EndDate)
+                    if (DateTime.Now > contest.EndDate)
                     {
-                        if (DateTime.Now > contest.EndDate)
-                        {
-                            contest.IsActive = false;
-                        }
+                        contest.IsActive = false;
+                        hub.InfoExpiredContest(contest.Title);
                     }
-                    else if (contest.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
+                }
+                else if (contest.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
+                {
+                    if (contest.RegisteredParticipants.Count > contest.ParticipantsLimit)
                     {
-                        if (contest.RegisteredParticipants.Count > contest.ParticipantsLimit)
-                        {
-                            contest.IsActive = false;
-                        }
+                        contest.IsActive = false;
+                        hub.InfoExpiredContest(contest.Title);
                     }
                 }
             }

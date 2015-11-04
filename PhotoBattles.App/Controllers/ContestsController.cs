@@ -42,6 +42,8 @@
         [AllowAnonymous]
         public ActionResult GetContests(int? pageNum)
         {
+            this.CheckActive();
+
             pageNum = pageNum ?? 0;
             this.ViewBag.IsEndOfRecords = false;
 
@@ -63,8 +65,6 @@
 
         public void LoadAllContestsToSession()
         {
-            this.CheckActive();
-
             IQueryable<ContestViewModel> contests =
                 this.Data.Contests.GetAll()
                     .OrderByDescending(c => c.IsActive)

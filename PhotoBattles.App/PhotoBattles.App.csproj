@@ -282,6 +282,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\ContestInformationHub.cs" />
     <Compile Include="Hubs\VotingHub.cs" />
     <Compile Include="Infrastructure\AspNetUserIdProvider.cs" />
     <Compile Include="Contracts\IUserIdProvider.cs" />
