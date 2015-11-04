@@ -39,10 +39,10 @@
                             IsActive = true,
                             IsOpen = true,
                             OrganizerId = "fakeuseroneid",
-                            VotingStrategy = VotingStrategy.Open,
-                            ParticipationStrategy = ParticipationStrategy.Open,
-                            RewardStrategy = RewardStrategy.SingleWinner,
-                            DeadlineStrategy = DeadlineStrategy.ParticipantsLimit,
+                            VotingStrategyEnum = VotingStrategyEnum.Open,
+                            ParticipationStrategyEnum = ParticipationStrategyEnum.Open,
+                            RewardStrategyEnum = RewardStrategyEnum.SingleWinner,
+                            DeadlineStrategyEnum = DeadlineStrategyEnum.ParticipantsLimit,
                             ParticipantsLimit = 10
                         },
                     new Contest()
@@ -54,10 +54,10 @@
                             IsActive = true,
                             IsOpen = true,
                             OrganizerId = "fakeusertwoid",
-                            VotingStrategy = VotingStrategy.Open,
-                            ParticipationStrategy = ParticipationStrategy.Open,
-                            RewardStrategy = RewardStrategy.SingleWinner,
-                            DeadlineStrategy = DeadlineStrategy.ParticipantsLimit,
+                            VotingStrategyEnum = VotingStrategyEnum.Open,
+                            ParticipationStrategyEnum = ParticipationStrategyEnum.Open,
+                            RewardStrategyEnum = RewardStrategyEnum.SingleWinner,
+                            DeadlineStrategyEnum = DeadlineStrategyEnum.ParticipantsLimit,
                             ParticipantsLimit = 5
                         }
                 };

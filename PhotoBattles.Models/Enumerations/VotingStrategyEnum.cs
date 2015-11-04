@@ -1,6 +1,6 @@
 ﻿namespace PhotoBattles.Models.Enumerations
 {
-    public enum VotingStrategy
+    public enum VotingStrategyEnum
     {
         Open = 0,
 

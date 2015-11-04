@@ -14,6 +14,8 @@ namespace PhotoBattles.App.App_Start
 
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
+    using PhotoBattles.Models.Contracts;
+    using PhotoBattles.Models.Strategies.VotingStrategies;
 
     public static class NinjectWebCommon
     {

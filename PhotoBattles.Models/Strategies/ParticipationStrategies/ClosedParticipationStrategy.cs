@@ -1,21 +1,23 @@
 ﻿namespace PhotoBattles.Models.Strategies.ParticipationStrategies
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using PhotoBattles.Models.Contracts;
 
     public class ClosedParticipationStrategy : IParticipationStrategy
     {
-        private IList<string> participants = null;
+        private readonly IContest contest;
 
-        public ClosedParticipationStrategy(string[] participants)
+        public ClosedParticipationStrategy(IContest contest)
         {
-            this.participants = participants;
+            this.contest = contest;
         }
 
-        public bool CanParticipate(string user)
+        public bool CanParticipate(string userName)
         {
-            if (this.participants.Contains(user))
+            if (this.contest.RegisteredParticipants.Any(rp => rp.UserName == userName)
+                && this.contest.Participants.Any(p => p.UserName != userName))
             {
                 return true;
             }

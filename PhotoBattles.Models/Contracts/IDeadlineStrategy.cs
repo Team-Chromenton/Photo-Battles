@@ -2,6 +2,6 @@
 {
     public interface IDeadlineStrategy
     {
-        void Expire();
+        bool Expire();
     }
 }

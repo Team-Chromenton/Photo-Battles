@@ -1,6 +1,6 @@
 ﻿namespace PhotoBattles.Models.Enumerations
 {
-    public enum DeadlineStrategy
+    public enum DeadlineStrategyEnum
     {
         EndDate = 0,
 

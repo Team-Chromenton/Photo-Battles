@@ -88,7 +88,7 @@
 
         private bool EditDeadlineStartegy(ContestBindingModel model, Contest contest)
         {
-            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
+            if (model.DeadlineStrategyEnum == DeadlineStrategyEnum.EndDate)
             {
                 contest.EndDate = model.EndDate;
                 contest.ParticipantsLimit = null;
@@ -99,14 +99,14 @@
                 contest.EndDate = null;
             }
 
-            contest.DeadlineStrategy = model.DeadlineStrategy;
+            contest.DeadlineStrategyEnum = model.DeadlineStrategyEnum;
 
             return true;
         }
 
         private bool EditRewardStrategy(ContestBindingModel model, Contest contest)
         {
-            if (model.RewardStrategy == RewardStrategy.MultipleWinners)
+            if (model.RewardStrategyEnum == RewardStrategyEnum.MultipleWinners)
             {
                 if (model.NumberOfWinners != null)
                 {
@@ -118,7 +118,7 @@
                 contest.NumberOfWinners = 1;
             }
 
-            contest.RewardStrategy = model.RewardStrategy;
+            contest.RewardStrategyEnum = model.RewardStrategyEnum;
 
             return true;
         }
@@ -127,7 +127,7 @@
         {
             contest.RegisteredParticipants.Clear();
 
-            if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            if (model.ParticipationStrategyEnum == ParticipationStrategyEnum.Closed)
             {
                 if (model.Participants == null || !model.Participants.Any())
                 {
@@ -146,7 +146,7 @@
                 contest.IsOpen = true;
             }
 
-            contest.ParticipationStrategy = model.ParticipationStrategy;
+            contest.ParticipationStrategyEnum = model.ParticipationStrategyEnum;
             return true;
         }
 
@@ -154,7 +154,7 @@
         {
             contest.RegisteredVoters.Clear();
 
-            if (model.VotingStrategy == VotingStrategy.Closed)
+            if (model.VotingStrategyEnum == VotingStrategyEnum.Closed)
             {
                 if (model.Voters == null || !model.Voters.Any())
                 {
@@ -167,7 +167,7 @@
                 contest.RegisteredVoters = new List<User>(voters);
             }
 
-            contest.VotingStrategy = model.VotingStrategy;
+            contest.VotingStrategyEnum = model.VotingStrategyEnum;
             return true;
         }
     }

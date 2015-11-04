@@ -12,6 +12,7 @@
 
     using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Extensions;
+    using PhotoBattles.App.Hubs;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data.Contracts;
@@ -42,8 +43,6 @@
         [AllowAnonymous]
         public ActionResult GetContests(int? pageNum)
         {
-            this.CheckActive();
-
             pageNum = pageNum ?? 0;
             this.ViewBag.IsEndOfRecords = false;
 
@@ -51,8 +50,7 @@
             {
                 var contests = this.GetRecordsForPage(pageNum.Value);
 
-                this.ViewBag.IsEndOfRecords = contests.Any()
-                                              && ((pageNum.Value * RecordsPerPage) >= contests.Last().Key);
+                this.ViewBag.IsEndOfRecords = contests.Any() && ((pageNum.Value * RecordsPerPage) >= contests.Last().Key);
                 return this.PartialView("_ContestRow", contests);
             }
             else
@@ -65,12 +63,25 @@
 
         public void LoadAllContestsToSession()
         {
-            IQueryable<ContestViewModel> contests =
+            IEnumerable<ContestViewModel> contests =
                 this.Data.Contests.GetAll()
                     .OrderByDescending(c => c.IsActive)
                     .ThenByDescending(c => c.IsOpen)
                     .ThenByDescending(c => c.CreatedOn)
                     .ProjectTo<ContestViewModel>();
+
+            foreach (var contest in contests)
+            {
+                var deadlineStrategy = contest.GetDeadlineStrategy(this.Data.Contests.Find(contest.Id));
+                bool hasExpired = deadlineStrategy.Expire();
+
+                if (hasExpired)
+                {
+                    this.hub.InfoExpiredContest(contest.Title, contest.Id);
+                }
+            }
+
+            this.Data.SaveChanges();
 
             int contestIndex = 1;
 
@@ -157,25 +168,30 @@
         [HttpGet]
         public ActionResult Participate(int id)
         {
-            this.CheckActive();
+            var contest = this.Data.Contests.GetAll().Where(c => c.Id == id).ProjectTo<ContestViewModel>().FirstOrDefault();
 
-            var contest = this.Data.Contests.Find(id);
+            var deadlineStrategy = contest.GetDeadlineStrategy(this.Data.Contests.Find(contest.Id));
+            bool hasExpired = deadlineStrategy.Expire();
 
-            if (!contest.IsActive)
+            if (hasExpired)
+            {
+                this.Data.SaveChanges();
+                this.hub.InfoExpiredContest(contest.Title, contest.Id);
+                return this.RedirectToAction("Index");
+            }
+
+            var currentUserId = this.User.Identity.GetUserId();
+            var currentUserName = this.User.Identity.GetUserName();
+
+            var currentUser = this.Data.Users.Find(currentUserId);
+            var participationStrategy = contest.GetParticipationStrategy(this.Data.Contests.Find(contest.Id));
+
+            if (participationStrategy.CanParticipate(currentUserName))
             {
                 return this.RedirectToAction("Index");
             }
 
-            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            var user = this.Data.Users.Find(userId);
-
-            if (contest.ParticipationStrategy == ParticipationStrategy.Closed
-                && !contest.RegisteredParticipants.Contains(user))
-            {
-                return this.RedirectToAction("Index");
-            }
-
-            contest.Participants.Add(user);
+            this.Data.Contests.Find(id).Participants.Add(currentUser);
 
             this.Data.SaveChanges();
 
@@ -186,13 +202,17 @@
         [HttpGet]
         public ActionResult Details(int id)
         {
+            var currentUserName = this.User.Identity.GetUserName();
+
             var contest = this.Data.Contests.GetAll()
                               .Where(c => c.Id == id)
                               .OrderByDescending(c => c.CreatedOn)
                               .ProjectTo<ContestDetailsViewModel>()
                               .FirstOrDefault();
 
-            contest.Photos.ForEach(p => p.UserCanVote = this.CanVote(id, p.Id));
+            var votingStrategy = contest.GetVotingStrategy(this.Data.Contests.Find(contest.Id));
+
+            contest.Photos.ForEach(p => p.UserCanVote = votingStrategy.CanVote(p.Id, currentUserName));
 
             return this.View(contest);
         }
@@ -249,17 +269,19 @@
                 return this.HttpNotFound();
             }
             
-            string currentUserName = System.Web.HttpContext.Current.User.Identity.GetUserName();
+            string currentUserName = this.User.Identity.GetUserName();
 
             var availableParticipants = this.Data.Users
                                             .GetAll()
                                             .ProjectTo<UserViewModel>()
                                             .ToList();
+
             contest.AvailableParticipants = new List<UserViewModel>(availableParticipants);
 
-            var availableVoters =
-                availableParticipants.Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
-                                     .ToList();
+            var availableVoters = availableParticipants
+                .Where(u => u.UserName != currentUserName && u.UserName != "Administrator")
+                .ToList();
+
             contest.AvailableVoters = new List<UserViewModel>(availableVoters);
 
             this.ViewBag.Title = contest.Title;
@@ -318,29 +340,13 @@
         [HttpPost]
         public ActionResult Finalize(int id)
         {
-            var contextFinalize = this.Data.Contests.Find(id);
-            if (contextFinalize.NumberOfWinners > 1)
-            {
-                var winners =
-                    contextFinalize.Participants.Where(p => p.Votes.Count > 0)
-                                   .OrderByDescending(p => p.Votes.Count)
-                                   .Take(contextFinalize.NumberOfWinners);
-                contextFinalize.Winners = winners.ToList();
-            }
-            else
-            {
-                var winner =
-                    contextFinalize.Participants.Where(p => p.Votes.Count > 0)
-                                   .OrderByDescending(p => p.Votes.Count)
-                                   .FirstOrDefault();
-                contextFinalize.Winners = new List<User>()
-                    {
-                        winner
-                    };
-            }
+            var contest = this.Data.Contests.GetAll().Where(c => c.Id == id).ProjectTo<ContestViewModel>().FirstOrDefault();
 
-            contextFinalize.IsActive = false;
-            contextFinalize.IsOpen = false;
+            var rewardStrategy = contest.GetRewardStrategy(this.Data.Contests.Find(contest.Id));
+            rewardStrategy.SetWinners();
+
+            this.Data.Contests.Find(contest.Id).IsActive = false;
+            this.Data.Contests.Find(contest.Id).IsOpen = false;
 
             this.Data.SaveChanges();
             return this.RedirectToAction("OwnContests", "Contests");
@@ -348,7 +354,7 @@
 
         private bool EditDeadlineStartegy(ContestBindingModel model, Contest contest)
         {
-            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
+            if (model.DeadlineStrategyEnum == DeadlineStrategyEnum.EndDate)
             {
                 contest.EndDate = model.EndDate;
                 contest.ParticipantsLimit = null;
@@ -359,14 +365,14 @@
                 contest.EndDate = null;
             }
 
-            contest.DeadlineStrategy = model.DeadlineStrategy;
+            contest.DeadlineStrategyEnum = model.DeadlineStrategyEnum;
 
             return true;
         }
 
         private bool EditRewardStrategy(ContestBindingModel model, Contest contest)
         {
-            if (model.RewardStrategy == RewardStrategy.MultipleWinners)
+            if (model.RewardStrategyEnum == RewardStrategyEnum.MultipleWinners)
             {
                 if (model.NumberOfWinners != null)
                 {
@@ -378,7 +384,7 @@
                 contest.NumberOfWinners = 1;
             }
 
-            contest.RewardStrategy = model.RewardStrategy;
+            contest.RewardStrategyEnum = model.RewardStrategyEnum;
 
             return true;
         }
@@ -387,7 +393,7 @@
         {
             contest.RegisteredParticipants.Clear();
 
-            if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            if (model.ParticipationStrategyEnum == ParticipationStrategyEnum.Closed)
             {
                 if (model.Participants == null || !model.Participants.Any())
                 {
@@ -406,7 +412,7 @@
                 contest.IsOpen = true;
             }
 
-            contest.ParticipationStrategy = model.ParticipationStrategy;
+            contest.ParticipationStrategyEnum = model.ParticipationStrategyEnum;
             return true;
         }
 
@@ -414,7 +420,7 @@
         {
             contest.RegisteredVoters.Clear();
 
-            if (model.VotingStrategy == VotingStrategy.Closed)
+            if (model.VotingStrategyEnum == VotingStrategyEnum.Closed)
             {
                 if (model.Voters == null || !model.Voters.Any())
                 {
@@ -427,13 +433,13 @@
                 contest.RegisteredVoters = new List<User>(voters);
             }
 
-            contest.VotingStrategy = model.VotingStrategy;
+            contest.VotingStrategyEnum = model.VotingStrategyEnum;
             return true;
         }
 
         private bool SetDeadlineStrategy(ContestBindingModel model, Contest newContest)
         {
-            if (model.DeadlineStrategy == DeadlineStrategy.EndDate)
+            if (model.DeadlineStrategyEnum == DeadlineStrategyEnum.EndDate)
             {
                 if (model.EndDate == null)
                 {
@@ -441,10 +447,10 @@
                     return false;
                 }
 
-                newContest.DeadlineStrategy = DeadlineStrategy.EndDate;
+                newContest.DeadlineStrategyEnum = DeadlineStrategyEnum.EndDate;
                 newContest.EndDate = (DateTime)model.EndDate;
             }
-            else if (model.DeadlineStrategy == DeadlineStrategy.ParticipantsLimit)
+            else if (model.DeadlineStrategyEnum == DeadlineStrategyEnum.ParticipantsLimit)
             {
                 if (model.ParticipantsLimit == null || model.ParticipantsLimit <= 0)
                 {
@@ -452,7 +458,7 @@
                     return false;
                 }
 
-                newContest.DeadlineStrategy = DeadlineStrategy.ParticipantsLimit;
+                newContest.DeadlineStrategyEnum = DeadlineStrategyEnum.ParticipantsLimit;
                 newContest.ParticipantsLimit = (int)model.ParticipantsLimit;
             }
 
@@ -461,12 +467,12 @@
 
         private bool SetRewardStrategy(ContestBindingModel model, Contest newContest)
         {
-            if (model.RewardStrategy == RewardStrategy.SingleWinner)
+            if (model.RewardStrategyEnum == RewardStrategyEnum.SingleWinner)
             {
-                newContest.RewardStrategy = RewardStrategy.SingleWinner;
+                newContest.RewardStrategyEnum = RewardStrategyEnum.SingleWinner;
                 newContest.NumberOfWinners = 1;
             }
-            else if (model.RewardStrategy == RewardStrategy.MultipleWinners)
+            else if (model.RewardStrategyEnum == RewardStrategyEnum.MultipleWinners)
             {
                 if (model.NumberOfWinners == null || model.NumberOfWinners <= 0)
                 {
@@ -474,7 +480,7 @@
                     return false;
                 }
 
-                newContest.RewardStrategy = RewardStrategy.MultipleWinners;
+                newContest.RewardStrategyEnum = RewardStrategyEnum.MultipleWinners;
                 newContest.NumberOfWinners = (int)model.NumberOfWinners;
             }
 
@@ -483,11 +489,11 @@
 
         private bool SetParticipatingStrategy(ContestBindingModel model, Contest newContest)
         {
-            if (model.ParticipationStrategy == ParticipationStrategy.Open)
+            if (model.ParticipationStrategyEnum == ParticipationStrategyEnum.Open)
             {
-                newContest.ParticipationStrategy = ParticipationStrategy.Open;
+                newContest.ParticipationStrategyEnum = ParticipationStrategyEnum.Open;
             }
-            else if (model.ParticipationStrategy == ParticipationStrategy.Closed)
+            else if (model.ParticipationStrategyEnum == ParticipationStrategyEnum.Closed)
             {
                 if (model.Participants == null || !model.Participants.Any())
                 {
@@ -495,7 +501,7 @@
                     return false;
                 }
 
-                newContest.ParticipationStrategy = ParticipationStrategy.Closed;
+                newContest.ParticipationStrategyEnum = ParticipationStrategyEnum.Closed;
 
                 var participants = this.Data.Users.GetAll().Where(u => model.Participants.Contains(u.UserName)).ToList();
 
@@ -508,11 +514,11 @@
 
         private bool SetVotingStrategy(ContestBindingModel model, Contest newContest)
         {
-            if (model.VotingStrategy == VotingStrategy.Open)
+            if (model.VotingStrategyEnum == VotingStrategyEnum.Open)
             {
-                newContest.VotingStrategy = VotingStrategy.Open;
+                newContest.VotingStrategyEnum = VotingStrategyEnum.Open;
             }
-            else if (model.VotingStrategy == VotingStrategy.Closed)
+            else if (model.VotingStrategyEnum == VotingStrategyEnum.Closed)
             {
                 if (model.Voters == null || !model.Voters.Any())
                 {
@@ -524,7 +530,7 @@
 
                 voters.ForEach(v => newContest.RegisteredVoters.Add(v));
 
-                newContest.VotingStrategy = VotingStrategy.Closed;
+                newContest.VotingStrategyEnum = VotingStrategyEnum.Closed;
             }
 
             return true;

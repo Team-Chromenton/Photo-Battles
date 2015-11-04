@@ -17,13 +17,15 @@
         [Required]
         public string Description { get; set; }
 
-        public VotingStrategy VotingStrategy { get; set; }
+        //// Strategies - Enum
+        public VotingStrategyEnum VotingStrategyEnum { get; set; }
 
-        public ParticipationStrategy ParticipationStrategy { get; set; }
+        public ParticipationStrategyEnum ParticipationStrategyEnum { get; set; }
 
-        public RewardStrategy RewardStrategy { get; set; }
+        public RewardStrategyEnum RewardStrategyEnum { get; set; }
 
-        public DeadlineStrategy DeadlineStrategy { get; set; }
+        public DeadlineStrategyEnum DeadlineStrategyEnum { get; set; }
+        //// Strategies - Enum
 
         public ICollection<UserViewModel> AvailableVoters { get; set; }
 

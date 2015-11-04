@@ -72,12 +72,12 @@ namespace PhotoBattles.Data.Migrations
 
                 if (i % 2 == 0)
                 {
-                    contest.DeadlineStrategy = DeadlineStrategy.EndDate;
+                    contest.DeadlineStrategyEnum = DeadlineStrategyEnum.EndDate;
                     contest.EndDate = contest.CreatedOn.AddDays(14);
                 }
                 else
                 {
-                    contest.DeadlineStrategy = DeadlineStrategy.ParticipantsLimit;
+                    contest.DeadlineStrategyEnum = DeadlineStrategyEnum.ParticipantsLimit;
                     contest.ParticipantsLimit = i + 5;
                 }
 

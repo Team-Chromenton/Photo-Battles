@@ -2,6 +2,6 @@
 {
     public interface IVotingStrategy
     {
-        bool CanVote(string user);
+        bool CanVote(int photoId, string userName);
     }
 }

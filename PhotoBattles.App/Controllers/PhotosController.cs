@@ -43,10 +43,14 @@
         [HttpPost]
         public ActionResult AddPhoto(PhotoBindingModel model)
         {
-            this.CheckActive();
+            var contest = this.Data.Contests.GetAll().Where(c => c.Id == model.ContestId).ProjectTo<ContestViewModel>().FirstOrDefault();
+            var deadlineStrategy = contest.GetDeadlineStrategy(this.Data.Contests.Find(contest.Id));
+            bool hasExpired = deadlineStrategy.Expire();
 
-            if (!this.Data.Contests.Find(model.ContestId).IsActive)
+            if (hasExpired)
             {
+                this.Data.SaveChanges();
+                this.hub.InfoExpiredContest(contest.Title, contest.Id);
                 this.RedirectToAction("ParticipateContests", "Contests");
             }
 
@@ -55,7 +59,7 @@
                 return this.ViewBag.StatusMessage("Error");
             }
 
-            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            string currentUserId = this.User.Identity.GetUserId();
 
             string[] uploadResults = this.UploadPhotoToGoogleDrive(model.PhotoData, model.ContestId);
 

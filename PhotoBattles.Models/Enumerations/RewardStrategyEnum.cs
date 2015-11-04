@@ -1,6 +1,6 @@
 ﻿namespace PhotoBattles.Models.Enumerations
 {
-    public enum RewardStrategy
+    public enum RewardStrategyEnum
     {
         SingleWinner = 0,
 

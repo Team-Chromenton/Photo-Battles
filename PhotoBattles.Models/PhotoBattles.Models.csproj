@@ -59,13 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IDeadlineStrategy.cs" />
+    <Compile Include="Contracts\IContest.cs" />
     <Compile Include="Contracts\IParticipationStrategy.cs" />
     <Compile Include="Contracts\IRewardStrategy.cs" />
     <Compile Include="Contracts\IVotingStrategy.cs" />
-    <Compile Include="Enumerations\DeadlineStrategy.cs" />
-    <Compile Include="Enumerations\ParticipationStrategy.cs" />
-    <Compile Include="Enumerations\RewardStrategy.cs" />
-    <Compile Include="Enumerations\VotingStrategy.cs" />
+    <Compile Include="Enumerations\DeadlineStrategyEnum.cs" />
+    <Compile Include="Enumerations\ParticipationStrategyEnum.cs" />
+    <Compile Include="Enumerations\RewardStrategyEnum.cs" />
+    <Compile Include="Enumerations\VotingStrategyEnum.cs" />
     <Compile Include="Photo.cs" />
     <Compile Include="Strategies\ParticipationStrategies\ClosedParticipationStrategy.cs" />
     <Compile Include="Strategies\VotingStrategies\ClosedVotingStartegy.cs" />

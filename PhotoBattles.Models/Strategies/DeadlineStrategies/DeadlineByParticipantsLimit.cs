@@ -4,22 +4,23 @@
 
     public class DeadlineByParticipantsLimit : IDeadlineStrategy
     {
-        private readonly Contest contest;
+        private readonly IContest contest;
 
-        private readonly int numberOfParticipants;
-
-        public DeadlineByParticipantsLimit(Contest contest, int numberOfParticipants)
+        public DeadlineByParticipantsLimit(IContest contest)
         {
             this.contest = contest;
-            this.numberOfParticipants = numberOfParticipants;
         }
 
-        public void Expire()
+        public bool Expire()
         {
-            if (this.contest.Participants.Count > this.numberOfParticipants)
-            {
+            if (this.contest.IsActive && this.contest.RegisteredParticipants.Count > this.contest.ParticipantsLimit)
+            {   
+                this.contest.IsActive = false;
                 this.contest.IsOpen = false;
+                return true;
             }
+
+            return false;
         }
     }
 }

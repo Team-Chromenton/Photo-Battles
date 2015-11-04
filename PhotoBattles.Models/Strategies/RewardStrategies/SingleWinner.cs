@@ -1,4 +1,4 @@
-﻿namespace PhotoBattles.Models.Strategies
+﻿namespace PhotoBattles.Models.Strategies.RewardStrategies
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -7,16 +7,21 @@
 
     public class SingleWinner : IRewardStrategy
     {
-        private readonly Contest contest;
+        private readonly IContest contest;
 
-        public SingleWinner(Contest contest)
+        public SingleWinner(IContest contest)
         {
             this.contest = contest;
         }
 
-        public ICollection<User> GetWiners()
+        public void SetWinners()
         {
-            return this.contest.Winners.Take(1).ToList();
+            var winner = this.contest.Participants
+                .Where(p => p.Votes.Count > 0)
+                .OrderByDescending(p => p.Votes.Count)
+                .FirstOrDefault();
+
+            this.contest.Winners.Add(winner);
         }
     }
 }

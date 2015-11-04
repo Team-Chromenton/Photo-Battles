@@ -63,10 +63,10 @@
             {
                 Title = "Contest three",
                 Description = "Contests three description",
-                VotingStrategy = VotingStrategy.Open,
-                ParticipationStrategy = ParticipationStrategy.Open,
-                RewardStrategy = RewardStrategy.SingleWinner,
-                DeadlineStrategy = DeadlineStrategy.ParticipantsLimit,
+                VotingStrategyEnum = VotingStrategyEnum.Open,
+                ParticipationStrategyEnum = ParticipationStrategyEnum.Open,
+                RewardStrategyEnum = RewardStrategyEnum.SingleWinner,
+                DeadlineStrategyEnum = DeadlineStrategyEnum.ParticipantsLimit,
                 ParticipantsLimit = 3
             };
 

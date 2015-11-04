@@ -1,25 +1,27 @@
-﻿namespace PhotoBattles.Models.Strategies
+﻿namespace PhotoBattles.Models.Strategies.RewardStrategies
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using PhotoBattles.Models.Contracts;
 
     public class MultipleWinners : IRewardStrategy
     {
-        private readonly Contest contest;
+        private readonly IContest contest;
 
-        private readonly int numberOfWinners;
-
-        public MultipleWinners(Contest contest, int numberOfWinners)
+        public MultipleWinners(IContest contest)
         {
             this.contest = contest;
-            this.numberOfWinners = numberOfWinners;
         }
 
-        public ICollection<User> GetWiners()
+        public void SetWinners()
         {
-            return this.contest.Winners.Take(this.numberOfWinners).ToList();
+            var winners = this.contest.Participants
+                 .Where(p => p.Votes.Count > 0)
+                 .OrderByDescending(p => p.Votes.Count)
+                 .Take(this.contest.NumberOfWinners)
+                 .ToList();
+
+            winners.ForEach(this.contest.Winners.Add);
         }
     }
 }

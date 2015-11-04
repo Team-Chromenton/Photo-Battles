@@ -4,9 +4,10 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using PhotoBattles.Models.Contracts;
     using PhotoBattles.Models.Enumerations;
 
-    public class Contest
+    public class Contest : IContest
     {
         private ICollection<Photo> photos;
 
@@ -50,20 +51,19 @@
 
         public virtual User Organizer { get; set; }
 
-        //[Required]
-        public virtual VotingStrategy VotingStrategy { get; set; }
+        //// Strategies - Enum
+        public virtual VotingStrategyEnum VotingStrategyEnum { get; set; }
 
-        //[Required]
-        public virtual ParticipationStrategy ParticipationStrategy { get; set; }
+        public virtual ParticipationStrategyEnum ParticipationStrategyEnum { get; set; }
 
-        //[Required]
-        public virtual RewardStrategy RewardStrategy { get; set; }
+        public virtual RewardStrategyEnum RewardStrategyEnum { get; set; }
+
+        public virtual DeadlineStrategyEnum DeadlineStrategyEnum { get; set; }
+        //// Strategies - Enum
 
         [Required]
         public int NumberOfWinners { get; set; }
 
-        //[Required]
-        public virtual DeadlineStrategy DeadlineStrategy { get; set; }
 
         public DateTime? EndDate { get; set; }
 

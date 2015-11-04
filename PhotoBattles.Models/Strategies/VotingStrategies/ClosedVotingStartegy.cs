@@ -1,21 +1,21 @@
 ﻿namespace PhotoBattles.Models.Strategies.VotingStrategies
 {
-    using System.Collections.Generic;
+    using System.Linq;
 
     using PhotoBattles.Models.Contracts;
 
     public class ClosedVotingStartegy : IVotingStrategy
     {
-        private IList<string> commiteeMembers = null;
+        private readonly IContest contest;
 
-        public ClosedVotingStartegy(string[] committeeMembers)
+        public ClosedVotingStartegy(IContest contest)
         {
-            this.commiteeMembers = committeeMembers;
+            this.contest = contest;
         }
 
-        public bool CanVote(string user)
+        public bool CanVote(int photoId, string userName)
         {
-            if (this.commiteeMembers.Contains(user))
+            if (this.contest.RegisteredVoters.Any(rv => rv.UserName == userName) && !this.contest.Photos.FirstOrDefault(p => p.Id == photoId).Votes.Any(v => v.Author.UserName == userName))
             {
                 return true;
             }

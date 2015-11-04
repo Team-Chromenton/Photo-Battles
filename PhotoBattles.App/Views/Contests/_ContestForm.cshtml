@@ -14,12 +14,12 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.VotingStrategy, 0, new { @checked = "checked", @onclick = "hide('voters')", @id = "voting-strategy-open" })
-                        @Html.LabelFor(m => m.VotingStrategy, "Open", new { @for = "voting-strategy-open" })
+                        @Html.RadioButtonFor(m => m.VotingStrategyEnum, 0, new { @checked = "checked", @onclick = "hide('voters')", @id = "voting-strategy-open" })
+                        @Html.LabelFor(m => m.VotingStrategyEnum, "Open", new { @for = "voting-strategy-open" })
                     </div>
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.VotingStrategy, 1, new { @onclick = "show('voters')", @id = "voting-strategy-closed" })
-                        @Html.LabelFor(m => m.VotingStrategy, "Closed", new { @for = "voting-strategy-closed" })
+                        @Html.RadioButtonFor(m => m.VotingStrategyEnum, 1, new { @onclick = "show('voters')", @id = "voting-strategy-closed" })
+                        @Html.LabelFor(m => m.VotingStrategyEnum, "Closed", new { @for = "voting-strategy-closed" })
                     </div>
                     <div class="row">
                         <select multiple id="voters" name="Voters" style="width: 100%; display: none">
@@ -43,12 +43,12 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.ParticipationStrategy, 0, new { @checked = "checked", @onclick = "hide('participants')", @id = "participation-strategy-open" })
-                        @Html.LabelFor(m => m.ParticipationStrategy, "Open", new { @for = "participation-strategy-open" })
+                        @Html.RadioButtonFor(m => m.ParticipationStrategyEnum, 0, new { @checked = "checked", @onclick = "hide('participants')", @id = "participation-strategy-open" })
+                        @Html.LabelFor(m => m.ParticipationStrategyEnum, "Open", new { @for = "participation-strategy-open" })
                     </div>
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.ParticipationStrategy, 1, new { @onclick = "show('participants')", @id = "participation-strategy-closed" })
-                        @Html.LabelFor(m => m.ParticipationStrategy, "Closed", new { @for = "participation-strategy-closed" })
+                        @Html.RadioButtonFor(m => m.ParticipationStrategyEnum, 1, new { @onclick = "show('participants')", @id = "participation-strategy-closed" })
+                        @Html.LabelFor(m => m.ParticipationStrategyEnum, "Closed", new { @for = "participation-strategy-closed" })
                     </div>
                     <div class="row">
                         <select multiple id="participants" name="Participants" style="width: 100%; display: none">
@@ -72,12 +72,12 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.RewardStrategy, 0, new { @checked = "checked", @onclick = "hide('number-of-winners')", @id = "reward-strategy-single" })
-                        @Html.LabelFor(m => m.RewardStrategy, "Single Winner", new { @for = "reward-strategy-single" })
+                        @Html.RadioButtonFor(m => m.RewardStrategyEnum, 0, new { @checked = "checked", @onclick = "hide('number-of-winners')", @id = "reward-strategy-single" })
+                        @Html.LabelFor(m => m.RewardStrategyEnum, "Single Winner", new { @for = "reward-strategy-single" })
                     </div>
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.RewardStrategy, 1, new { @onclick = "show('number-of-winners')", @id = "reward-strategy-multiple" })
-                        @Html.LabelFor(m => m.RewardStrategy, "Multiple Winners", new { @for = "reward-strategy-multiple" })
+                        @Html.RadioButtonFor(m => m.RewardStrategyEnum, 1, new { @onclick = "show('number-of-winners')", @id = "reward-strategy-multiple" })
+                        @Html.LabelFor(m => m.RewardStrategyEnum, "Multiple Winners", new { @for = "reward-strategy-multiple" })
                     </div>
                     <div class="row">
                         @Html.TextBoxFor(m => m.NumberOfWinners, new { @id = "number-of-winners", @style = "display:none", @type = "number" })
@@ -93,14 +93,14 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.DeadlineStrategy, 0, new { @checked = "checked", @onclick = "hide('participants-limit'); show('end-date')", @id = "deadline-strategy-date" })
-                        @Html.LabelFor(m => m.DeadlineStrategy, "End date", new { @for = "deadline-strategy-date" })
+                        @Html.RadioButtonFor(m => m.DeadlineStrategyEnum, 0, new { @checked = "checked", @onclick = "hide('participants-limit'); show('end-date')", @id = "deadline-strategy-date" })
+                        @Html.LabelFor(m => m.DeadlineStrategyEnum, "End date", new { @for = "deadline-strategy-date" })
 
                         @Html.TextBoxFor(m => m.EndDate, new { @id = "end-date", @type = "date" })
                     </div>
                     <div class="row">
-                        @Html.RadioButtonFor(m => m.DeadlineStrategy, 1, new { @onclick = "hide('end-date'); show('participants-limit')", @id = "deadline-strategy-limit" })
-                        @Html.LabelFor(m => m.DeadlineStrategy, "Participants limit", new { @for = "deadline-strategy-limit" })
+                        @Html.RadioButtonFor(m => m.DeadlineStrategyEnum, 1, new { @onclick = "hide('end-date'); show('participants-limit')", @id = "deadline-strategy-limit" })
+                        @Html.LabelFor(m => m.DeadlineStrategyEnum, "Participants limit", new { @for = "deadline-strategy-limit" })
 
                         @Html.TextBoxFor(m => m.ParticipantsLimit, new { @id = "participants-limit", @style = "display:none", @type = "number" })
                     </div>

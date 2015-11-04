@@ -1,10 +1,14 @@
 ﻿namespace PhotoBattles.App.Controllers
 {
+    using System.Linq;
     using System.Web.Mvc;
+
+    using AutoMapper.QueryableExtensions;
 
     using Microsoft.AspNet.Identity;
 
     using PhotoBattles.App.Hubs;
+    using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models;
 
     [Authorize]
@@ -12,7 +16,9 @@
     {
         public ActionResult Upvote(int contestId, int photoId)
         {
-            if (!this.CanVote(contestId, photoId))
+            bool currentUserCanVote = this.CurrentUserCanVote(contestId, photoId);
+
+            if (!currentUserCanVote)
             {
                 return this.RedirectToAction("Details", "Contests", new { id = contestId });
             }
@@ -32,7 +38,9 @@
 
         public ActionResult Downvote(int contestId, int photoId)
         {
-            if (!this.CanVote(contestId, photoId))
+            bool currentUserCanVote = this.CurrentUserCanVote(contestId, photoId);
+
+            if (!currentUserCanVote)
             {
                 return this.RedirectToAction("Details", "Contests", new { id = contestId });
             }
@@ -48,6 +56,21 @@
             hub.DecreaseScore(photoId);
 
             return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        private bool CurrentUserCanVote(int contestId, int photoId)
+        {
+            var currentUsername = this.User.Identity.GetUserName();
+            var contest = this.Data.Contests.GetAll().Where(c => c.Id == contestId).ProjectTo<ContestViewModel>().FirstOrDefault();
+
+            var votingStrategy = contest.GetVotingStrategy(this.Data.Contests.Find(contest.Id));
+
+            if (votingStrategy.CanVote(photoId, currentUsername))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

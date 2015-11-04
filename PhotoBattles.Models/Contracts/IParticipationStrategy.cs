@@ -2,6 +2,6 @@
 {
     public interface IParticipationStrategy
     {
-        bool CanParticipate(string user);
+        bool CanParticipate(string userName);
     }
 }
