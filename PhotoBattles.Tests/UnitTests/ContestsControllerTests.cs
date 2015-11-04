@@ -135,5 +135,38 @@
             Assert.AreEqual(editContest.Title, result.Title);
             Assert.AreEqual(editContest.Description, result.Description);
         }
+
+        [TestMethod]
+        public void DissmissContestShouldWorkCorrectly()
+        {
+            var fakeContest = this.mocks.FakeContestRepository.Object.GetAll().FirstOrDefault();
+            if (fakeContest == null)
+            {
+                Assert.Fail();
+            }
+
+            var fakeUser = this.mocks.FakeUserRepository.Object.GetAll().FirstOrDefault();
+            if (fakeUser == null)
+            {
+                Assert.Fail();
+            }
+
+            var mockContext = new Mock<IPhotoBattlesData>();
+            mockContext.Setup(c => c.Users)
+                       .Returns(this.mocks.FakeUserRepository.Object);
+            mockContext.Setup(c => c.Contests)
+                       .Returns(this.mocks.FakeContestRepository.Object);
+
+            var mockIdProvider = new Mock<IUserIdProvider>();
+            mockIdProvider.Setup(ip => ip.GetUserId())
+                          .Returns(fakeUser.Id);
+
+            var contestController = new ContestsController(mockContext.Object, mockIdProvider.Object);
+
+            var response = contestController.DismissContest(fakeContest.Id);
+
+            mockContext.Verify(c => c.SaveChanges(), Times.Once);
+            Assert.IsInstanceOfType(response, typeof(RedirectToRouteResult));
+        }
     }
 }
