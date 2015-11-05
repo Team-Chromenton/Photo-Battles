@@ -60,7 +60,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult AdminEditContest(ContestBindingModel model)
         {
-            if (!this.ModelState.IsValid || model == null)
+            if (model == null || !this.ModelState.IsValid)
             {
                 this.AddNotification("Invalid input data", NotificationType.ERROR);
                 return this.RedirectToAction("AdminEditContest");
