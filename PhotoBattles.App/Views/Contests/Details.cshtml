@@ -32,7 +32,7 @@
                                         {
                                             OnSuccess = "disableVoting"
                                         },
-                                    new { @class = "btn btn-success", @id = "upvote-button" })
+                                    new { @class = "btn btn-success", @id = "upvote-button -" + @photo.Id })
                             }
                             else
                             {
@@ -61,7 +61,7 @@
                                         {
                                             OnSuccess = "disableVoting"
                                         },
-                                    new { @class = "btn btn-danger", @id = "downvote-button" })
+                                    new { @class = "btn btn-danger", @id = "downvote-button -" + @photo.Id })
                             }
                             else
                             {
@@ -92,8 +92,8 @@ else
 }
 
 <script>
-    function disableVoting() {
-        $('#downvote-button').attr('disabled', 'disabled');
-        $('#upvote-button').attr('disabled', 'disabled');
+    function disableVoting(id) {
+        $('#downvote-button-' + id).attr('disabled', 'disabled');
+        $('#upvote-button' + id).attr('disabled', 'disabled');
     }
 </script>
