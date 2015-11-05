@@ -8,9 +8,11 @@
 
     using Microsoft.AspNet.Identity;
 
+    using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Extensions;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
+    using PhotoBattles.Data.Contracts;
     using PhotoBattles.Models;
     using PhotoBattles.Models.Contracts;
     using PhotoBattles.Models.Enumerations;
@@ -18,6 +20,11 @@
     [Authorize(Roles = "Admin")]
     public class AdminContestsController : AdminBaseController
     {
+        public AdminContestsController(IPhotoBattlesData data, IUserIdProvider userIdProvider)
+            : base(data, userIdProvider)
+        {
+        }
+
         [HttpGet]
         public ActionResult AdminEditContest(int id)
         {

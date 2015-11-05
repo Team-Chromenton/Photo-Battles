@@ -131,6 +131,7 @@
   <ItemGroup>
     <Compile Include="MockContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\AdminContestsControllerTests.cs" />
     <Compile Include="UnitTests\ContestsControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
