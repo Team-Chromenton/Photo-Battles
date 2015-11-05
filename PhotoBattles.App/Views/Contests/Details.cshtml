@@ -29,10 +29,10 @@
                                 @Ajax.ActionLink("Upvote", "Upvote", "Votes",
                                     new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions()
-                                        {
-                                            OnSuccess = "disableVoting"
-                                        },
-                                    new { @class = "btn btn-success", @id = "upvote-button -" + @photo.Id })
+                                    {
+                                        OnSuccess = "disableVoting(" + photo.Id + ")"
+                                    },
+                                    new { @class = "btn btn-success", @id = "upvote-button-" + @photo.Id })
                             }
                             else
                             {
@@ -58,10 +58,10 @@
                                 @Ajax.ActionLink("Downvote", "Downvote", "Votes",
                                     new { contestId = Model.Id, photoId = photo.Id },
                                     new AjaxOptions
-                                        {
-                                            OnSuccess = "disableVoting"
-                                        },
-                                    new { @class = "btn btn-danger", @id = "downvote-button -" + @photo.Id })
+                                    {
+                                        OnSuccess = "disableVoting(" + photo.Id + ")"
+                                    },
+                                    new { @class = "btn btn-danger", @id = "downvote-button-" + @photo.Id })
                             }
                             else
                             {
@@ -94,6 +94,6 @@ else
 <script>
     function disableVoting(id) {
         $('#downvote-button-' + id).attr('disabled', 'disabled');
-        $('#upvote-button' + id).attr('disabled', 'disabled');
+        $('#upvote-button-' + id).attr('disabled', 'disabled');
     }
 </script>
