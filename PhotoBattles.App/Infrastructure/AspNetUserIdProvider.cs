@@ -12,5 +12,10 @@
         {
             return Thread.CurrentPrincipal.Identity.GetUserId();
         }
+
+        public string GetUserName()
+        {
+            return Thread.CurrentPrincipal.Identity.GetUserName();
+        }
     }
 }

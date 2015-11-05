@@ -6,15 +6,12 @@
 
     using AutoMapper.QueryableExtensions;
 
-    using Microsoft.AspNet.Identity;
-
     using PhotoBattles.App.Contracts;
     using PhotoBattles.App.Extensions;
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Data.Contracts;
     using PhotoBattles.Models;
-    using PhotoBattles.Models.Contracts;
     using PhotoBattles.Models.Enumerations;
 
     [Authorize(Roles = "Admin")]
@@ -40,7 +37,7 @@
                 return this.HttpNotFound();
             }
 
-            string currentUserName = this.User.Identity.GetUserName();
+            string currentUserName = this.UserIdProvider.GetUserName();
 
             var availableParticipants = this.Data.Users
                                             .GetAll()

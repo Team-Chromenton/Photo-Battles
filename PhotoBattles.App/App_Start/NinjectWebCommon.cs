@@ -12,6 +12,8 @@ namespace PhotoBattles.App.App_Start
     using Ninject;
     using Ninject.Web.Common;
 
+    using PhotoBattles.App.Contracts;
+    using PhotoBattles.App.Infrastructure;
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
     using PhotoBattles.Models;
@@ -76,6 +78,9 @@ namespace PhotoBattles.App.App_Start
 
             kernel.Bind<IPhotoBattlesContext>()
                   .To<PhotoBattlesContext>();
+
+            kernel.Bind<IUserIdProvider>()
+                  .To<AspNetUserIdProvider>();
 
             kernel.Bind<IContest>().To<Contest>();
         }
