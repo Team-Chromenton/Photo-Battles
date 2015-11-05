@@ -82,12 +82,12 @@
 
                 this.Data.SaveChanges();
 
-                this.AddNotification("Photo successfully added to contest " + contest.Title, NotificationType.SUCCESS);
+                this.AddNotification("Photo successfully added to contest", NotificationType.SUCCESS);
                 return this.RedirectToAction("Details", "Contests", new { id = model.ContestId });
             }
             else
             {
-                this.AddNotification("Photo did not upload. Please, try again later.", NotificationType.ERROR);
+                this.AddNotification("Photo did not upload. Please, try again later", NotificationType.ERROR);
                 return this.RedirectToAction("AddPhoto", model.ContestId);
             }
         }

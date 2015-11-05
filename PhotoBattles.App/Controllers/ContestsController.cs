@@ -190,7 +190,7 @@
 
             if (!participationStrategy.CanParticipate(currentUserName))
             {
-                this.AddNotification("You are currently participating in contest " + contest.Title, NotificationType.ERROR);
+                this.AddNotification("You are currently participating in contest", NotificationType.ERROR);
                 return this.RedirectToAction("Index");
             }
 
@@ -198,7 +198,7 @@
 
             this.Data.SaveChanges();
 
-            this.AddNotification("You have successfully joined contest " + contest.Title, NotificationType.SUCCESS);
+            this.AddNotification("You have successfully joined contest", NotificationType.SUCCESS);
             return this.RedirectToAction("ParticipateContests");
         }
 
@@ -406,7 +406,7 @@
             {
                 if (model.Participants == null || !model.Participants.Any())
                 {
-                    this.AddNotification("Please select participants.", NotificationType.ERROR);
+                    this.AddNotification("Please select participants", NotificationType.ERROR);
                     return false;
                 }
 
@@ -433,7 +433,7 @@
             {
                 if (model.Voters == null || !model.Voters.Any())
                 {
-                    this.AddNotification("Please select voters.", NotificationType.ERROR);
+                    this.AddNotification("Please select voters", NotificationType.ERROR);
                     return false;
                 }
 
@@ -506,7 +506,7 @@
             {
                 if (model.Participants == null || !model.Participants.Any())
                 {
-                    this.AddNotification("Please select participants.", NotificationType.ERROR);
+                    this.AddNotification("Please select participants", NotificationType.ERROR);
                     return false;
                 }
 
@@ -531,7 +531,7 @@
             {
                 if (model.Voters == null || !model.Voters.Any())
                 {
-                    this.AddNotification("Please select voters.", NotificationType.ERROR);
+                    this.AddNotification("Please select voters", NotificationType.ERROR);
                     return false;
                 }
 
