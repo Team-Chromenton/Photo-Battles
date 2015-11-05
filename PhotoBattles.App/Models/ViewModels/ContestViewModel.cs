@@ -59,46 +59,61 @@
         //// Strategies
         public IVotingStrategy GetVotingStrategy(IContest contest)
         {
-            if (this.VotingStrategyEnum == VotingStrategyEnum.Open)
+            switch (this.VotingStrategyEnum)
             {
-                return new OpenVotingStartegy(contest);
-            }
+                case VotingStrategyEnum.Open:
+                    return new OpenVotingStartegy(contest);
 
-            return new ClosedVotingStartegy(contest);
+                case VotingStrategyEnum.Closed:
+                    return new ClosedVotingStartegy(contest);
+
+                default:
+                    return new OpenVotingStartegy(contest);
+            }
         }
 
         public IParticipationStrategy GetParticipationStrategy(IContest contest)
         {
-            if (this.ParticipationStrategyEnum == ParticipationStrategyEnum.Open)
+            switch (this.ParticipationStrategyEnum)
             {
-                return new OpenParticipationStrategy(contest);
-            }
+                case ParticipationStrategyEnum.Open:
+                    return new OpenParticipationStrategy(contest);
 
-            return new ClosedParticipationStrategy(contest);
+                case ParticipationStrategyEnum.Closed:
+                    return new ClosedParticipationStrategy(contest);
+
+                default:
+                    return new OpenParticipationStrategy(contest);
+            }
         }
 
         public IRewardStrategy GetRewardStrategy(IContest contest)
         {
-            if (this.RewardStrategyEnum == RewardStrategyEnum.SingleWinner)
+            switch (this.RewardStrategyEnum)
             {
-                return new SingleWinner(contest);
-            }
-            else
-            {
-                return new MultipleWinners(contest);
+                case RewardStrategyEnum.SingleWinner:
+                    return new SingleWinner(contest);
+
+                case RewardStrategyEnum.MultipleWinners:
+                    return new MultipleWinners(contest);
+
+                default:
+                    return new SingleWinner(contest);
             }
         }
 
         public IDeadlineStrategy GetDeadlineStrategy(IContest contest)
         {
+            switch (this.DeadlineStrategyEnum)
+            {
+                case DeadlineStrategyEnum.EndDate:
+                    return new DeadlineByEndDate(contest);
 
-            if (this.DeadlineStrategyEnum == DeadlineStrategyEnum.EndDate)
-            {
-                return new DeadlineByEndDate(contest);
-            }
-            else
-            {
-                return new DeadlineByParticipantsLimit(contest);
+                case DeadlineStrategyEnum.ParticipantsLimit:
+                    return new DeadlineByParticipantsLimit(contest);
+
+                default:
+                    return new DeadlineByEndDate(contest);
             }
         }
         //// Strategies

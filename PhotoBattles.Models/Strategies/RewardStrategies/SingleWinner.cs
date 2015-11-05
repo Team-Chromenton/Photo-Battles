@@ -16,9 +16,9 @@
 
         public void SetWinners()
         {
-            var winner = this.contest.Participants
-                .Where(p => p.Votes.Count > 0)
-                .OrderByDescending(p => p.Votes.Count)
+            var winner = this.contest.Photos
+                .OrderByDescending(p => p.Votes.Sum(v => v.Score))
+                .Select(p => p.Author)
                 .FirstOrDefault();
 
             this.contest.Winners.Add(winner);
