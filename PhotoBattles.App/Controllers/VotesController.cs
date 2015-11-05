@@ -7,6 +7,7 @@
 
     using Microsoft.AspNet.Identity;
 
+    using PhotoBattles.App.Extensions;
     using PhotoBattles.App.Hubs;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models;
@@ -20,6 +21,7 @@
 
             if (!currentUserCanVote)
             {
+                this.AddNotification("You are not allowed to vote.", NotificationType.ERROR);
                 return this.RedirectToAction("Details", "Contests", new { id = contestId });
             }
 
@@ -33,6 +35,7 @@
             var hub = new VotingHub();
             hub.IncreaseScore(photoId);
 
+            this.AddNotification("You have successfully upvoted.", NotificationType.SUCCESS);
             return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
@@ -42,6 +45,7 @@
 
             if (!currentUserCanVote)
             {
+                this.AddNotification("You are not allowed to vote.", NotificationType.ERROR);
                 return this.RedirectToAction("Details", "Contests", new { id = contestId });
             }
 
@@ -55,6 +59,7 @@
             var hub = new VotingHub();
             hub.DecreaseScore(photoId);
 
+            this.AddNotification("You have successfully downvoted.", NotificationType.SUCCESS);
             return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 

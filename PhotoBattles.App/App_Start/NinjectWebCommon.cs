@@ -14,6 +14,7 @@ namespace PhotoBattles.App.App_Start
 
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
+    using PhotoBattles.Models;
     using PhotoBattles.Models.Contracts;
     using PhotoBattles.Models.Strategies.VotingStrategies;
 
@@ -75,6 +76,8 @@ namespace PhotoBattles.App.App_Start
 
             kernel.Bind<IPhotoBattlesContext>()
                   .To<PhotoBattlesContext>();
+
+            kernel.Bind<IContest>().To<Contest>();
         }
     }
 }

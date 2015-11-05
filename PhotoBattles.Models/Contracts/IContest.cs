@@ -3,17 +3,31 @@
     using System;
     using System.Collections.Generic;
 
+    using PhotoBattles.Models.Enumerations;
+
     public interface IContest
     {
-        ICollection<Photo> Photos { get; }
+        string Title { get; }
 
-        ICollection<User> RegisteredVoters { get; }
+        string Description { get; }
 
-        ICollection<User> RegisteredParticipants { get; }
+        DateTime CreatedOn { get; }
 
-        ICollection<User> Participants { get; }
+        bool IsActive { get; set; }
 
-        ICollection<User> Winners { get; }
+        bool IsOpen { get; set; }
+
+        User Organizer { get; }
+
+        //// Strategies - Enum
+        VotingStrategyEnum VotingStrategyEnum { get;  }
+
+        ParticipationStrategyEnum ParticipationStrategyEnum { get; }
+
+        RewardStrategyEnum RewardStrategyEnum { get; }
+
+        DeadlineStrategyEnum DeadlineStrategyEnum { get; }
+        //// Strategies - Enum
 
         int NumberOfWinners { get; }
 
@@ -21,8 +35,14 @@
 
         int? ParticipantsLimit { get; }
 
-        bool IsActive { get; set; }
+        ICollection<Photo> Photos { get; }
 
-        bool IsOpen { get; set; }
+        ICollection<User> RegisteredParticipants { get; }
+
+        ICollection<User> Participants { get; }
+
+        ICollection<User> RegisteredVoters { get; }
+
+        ICollection<User> Winners { get; }
     }
 }

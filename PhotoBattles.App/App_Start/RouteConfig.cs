@@ -12,10 +12,7 @@
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Contests", action = "Index", id = UrlParameter.Optional }
-                );
-
-                // , namespaces: new[] { "PhotoBattles.App.Controllers" });
+                defaults: new { controller = "Contests", action = "Index", id = UrlParameter.Optional });
         }
     }
 }

@@ -70,8 +70,6 @@
                     .ThenByDescending(c => c.CreatedOn)
                     .ProjectTo<ContestViewModel>();
 
-            var currentUserName = this.User.Identity.GetUserName();
-
             foreach (var contest in contests)
             {
                 var deadlineStrategy = contest.GetDeadlineStrategy(this.Data.Contests.Find(contest.Id));
@@ -157,6 +155,7 @@
                   this.SetRewardStrategy(model, newContest) &&
                   this.SetDeadlineStrategy(model, newContest)))
             {
+                this.AddNotification("Incorrect strategy parameters. Please, review strategy parameters.", NotificationType.ERROR);
                 return this.RedirectToAction("AddContest");
             }
 
@@ -191,9 +190,7 @@
 
             if (!participationStrategy.CanParticipate(currentUserName))
             {
-                this.AddNotification(
-                    "You are currently participating in contest " + contest.Title,
-                    NotificationType.ERROR);
+                this.AddNotification("You are currently participating in contest " + contest.Title, NotificationType.ERROR);
                 return this.RedirectToAction("Index");
             }
 
@@ -201,6 +198,7 @@
 
             this.Data.SaveChanges();
 
+            this.AddNotification("You have successfully joined contest " + contest.Title, NotificationType.SUCCESS);
             return this.RedirectToAction("ParticipateContests");
         }
 

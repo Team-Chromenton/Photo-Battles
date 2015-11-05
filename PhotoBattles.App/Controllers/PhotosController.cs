@@ -57,7 +57,8 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.ViewBag.StatusMessage("Error");
+                this.AddNotification("Invalid data entered.", NotificationType.ERROR);
+                return this.RedirectToAction("AddPhoto", contest.Id);
             }
 
             string currentUserId = this.User.Identity.GetUserId();
@@ -81,6 +82,7 @@
 
                 this.Data.SaveChanges();
 
+                this.AddNotification("Photo successfully added to contest " + contest.Title, NotificationType.SUCCESS);
                 return this.RedirectToAction("Details", "Contests", new { id = model.ContestId });
             }
             else
@@ -121,7 +123,6 @@
             catch (Exception exception)
             {
                 this.AddNotification(exception.Message, NotificationType.ERROR);
-
                 return null;
             }
         }

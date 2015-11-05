@@ -12,6 +12,7 @@
     using PhotoBattles.App.Models.BindingModels;
     using PhotoBattles.App.Models.ViewModels;
     using PhotoBattles.Models;
+    using PhotoBattles.Models.Contracts;
     using PhotoBattles.Models.Enumerations;
 
     [Authorize(Roles = "Admin")]

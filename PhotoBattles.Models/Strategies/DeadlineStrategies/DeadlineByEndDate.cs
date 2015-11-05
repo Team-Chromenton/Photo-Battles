@@ -15,7 +15,7 @@
 
         public bool Expire()
         {
-            if (this.contest.IsActive && DateTime.Now > this.contest.EndDate)
+            if (this.contest.IsActive && this.contest.EndDate != null && DateTime.Now > this.contest.EndDate)
             {
                 this.contest.IsActive = false;
                 this.contest.IsOpen = false;
