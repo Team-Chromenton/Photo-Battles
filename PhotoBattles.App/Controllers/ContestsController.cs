@@ -132,7 +132,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult AddContest(ContestBindingModel model)
         {
-            if (!this.ModelState.IsValid || model == null)
+            if (model == null || !this.ModelState.IsValid)
             {
                 this.AddNotification("Incorrect title or description", NotificationType.ERROR);
                 return this.RedirectToAction("AddContest");
@@ -296,7 +296,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult EditContest(ContestBindingModel model, int id)
         {
-            if (!this.ModelState.IsValid || model == null)
+            if (model == null || !this.ModelState.IsValid)
             {
                 this.AddNotification("Invalid input data", NotificationType.ERROR);
                 return this.RedirectToAction("EditContest");
