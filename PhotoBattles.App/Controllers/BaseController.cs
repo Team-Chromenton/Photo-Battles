@@ -8,6 +8,7 @@
     using PhotoBattles.Data;
     using PhotoBattles.Data.Contracts;
 
+    [ValidateInput(false)]
     public class BaseController : Controller
     {
         protected ContestInformationHub hub = new ContestInformationHub();

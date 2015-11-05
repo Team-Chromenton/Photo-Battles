@@ -13,6 +13,7 @@
     using PhotoBattles.Models;
 
     [Authorize]
+    [ValidateInput(false)]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;

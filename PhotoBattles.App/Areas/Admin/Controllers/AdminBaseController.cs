@@ -8,6 +8,7 @@
     using PhotoBattles.Data.Contracts;
 
     [Authorize(Roles = "Admin")]
+    [ValidateInput(false)]
     public class AdminBaseController : Controller
     {
         public AdminBaseController()
